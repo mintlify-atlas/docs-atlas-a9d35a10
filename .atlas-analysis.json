@@ -1,0 +1,167 @@
+{
+  "projectType": "frontend",
+  "projectName": "Grauity",
+  "projectDescription": "A React design system and component library for building elegant user interfaces",
+  "theme": "willow",
+  "primaryColor": "#6366F1",
+  "lightColor": "#818CF8",
+  "darkColor": "#4F46E5",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Fundamentals",
+            "pages": [
+              "fundamentals/theming",
+              "fundamentals/icons",
+              "fundamentals/design-tokens"
+            ]
+          },
+          {
+            "group": "Form Components",
+            "pages": [
+              "components/forms/text-field",
+              "components/forms/text-area",
+              "components/forms/checkbox",
+              "components/forms/radio-button",
+              "components/forms/dropdown",
+              "components/forms/combobox",
+              "components/forms/otp-input",
+              "components/forms/use-form"
+            ]
+          },
+          {
+            "group": "UI Components",
+            "pages": [
+              "components/ui/button",
+              "components/ui/typography",
+              "components/ui/icon",
+              "components/ui/alert",
+              "components/ui/alert-banner",
+              "components/ui/modal",
+              "components/ui/drawer",
+              "components/ui/bottom-sheet",
+              "components/ui/accordion",
+              "components/ui/tabs",
+              "components/ui/table",
+              "components/ui/tooltip",
+              "components/ui/popover",
+              "components/ui/chip",
+              "components/ui/pill",
+              "components/ui/tag",
+              "components/ui/carousel",
+              "components/ui/pagination"
+            ]
+          },
+          {
+            "group": "Calendar Components",
+            "pages": [
+              "components/calendar/unified-calendar",
+              "components/calendar/weekly-calendar",
+              "components/calendar/monthly-calendar"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "advanced/theme-scope",
+              "advanced/dropdown-menu",
+              "advanced/select-dropdown",
+              "advanced/multi-select-dropdown",
+              "advanced/floating-action-button",
+              "advanced/range-input"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Design Tokens",
+        "groups": [
+          {
+            "group": "Tokens",
+            "pages": [
+              "tokens/colors",
+              "tokens/typography",
+              "tokens/spacing",
+              "tokens/corner-radius",
+              "tokens/stacking"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Contributing",
+        "groups": [
+          {
+            "group": "Development",
+            "pages": [
+              "contributing/setup",
+              "contributing/guidelines",
+              "contributing/adding-components"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "30+ production-ready React components",
+    "TypeScript support with full type definitions",
+    "Light and dark theme support",
+    "Comprehensive form handling with useNSForm hook",
+    "Calendar and scheduling components",
+    "Design tokens for consistent styling",
+    "Storybook documentation",
+    "Accessibility-focused design"
+  ],
+  "publicApiSurface": [
+    "NSButton",
+    "NSTypography",
+    "NSIcon",
+    "NSAlert",
+    "NSAlertBanner",
+    "NSModal",
+    "NSConfirmationDialog",
+    "NSMultiStepModal",
+    "NSDrawer",
+    "NSBottomSheet",
+    "NSAccordion",
+    "NSTabs",
+    "NSTable",
+    "NSTextField",
+    "NSTextArea",
+    "NSCheckbox",
+    "NSRadioButton",
+    "NSDropdown",
+    "NSCombobox",
+    "NSSelectDropdown",
+    "NSMultiSelectDropdown",
+    "NSChip",
+    "NSPill",
+    "NSTag",
+    "NSTooltip",
+    "NSPopOver",
+    "NSCarousel",
+    "NSPagination",
+    "NSCalendar",
+    "NSWeeklyCalendar",
+    "NSMonthlyCalendar",
+    "NSFloatingActionButton",
+    "NSRangeInput",
+    "NSOtpInput",
+    "NSDropdownMenu",
+    "GrauityThemeProvider",
+    "NSThemeScope",
+    "useNSForm"
+  ]
+}
