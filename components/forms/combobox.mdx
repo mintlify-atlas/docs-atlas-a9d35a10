@@ -1,0 +1,439 @@
+---
+title: Combobox
+description: A searchable input field with a dropdown menu for selecting options
+---
+
+## Overview
+
+Combobox combines a text input with a dropdown menu, allowing users to search and filter options as they type. Selected items are displayed as dismissible tags, making it ideal for selecting multiple items with search functionality.
+
+## Basic Usage
+
+```jsx
+import { Combobox } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [value, setValue] = useState([]);
+
+  return (
+    <Combobox
+      name="tags"
+      label="Tags"
+      placeholder="Type to search..."
+      multiple
+      items={[
+        { type: 'option', label: 'React', value: 'react' },
+        { type: 'option', label: 'TypeScript', value: 'typescript' },
+        { type: 'option', label: 'JavaScript', value: 'javascript' },
+        { type: 'option', label: 'CSS', value: 'css' },
+      ]}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
+```
+
+## Single Selection
+
+```jsx
+import { Combobox } from 'grauity';
+import { useState } from 'react';
+
+function SingleSelectCombobox() {
+  const [movie, setMovie] = useState(null);
+
+  const movies = [
+    { type: 'option', label: 'Avatar', value: 'avatar' },
+    { type: 'option', label: 'Avengers: Endgame', value: 'endgame' },
+    { type: 'option', label: 'Avatar: The Way of Water', value: 'avatar2' },
+    { type: 'option', label: 'Star Wars: The Force Awakens', value: 'starwars' },
+  ];
+
+  return (
+    <Combobox
+      name="movie"
+      label="Favorite Movie"
+      placeholder="Search movies..."
+      multiple={false}
+      items={movies}
+      value={movie}
+      onChange={setMovie}
+    />
+  );
+}
+```
+
+## Multiple Selection
+
+```jsx
+import { Combobox } from 'grauity';
+import { useState } from 'react';
+
+function MultiSelectCombobox() {
+  const [skills, setSkills] = useState([]);
+
+  const skillOptions = [
+    { type: 'option', label: 'React', value: 'react' },
+    { type: 'option', label: 'Vue', value: 'vue' },
+    { type: 'option', label: 'Angular', value: 'angular' },
+    { type: 'option', label: 'Svelte', value: 'svelte' },
+    { type: 'option', label: 'TypeScript', value: 'typescript' },
+    { type: 'option', label: 'JavaScript', value: 'javascript' },
+  ];
+
+  return (
+    <Combobox
+      name="skills"
+      label="Technical Skills"
+      placeholder="Type to search skills..."
+      multiple
+      items={skillOptions}
+      value={skills}
+      onChange={setSkills}
+      helpMessage="Select all that apply"
+    />
+  );
+}
+```
+
+<Note>
+  By default, Combobox uses client-side filtering. The search matches against the `label` and `description` fields.
+</Note>
+
+## Custom Search (Server-side)
+
+```jsx
+import { Combobox } from 'grauity';
+import { useState, useEffect } from 'react';
+
+function ServerSearchCombobox() {
+  const [value, setValue] = useState([]);
+  const [options, setOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleTextInputChange = async (searchText) => {
+    if (!searchText) {
+      setOptions([]);
+      return;
+    }
+
+    setLoading(true);
+    // Simulate API call
+    const results = await searchAPI(searchText);
+    setOptions(
+      results.map(item => ({
+        type: 'option',
+        label: item.name,
+        value: item.id,
+      }))
+    );
+    setLoading(false);
+  };
+
+  return (
+    <Combobox
+      name="search"
+      label="Search"
+      placeholder="Type to search..."
+      multiple
+      useDefaultSearchMethod={false}
+      items={options}
+      value={value}
+      onChange={setValue}
+      onTextInputChange={handleTextInputChange}
+    />
+  );
+}
+```
+
+<Note>
+  Set `useDefaultSearchMethod={false}` to disable client-side filtering when implementing custom search logic.
+</Note>
+
+## Custom Tag Renderer
+
+```jsx
+import { Combobox, Button } from 'grauity';
+import { useState } from 'react';
+
+function CustomTagCombobox() {
+  const [value, setValue] = useState([]);
+
+  return (
+    <Combobox
+      name="custom"
+      label="Custom Tags"
+      placeholder="Type to search..."
+      multiple
+      items={[
+        { type: 'option', label: 'Option 1', value: '1' },
+        { type: 'option', label: 'Option 2', value: '2' },
+        { type: 'option', label: 'Option 3', value: '3' },
+      ]}
+      value={value}
+      onChange={setValue}
+      renderValue={({ item, onDismiss }) => (
+        <Button
+          color="success"
+          size="small"
+          icon="close"
+          iconPosition="right"
+          onClick={onDismiss}
+        >
+          {item.label}
+        </Button>
+      )}
+    />
+  );
+}
+```
+
+## Dismiss on Backspace
+
+```jsx
+import { Combobox } from 'grauity';
+import { useState } from 'react';
+
+function BackspaceDismissCombobox() {
+  const [value, setValue] = useState([]);
+
+  return (
+    <Combobox
+      name="tags"
+      label="Tags"
+      placeholder="Type to add tags..."
+      multiple
+      shouldDismissOnBackspace
+      items={[
+        { type: 'option', label: 'Tag 1', value: '1' },
+        { type: 'option', label: 'Tag 2', value: '2' },
+        { type: 'option', label: 'Tag 3', value: '3' },
+      ]}
+      value={value}
+      onChange={setValue}
+      helpMessage="Press Backspace to remove the last tag"
+    />
+  );
+}
+```
+
+## With Sections and Icons
+
+```jsx
+import { Combobox } from 'grauity';
+import { useState } from 'react';
+
+function GroupedCombobox() {
+  const [value, setValue] = useState([]);
+
+  return (
+    <Combobox
+      name="movies"
+      label="Movies"
+      placeholder="Search movies..."
+      multiple
+      items={[
+        { type: 'subheader', title: 'TOP RATED' },
+        {
+          type: 'option',
+          label: 'The Shawshank Redemption',
+          value: 'shawshank',
+          leftIcon: 'check-circle',
+        },
+        {
+          type: 'option',
+          label: 'The Godfather',
+          value: 'godfather',
+          leftIcon: 'check-circle',
+        },
+        { type: 'divider' },
+        { type: 'subheader', title: 'RECENT' },
+        {
+          type: 'option',
+          label: 'Oppenheimer',
+          value: 'oppenheimer',
+          leftIcon: 'check-circle',
+        },
+      ]}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
+```
+
+## Props
+
+### Trigger Props
+
+<ParamField path="name" type="string" required>
+  The name of the combobox field.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label displayed above the combobox.
+</ParamField>
+
+<ParamField path="placeholder" type="string" default="'Select'">
+  Placeholder text for the input field.
+</ParamField>
+
+<ParamField path="isRequired" type="boolean" default={false}>
+  Whether the field is required.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether the combobox is disabled.
+</ParamField>
+
+<ParamField path="helpMessage" type="string">
+  Helper text displayed below the combobox.
+</ParamField>
+
+<ParamField path="errorMessage" type="string">
+  Error message displayed below the combobox.
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  Color theme. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="onTextInputChange" type="function">
+  Callback fired when the input text changes.
+  
+  ```tsx
+  (text: string) => void
+  ```
+</ParamField>
+
+<ParamField path="tagProps" type="object">
+  Props passed to the Tag component for selected items.
+</ParamField>
+
+<ParamField path="renderValue" type="function">
+  Custom renderer for selected value tags.
+  
+  ```tsx
+  (props: {
+    index: number;
+    item: BaseItemOptionProps;
+    onDismiss: () => void;
+  }) => React.ReactNode
+  ```
+</ParamField>
+
+<ParamField path="shouldDismissOnBackspace" type="boolean" default={false}>
+  Whether pressing Backspace (when input is empty) should remove the last selected item.
+</ParamField>
+
+### Menu Props
+
+<ParamField path="items" type="array" required>
+  Array of menu items. Same format as Dropdown items.
+</ParamField>
+
+<ParamField path="value" type="BaseItemOptionProps | BaseItemOptionProps[]">
+  Currently selected value(s).
+</ParamField>
+
+<ParamField path="multiple" type="boolean" default={false}>
+  Whether multiple items can be selected.
+</ParamField>
+
+<ParamField path="useDefaultSearchMethod" type="boolean" default={true}>
+  Whether to use built-in client-side search. Set to `false` for custom search implementations.
+</ParamField>
+
+<ParamField path="showActionButtons" type="boolean" default={false}>
+  Whether to show Apply and Clear All buttons.
+</ParamField>
+
+<ParamField path="applyOnOptionSelectInMultipleMode" type="boolean" default={true}>
+  Whether `onChange` is called immediately when selecting options in multiple mode.
+</ParamField>
+
+<ParamField path="onChange" type="function">
+  Callback fired when selection changes.
+  
+  ```tsx
+  (value: BaseItemOptionProps | BaseItemOptionProps[]) => void
+  ```
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback fired when the dropdown closes.
+  
+  ```tsx
+  (value: BaseItemOptionProps | BaseItemOptionProps[]) => void
+  ```
+</ParamField>
+
+<ParamField path="menuProps" type="object">
+  Menu positioning configuration:
+  - `width`: Menu width (default: `'300px'`)
+  - `fullWidth`: Match trigger width (default: `true`)
+</ParamField>
+
+## TypeScript
+
+```tsx
+import { ComboboxProps, BaseItemOptionProps } from 'grauity';
+
+interface ComboboxProps {
+  name: string;
+  label?: string;
+  placeholder?: string;
+  isRequired?: boolean;
+  isDisabled?: boolean;
+  helpMessage?: string;
+  errorMessage?: string;
+  color?: string;
+  multiple?: boolean;
+  items: BaseItemProps[];
+  value?: BaseItemOptionProps | BaseItemOptionProps[];
+  onChange?: (value: any) => void;
+  onClose?: (value: any) => void;
+  onTextInputChange?: (text: string) => void;
+  useDefaultSearchMethod?: boolean;
+  renderValue?: (props: any) => React.ReactNode;
+  shouldDismissOnBackspace?: boolean;
+  tagProps?: Omit<TagProps, 'children'>;
+  menuProps?: {
+    width?: string;
+    fullWidth?: boolean;
+  };
+}
+```
+
+## Accessibility
+
+- Keyboard navigation with arrow keys and Enter
+- Screen reader support with proper ARIA attributes
+- Focus management between input and menu
+- Selected items are dismissible via keyboard
+- Support for assistive technologies
+
+<Warning>
+  When implementing custom search with `useDefaultSearchMethod={false}`, ensure your search function handles debouncing to avoid excessive API calls.
+</Warning>
+
+## Best Practices
+
+1. **Use for searchable selections**: Ideal when users need to search through many options
+2. **Debounce API calls**: When using server-side search, debounce the search function
+3. **Provide feedback**: Show loading states during async operations
+4. **Clear empty states**: Display helpful messages when no results are found
+5. **Tag management**: Make it easy to review and remove selected items
+
+## Related Components
+
+- [Dropdown](/components/forms/dropdown) - For non-searchable selections
+- [TextField](/components/forms/text-field) - For free-text input
+
+## Source
+
+View the source code on GitHub:
+- [Combobox.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/Combobox/Combobox.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/Combobox/types.ts:1)

@@ -1,0 +1,457 @@
+---
+title: 'MonthlyCalendar'
+description: 'A month-based calendar grid component for displaying events across an entire month'
+icon: 'calendar-days'
+---
+
+## Overview
+
+The `MonthlyCalendar` component displays events in a traditional month grid view, similar to Google Calendar or Outlook. It automatically handles event overflow with popover lists, highlights the current day, and supports custom event rendering. Ideal for applications that need a high-level overview of monthly schedules.
+
+## Import
+
+```tsx
+import { MonthlyCalendar } from '@grauity/ui';
+import type { MonthlyCalendarProps, CalendarEvent } from '@grauity/ui';
+```
+
+## Basic Usage
+
+```tsx
+import { MonthlyCalendar } from '@grauity/ui';
+import { useState } from 'react';
+
+function MyMonthlyCalendar() {
+  const [date, setDate] = useState(new Date());
+
+  const events = [
+    {
+      id: '1',
+      title: 'Team Meeting',
+      start: new Date(2024, 2, 15, 10, 0),
+      end: new Date(2024, 2, 15, 11, 0),
+    },
+    {
+      id: '2',
+      title: 'Project Deadline',
+      start: new Date(2024, 2, 25, 17, 0),
+      end: new Date(2024, 2, 25, 18, 0),
+    },
+  ];
+
+  return (
+    <MonthlyCalendar
+      events={events}
+      date={date}
+      onDateChange={setDate}
+      eventRenderer={(event) => (
+        <div>{event.title}</div>
+      )}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="events" type="CalendarEvent<T>[]" required>
+  Array of events to display in the calendar. Events are automatically sorted by start time within each day.
+</ParamField>
+
+<ParamField path="eventRenderer" type="(item: CalendarEvent<T>) => React.ReactNode" required>
+  Function to render each event in the calendar grid. This is used for the main event display.
+</ParamField>
+
+<ParamField path="date" type="Date" default="new Date()">
+  The date to show in the calendar. Determines which month is displayed.
+</ParamField>
+
+<ParamField path="onDateChange" type="(date: Date) => void">
+  Callback fired when the date changes through month navigation controls.
+</ParamField>
+
+<ParamField path="shouldShowMonthControls" type="boolean" default="true">
+  Whether to show month navigation controls (previous/next arrows and Today button).
+</ParamField>
+
+<ParamField path="header" type="React.ReactNode" default="null">
+  Custom header content to display above the calendar.
+</ParamField>
+
+<ParamField path="renderDayItem" type="(item: CalendarEvent<T>) => React.ReactNode">
+  Optional alternative render function for events. When provided, this is used instead of `eventRenderer` for rendering events in day cells.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Whether the calendar is in a loading state. Shows placeholder UI when true.
+</ParamField>
+
+<ParamField path="onPopOverClose" type="() => void">
+  Callback to run when the overflow events popover closes.
+</ParamField>
+
+<ParamField path="className" type="string" default="''">
+  Additional class name for the calendar container element.
+</ParamField>
+
+## Event Data Structure
+
+The `CalendarEvent` interface defines the structure for calendar events:
+
+```tsx
+interface CalendarEvent<T = {}> {
+  id?: string | number;
+  title?: string;
+  start: Date;        // Required: Event start time
+  end: Date;          // Required: Event end time
+  allDay?: boolean;
+  render?: (event: CalendarEvent<T>) => React.ReactNode;
+  focused?: boolean;
+}
+```
+
+## Custom Event Rendering
+
+Use the `MonthlyCalendarEvent` component for styled event items:
+
+```tsx
+import { MonthlyCalendar } from '@grauity/ui';
+import MonthlyCalendarEventItem from '@grauity/ui/MonthlyCalendarEvent';
+
+function CustomMonthlyCalendar() {
+  const events = [
+    {
+      id: '1',
+      title: 'Morning Meeting',
+      start: new Date(2024, 2, 7, 9, 0),
+      end: new Date(2024, 2, 7, 10, 30),
+    },
+  ];
+
+  return (
+    <MonthlyCalendar
+      events={events}
+      eventRenderer={(event) => (
+        <MonthlyCalendarEventItem
+          key={event.id}
+          eventTime={event.start}
+          eventTitle={event.title}
+          eventTitleColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+          eventTimeColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+          backgroundColor="var(--bg-emphasis-brand-default, #0673f9)"
+          height="50px"
+        />
+      )}
+    />
+  );
+}
+```
+
+## Event Overflow Handling
+
+When a day has more events than can fit in the grid cell:
+
+<Steps>
+  <Step title="Visible Events">
+    The first few events are displayed in the day cell (number depends on cell height).
+  </Step>
+  
+  <Step title="Overflow Indicator">
+    An indicator like "+3 more" appears at the bottom of the cell.
+  </Step>
+  
+  <Step title="Popover Display">
+    Clicking the indicator opens a popover showing all events for that day.
+  </Step>
+  
+  <Step title="Popover Close">
+    The `onPopOverClose` callback fires when the user closes the popover.
+  </Step>
+</Steps>
+
+```tsx
+<MonthlyCalendar
+  events={manyEvents}
+  eventRenderer={(event) => <div>{event.title}</div>}
+  onPopOverClose={() => console.log('Overflow popover closed')}
+/>
+```
+
+## Month Navigation
+
+<CodeGroup>
+```tsx With Controls
+<MonthlyCalendar
+  shouldShowMonthControls
+  date={date}
+  onDateChange={setDate}
+  events={events}
+  eventRenderer={(event) => <div>{event.title}</div>}
+/>
+```
+
+```tsx Without Controls
+<MonthlyCalendar
+  shouldShowMonthControls={false}
+  date={date}
+  events={events}
+  eventRenderer={(event) => <div>{event.title}</div>}
+/>
+```
+</CodeGroup>
+
+## Complete Example
+
+```tsx
+import { MonthlyCalendar } from '@grauity/ui';
+import MonthlyCalendarEventItem from '@grauity/ui/MonthlyCalendarEvent';
+import { useState } from 'react';
+
+function CalendarApp() {
+  const [date, setDate] = useState(new Date());
+  
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+
+  const events = [
+    {
+      id: '1-1',
+      title: 'Morning Meeting',
+      start: new Date(currentYear, currentMonth, 1, 9, 0),
+      end: new Date(currentYear, currentMonth, 1, 10, 30),
+    },
+    {
+      id: '1-2',
+      title: 'Team Lunch',
+      start: new Date(currentYear, currentMonth, 1, 12, 0),
+      end: new Date(currentYear, currentMonth, 1, 13, 0),
+    },
+    {
+      id: '5-1',
+      title: 'Project Review',
+      start: new Date(currentYear, currentMonth, 5, 11, 0),
+      end: new Date(currentYear, currentMonth, 5, 12, 30),
+    },
+    {
+      id: '5-2',
+      title: 'Client Call',
+      start: new Date(currentYear, currentMonth, 5, 14, 0),
+      end: new Date(currentYear, currentMonth, 5, 15, 0),
+    },
+    {
+      id: '10-1',
+      title: 'Sprint Planning',
+      start: new Date(currentYear, currentMonth, 10, 10, 0),
+      end: new Date(currentYear, currentMonth, 10, 11, 30),
+    },
+    {
+      id: '15-1',
+      title: 'Weekly Standup',
+      start: new Date(currentYear, currentMonth, 15, 9, 30),
+      end: new Date(currentYear, currentMonth, 15, 10, 30),
+    },
+  ];
+
+  return (
+    <div style={{ height: '100vh' }}>
+      <MonthlyCalendar
+        date={date}
+        onDateChange={(newDate) => {
+          console.log('Month changed to:', newDate);
+          setDate(newDate);
+        }}
+        events={events}
+        eventRenderer={(event) => (
+          <MonthlyCalendarEventItem
+            key={event.id}
+            eventTime={event.start}
+            eventTitle={event.title}
+            eventTitleColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+            eventTimeColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+            backgroundColor="var(--bg-emphasis-brand-default, #0673f9)"
+            height="50px"
+          />
+        )}
+        shouldShowMonthControls
+        onPopOverClose={() => {
+          console.log('User closed overflow popover');
+        }}
+        header={
+          <div style={{ padding: '16px', borderBottom: '1px solid #e1e5ea' }}>
+            <h2>Monthly Schedule</h2>
+          </div>
+        }
+      />
+    </div>
+  );
+}
+```
+
+## Grid Layout
+
+The calendar grid:
+
+- Always shows complete weeks (42 or 35 days depending on the month)
+- Includes dates from previous and next months to fill the grid
+- Grays out dates outside the current month
+- Highlights today's date
+- Starts weeks on Sunday
+
+## Custom Day Rendering
+
+For advanced customization, use `renderDayItem` instead of `eventRenderer`:
+
+```tsx
+<MonthlyCalendar
+  events={events}
+  eventRenderer={(event) => <div>{event.title}</div>}
+  renderDayItem={(event) => (
+    <div style={{ 
+      padding: '4px',
+      background: event.start.getDay() === 0 ? '#f0f0f0' : 'transparent' 
+    }}>
+      {event.title}
+    </div>
+  )}
+/>
+```
+
+<Note>
+  When `renderDayItem` is provided, it takes precedence over `eventRenderer` for the main calendar grid. The `eventRenderer` is still used in the overflow popover.
+</Note>
+
+## Loading State
+
+```tsx
+<MonthlyCalendar
+  loading={true}
+  events={[]}
+  eventRenderer={(event) => <div>{event.title}</div>}
+/>
+```
+
+When `loading` is true, the calendar displays placeholder elements in each day cell.
+
+## Multiple Events Per Day
+
+Events are automatically sorted by start time within each day:
+
+```tsx
+const dayEvents = [
+  {
+    id: '1',
+    title: 'Morning Meeting',
+    start: new Date(2024, 2, 15, 9, 0),
+    end: new Date(2024, 2, 15, 10, 0),
+  },
+  {
+    id: '2',
+    title: 'Lunch',
+    start: new Date(2024, 2, 15, 12, 0),
+    end: new Date(2024, 2, 15, 13, 0),
+  },
+  {
+    id: '3',
+    title: 'Afternoon Review',
+    start: new Date(2024, 2, 15, 15, 0),
+    end: new Date(2024, 2, 15, 16, 0),
+  },
+];
+
+<MonthlyCalendar
+  events={dayEvents}
+  eventRenderer={(event) => <div>{event.title}</div>}
+/>
+```
+
+The calendar will display these in chronological order within the day cell.
+
+## Accessibility
+
+- Semantic HTML structure with proper heading hierarchy
+- ARIA labels describing the current month
+- Keyboard navigation for month controls
+- Screen reader support for date changes
+- Focusable event items
+
+## Performance
+
+<AccordionGroup>
+  <Accordion title="Event Sorting">
+    Events are sorted once when passed to the component, not on every render. For optimal performance, memoize your events array.
+  </Accordion>
+  
+  <Accordion title="Grid Calculation">
+    The calendar calculates grid dates efficiently and only recalculates when the month changes.
+  </Accordion>
+  
+  <Accordion title="Popover Rendering">
+    Overflow popovers are rendered on-demand, not upfront, keeping the initial render fast.
+  </Accordion>
+</AccordionGroup>
+
+## TypeScript
+
+The component supports generic typing for custom event data:
+
+```tsx
+interface TaskEvent {
+  priority: 'high' | 'medium' | 'low';
+  assignee: string;
+  completed: boolean;
+}
+
+const tasks: CalendarEvent<TaskEvent>[] = [
+  {
+    id: '1',
+    title: 'Complete quarterly review',
+    start: new Date(2024, 2, 15, 10, 0),
+    end: new Date(2024, 2, 15, 11, 0),
+    priority: 'high',
+    assignee: 'john@example.com',
+    completed: false,
+  },
+];
+
+<MonthlyCalendar<TaskEvent>
+  events={tasks}
+  eventRenderer={(event) => (
+    <div>
+      <span>{event.title}</span>
+      {event.priority === 'high' && <span>🔴</span>}
+      {event.completed && <span>✓</span>}
+    </div>
+  )}
+/>
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Event Height">
+    Keep event heights consistent (around 40-50px) for the best visual layout. The calendar will show 3-4 events per cell before overflow.
+  </Accordion>
+  
+  <Accordion title="Event Titles">
+    Use concise event titles that fit within the narrow day cells. Long titles will be truncated.
+  </Accordion>
+  
+  <Accordion title="Color Coding">
+    Use consistent colors for event categories to help users quickly scan the calendar.
+  </Accordion>
+  
+  <Accordion title="Responsive Design">
+    The calendar adapts to its container width. Ensure the container has adequate space (minimum 800px recommended).
+  </Accordion>
+</AccordionGroup>
+
+## Related Components
+
+<CardGroup cols={2}>
+  <Card title="UnifiedCalendar" icon="calendar" href="/components/calendar/unified-calendar">
+    Combined monthly and weekly calendar with view switching
+  </Card>
+  <Card title="WeeklyCalendar" icon="calendar-week" href="/components/calendar/weekly-calendar">
+    Time-slot based weekly calendar view
+  </Card>
+</CardGroup>

@@ -1,0 +1,317 @@
+---
+title: TextField
+description: A versatile text input component with support for adornments, validation, and multiple sizes
+---
+
+## Overview
+
+TextField is a form input component that allows users to enter single-line text. It supports various input types, validation states, adornments (prefix/suffix elements), and multiple size variants.
+
+## Basic Usage
+
+```jsx
+import { TextField } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [value, setValue] = useState('');
+
+  return (
+    <TextField
+      name="username"
+      label="Username"
+      placeholder="Enter your username"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+}
+```
+
+## With Validation
+
+```jsx
+import { TextField } from 'grauity';
+import { useState } from 'react';
+
+function ValidatedInput() {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+
+  const handleBlur = () => {
+    if (!email.includes('@')) {
+      setError('Please enter a valid email address');
+    } else {
+      setError('');
+    }
+  };
+
+  return (
+    <TextField
+      name="email"
+      label="Email"
+      type="email"
+      placeholder="you@example.com"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      onBlur={handleBlur}
+      errorMessage={error}
+      helpMessage="We'll never share your email"
+      isRequired
+    />
+  );
+}
+```
+
+## With Adornments
+
+<Tabs>
+  <Tab title="Left Adornment">
+    ```jsx
+    import { TextField, Icon } from 'grauity';
+
+    <TextField
+      name="phone"
+      label="Phone Number"
+      placeholder="1234567890"
+      adornments={{
+        start: (
+          <>
+            <Icon name="call-end" color="currentColor" />
+            +91
+          </>
+        )
+      }}
+    />
+    ```
+  </Tab>
+  <Tab title="Right Adornment">
+    ```jsx
+    import { TextField, Icon, Button } from 'grauity';
+
+    <TextField
+      name="email"
+      label="Email"
+      placeholder="you@example.com"
+      adornments={{
+        end: (
+          <>
+            @gmail.com
+            <Icon name="check-circle" color="currentColor" />
+            <Button size="small" variant="primary">Save</Button>
+          </>
+        )
+      }}
+    />
+    ```
+  </Tab>
+  <Tab title="Both Sides">
+    ```jsx
+    import { TextField, Icon, Button } from 'grauity';
+
+    <TextField
+      name="custom"
+      label="Custom Field"
+      adornments={{
+        start: <Icon name="call-end" color="currentColor" />,
+        end: <Button size="small">Submit</Button>
+      }}
+    />
+    ```
+  </Tab>
+</Tabs>
+
+## Sizes
+
+TextField comes in four sizes: `small`, `medium` (default), `large`, and `extra-large`.
+
+```jsx
+<TextField name="small" size="small" placeholder="Small (32px)" />
+<TextField name="medium" size="medium" placeholder="Medium (40px)" />
+<TextField name="large" size="large" placeholder="Large (48px)" />
+<TextField name="xlarge" size="extra-large" placeholder="Extra Large (56px)" />
+```
+
+## Input Types
+
+```jsx
+// Text input
+<TextField name="text" type="text" placeholder="Text input" />
+
+// Number input
+<TextField name="number" type="number" placeholder="Enter a number" min={0} max={100} step={1} />
+
+// Email input
+<TextField name="email" type="email" placeholder="you@example.com" />
+
+// Password input
+<TextField name="password" type="password" placeholder="Enter password" />
+
+// URL input
+<TextField name="url" type="url" placeholder="https://example.com" />
+```
+
+## Props
+
+<ParamField path="name" type="string" required>
+  The name of the input field. Used for form submission and identification.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label displayed above the input field.
+</ParamField>
+
+<ParamField path="placeholder" type="string">
+  Placeholder text displayed when the field is empty.
+</ParamField>
+
+<ParamField path="value" type="string" default="''">
+  The current value of the input field.
+</ParamField>
+
+<ParamField path="type" type="string" default="'text'">
+  The HTML input type. Accepts any valid HTML input type (text, email, password, number, url, tel, etc.).
+</ParamField>
+
+<ParamField path="inputMode" type="string" default="'text'">
+  Hint for mobile keyboards. Options: `'none'` | `'text'` | `'search'` | `'email'` | `'tel'` | `'url'` | `'numeric'` | `'decimal'`
+</ParamField>
+
+<ParamField path="size" type="string" default="'medium'">
+  The size of the input field. Options: `'small'` | `'medium'` | `'large'` | `'extra-large'`
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  The color theme for the field. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="isRequired" type="boolean" default={false}>
+  Whether the field is required. Displays a required indicator next to the label.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether the input field is disabled.
+</ParamField>
+
+<ParamField path="isReadOnly" type="boolean" default={false}>
+  Whether the input field is read-only.
+</ParamField>
+
+<ParamField path="errorMessage" type="string">
+  Error message to display when the field is invalid.
+</ParamField>
+
+<ParamField path="helpMessage" type="string">
+  Helper text displayed below the input field.
+</ParamField>
+
+<ParamField path="maxLength" type="number">
+  Maximum number of characters allowed. Shows character count when combined with helpMessage.
+</ParamField>
+
+<ParamField path="min" type="number">
+  Minimum value for number inputs.
+</ParamField>
+
+<ParamField path="max" type="number">
+  Maximum value for number inputs.
+</ParamField>
+
+<ParamField path="step" type="number">
+  Step value for number inputs.
+</ParamField>
+
+<ParamField path="pattern" type="string">
+  Regular expression pattern for validation.
+</ParamField>
+
+<ParamField path="autoComplete" type="string" default="'on'">
+  HTML autocomplete attribute.
+</ParamField>
+
+<ParamField path="autoFocus" type="boolean" default={false}>
+  Whether the field should autofocus on mount.
+</ParamField>
+
+<ParamField path="adornments" type="object">
+  Adornments to display inside the input field.
+  
+  Properties:
+  - `start`: React node displayed at the start (left) of the input
+  - `end`: React node displayed at the end (right) of the input
+</ParamField>
+
+<ParamField path="onChange" type="function">
+  Callback fired when the input value changes.
+  
+  ```tsx
+  (event: React.ChangeEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="onBlur" type="function">
+  Callback fired when the input loses focus.
+  
+  ```tsx
+  (event: React.FocusEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="onFocus" type="function">
+  Callback fired when the input receives focus.
+  
+  ```tsx
+  (event: React.FocusEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="onClick" type="function">
+  Callback fired when the input is clicked.
+  
+  ```tsx
+  (event: React.MouseEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="onKeyDown" type="function">
+  Callback fired when a key is pressed.
+  
+  ```tsx
+  (event: React.KeyboardEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name for the container.
+</ParamField>
+
+## TypeScript
+
+```tsx
+import { TextFieldProps } from 'grauity';
+
+type TextFieldSize = 'small' | 'medium' | 'large' | 'extra-large';
+type TextFieldColors = 'brand' | 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+
+interface InputAdornments {
+  start?: React.ReactNode;
+  end?: React.ReactNode;
+}
+```
+
+## Accessibility
+
+- The component uses semantic HTML with proper `<label>` and `<input>` elements
+- Required fields are indicated with `aria-required`
+- Error messages are announced to screen readers
+- All interactive elements are keyboard accessible
+
+<Note>
+  When using adornments with interactive elements (buttons, icons), ensure they are keyboard accessible and have appropriate ARIA labels.
+</Note>
+
+## Source
+
+View the source code on GitHub:
+- [TextField.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/TextField/TextField.tsx)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/TextField/types.ts:1)

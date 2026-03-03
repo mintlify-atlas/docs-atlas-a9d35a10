@@ -1,0 +1,265 @@
+---
+title: Popover
+description: A popover component for displaying content in a floating panel relative to a trigger element.
+---
+
+## Overview
+
+The Popover component displays content in a floating panel that appears relative to a trigger element, ideal for dropdowns, menus, and contextual information.
+
+## Basic Usage
+
+```tsx
+import PopOver from '@grauity/ui/elements/PopOver';
+import { useRef, useState } from 'react';
+
+function MyComponent() {
+  const triggerRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <Button 
+        ref={triggerRef}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        Open Popover
+      </Button>
+      
+      <PopOver
+        isOpen={isOpen}
+        triggerRef={triggerRef}
+        direction="bottom"
+        onClose={() => setIsOpen(false)}
+      >
+        <div style={{ padding: '16px' }}>
+          <p>Popover content goes here</p>
+        </div>
+      </PopOver>
+    </div>
+  );
+}
+```
+
+## Props
+
+<ParamField path="isOpen" type="boolean" default={false}>
+  Controls whether the popover is visible.
+</ParamField>
+
+<ParamField path="triggerRef" type="React.RefObject<any>" required>
+  Reference to the trigger element. Required to calculate the popover position.
+</ParamField>
+
+<ParamField path="direction" type="string" default="bottom">
+  Direction in which the popover should open.
+  
+  **Available choices:** `top`, `right`, `bottom`, `left`
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback function triggered when the popover is closed.
+</ParamField>
+
+<ParamField path="autoAdjust" type="boolean" default={true}>
+  Enable automatic position adjustment to keep popover in viewport.
+</ParamField>
+
+<ParamField path="shouldCloseOnOutsideClick" type="boolean" default={true}>
+  Close the popover when clicking outside of it.
+</ParamField>
+
+<ParamField path="disableBackgroundScroll" type="boolean" default={false}>
+  Disable background scrolling when popover is open.
+</ParamField>
+
+<ParamField path="parentRef" type="React.RefObject<any>">
+  Reference to parent container. Defaults to `document.body`.
+</ParamField>
+
+<ParamField path="minimumOffset" type="PopOverOffset" default="{ top: 0, left: 0, right: 0, bottom: 0 }">
+  Minimum margin offset from the parent container edges.
+  
+  **Type:** `{ top?: number, left?: number, bottom?: number, right?: number }`
+</ParamField>
+
+<ParamField path="width" type="string">
+  Width of the popover content.
+</ParamField>
+
+<ParamField path="height" type="string">
+  Height of the popover content.
+</ParamField>
+
+<ParamField path="position" type="PopoverPosition">
+  Custom position for the popover. Opens at given position without adjustments.
+  
+  **Type:** `{ top: number, left: number }`
+</ParamField>
+
+<ParamField path="shouldFocusOnFirstElement" type="boolean" default={true}>
+  Automatically focus the first focusable element when opened.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Content to display inside the popover.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name.
+</ParamField>
+
+## Direction Options
+
+```tsx
+// Bottom (default)
+<PopOver direction="bottom" triggerRef={triggerRef} isOpen={isOpen}>
+  <p>Opens below trigger</p>
+</PopOver>
+
+// Top
+<PopOver direction="top" triggerRef={triggerRef} isOpen={isOpen}>
+  <p>Opens above trigger</p>
+</PopOver>
+
+// Left
+<PopOver direction="left" triggerRef={triggerRef} isOpen={isOpen}>
+  <p>Opens to the left</p>
+</PopOver>
+
+// Right
+<PopOver direction="right" triggerRef={triggerRef} isOpen={isOpen}>
+  <p>Opens to the right</p>
+</PopOver>
+```
+
+## Menu Popover
+
+```tsx
+function MenuPopover() {
+  const triggerRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <Button ref={triggerRef} onClick={() => setIsOpen(!isOpen)}>
+        Menu
+      </Button>
+      
+      <PopOver
+        isOpen={isOpen}
+        triggerRef={triggerRef}
+        onClose={() => setIsOpen(false)}
+        width="200px"
+      >
+        <div style={{ padding: '8px 0' }}>
+          <Button variant="tertiary" fullWidth onClick={() => handleAction('edit')}>
+            Edit
+          </Button>
+          <Button variant="tertiary" fullWidth onClick={() => handleAction('duplicate')}>
+            Duplicate
+          </Button>
+          <Button variant="tertiary" fullWidth color="error" onClick={() => handleAction('delete')}>
+            Delete
+          </Button>
+        </div>
+      </PopOver>
+    </div>
+  );
+}
+```
+
+## With Custom Size
+
+```tsx
+<PopOver
+  isOpen={isOpen}
+  triggerRef={triggerRef}
+  width="400px"
+  height="300px"
+  onClose={onClose}
+>
+  <div style={{ padding: '24px' }}>
+    <Typography variant="heading-sb-h5">Custom Size</Typography>
+    <p>This popover has a custom width and height</p>
+  </div>
+</PopOver>
+```
+
+## Without Auto-Adjustment
+
+```tsx
+<PopOver
+  isOpen={isOpen}
+  triggerRef={triggerRef}
+  autoAdjust={false}
+  onClose={onClose}
+>
+  <p>Position won't be automatically adjusted</p>
+</PopOver>
+```
+
+## With Minimum Offset
+
+```tsx
+<PopOver
+  isOpen={isOpen}
+  triggerRef={triggerRef}
+  minimumOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}
+  onClose={onClose}
+>
+  <p>Maintains 20px margin from container edges</p>
+</PopOver>
+```
+
+## Prevent Close on Outside Click
+
+```tsx
+<PopOver
+  isOpen={isOpen}
+  triggerRef={triggerRef}
+  shouldCloseOnOutsideClick={false}
+  onClose={onClose}
+>
+  <div>
+    <p>Click outside won't close this</p>
+    <Button onClick={onClose}>Close</Button>
+  </div>
+</PopOver>
+```
+
+## Form Popover
+
+```tsx
+function FormPopover() {
+  const triggerRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <Button ref={triggerRef} onClick={() => setIsOpen(true)}>
+        Add Item
+      </Button>
+      
+      <PopOver
+        isOpen={isOpen}
+        triggerRef={triggerRef}
+        onClose={() => setIsOpen(false)}
+        width="320px"
+        disableBackgroundScroll={true}
+      >
+        <div style={{ padding: '20px' }}>
+          <Typography variant="heading-sb-h6">Add New Item</Typography>
+          <input type="text" placeholder="Item name" />
+          <Button variant="primary" onClick={handleSubmit}>
+            Save
+          </Button>
+          <Button variant="tertiary" onClick={() => setIsOpen(false)}>
+            Cancel
+          </Button>
+        </div>
+      </PopOver>
+    </div>
+  );
+}
+```

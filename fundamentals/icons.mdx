@@ -1,0 +1,471 @@
+---
+title: Icons
+description: Learn how to use Grauity's comprehensive icon system with 450+ icons
+---
+
+# Icons
+
+Grauity includes a comprehensive icon system with over 450 icons organized into categories. The icon system uses a custom icon font built from the `iconland` submodule and provides a flexible React component for rendering icons.
+
+## Installation
+
+Icons are included with the Grauity package. To use icons, you need to import the icon CSS:
+
+```tsx
+import '@newtonschool/grauity/ui/css/index.scss';
+// or if you only need icons
+import '@newtonschool/grauity/ui/css/grauity-icons.scss';
+```
+
+<Note>
+The icon fonts are loaded from `ui/fonts/grauity-icons.*` and include `.eot`, `.ttf`, `.woff`, and `.woff2` formats for maximum browser compatibility.
+</Note>
+
+## NSIcon Component
+
+The `NSIcon` component (defined in `ui/elements/Icon/Icon.tsx:13`) is the primary way to render icons in Grauity.
+
+### Basic Usage
+
+<CodeGroup>
+
+```tsx Basic Icon
+import { NSIcon } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return <NSIcon name="sparkle" size="24" />;
+}
+```
+
+```tsx With Color
+import { NSIcon } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return (
+    <div>
+      <NSIcon name="star-filled" size="24" color="brand" />
+      <NSIcon name="heart-filled" size="24" color="error" />
+      <NSIcon name="check-circle" size="24" color="success" />
+    </div>
+  );
+}
+```
+
+```tsx Interactive Icon
+import { NSIcon } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return (
+    <NSIcon 
+      name="close" 
+      size="20" 
+      link 
+      onClick={() => console.log('Clicked!')}
+      ariaLabel="Close button"
+    />
+  );
+}
+```
+
+```tsx Loading State
+import { NSIcon } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return <NSIcon name="loading" size="24" loading />;
+}
+```
+
+</CodeGroup>
+
+### Props
+
+<ParamField path="name" type="string" required>
+  The name of the icon to display. See [Icon Categories](#icon-categories) for available icons.
+</ParamField>
+
+<ParamField path="size" type="string" default="'24'">
+  The size of the icon in pixels (e.g., `"16"`, `"20"`, `"24"`, `"32"`).
+</ParamField>
+
+<ParamField path="color" type="string" default="'grey'">
+  The color of the icon. Accepts any color value or design token.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType" default="'i'">
+  The HTML element to render as.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default="false">
+  Whether the icon is disabled.
+</ParamField>
+
+<ParamField path="bordered" type="boolean" default="false">
+  Whether to add a border around the icon.
+</ParamField>
+
+<ParamField path="circular" type="boolean" default="false">
+  Whether to render the icon with a circular background.
+</ParamField>
+
+<ParamField path="fitted" type="boolean" default="false">
+  Whether to remove extra spacing around the icon.
+</ParamField>
+
+<ParamField path="inverted" type="boolean" default="false">
+  Whether to invert the icon colors.
+</ParamField>
+
+<ParamField path="link" type="boolean" default="false">
+  Whether the icon should appear as a clickable link.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Whether the icon should display a loading animation.
+</ParamField>
+
+<ParamField path="flipped" type="'horizontal' | 'vertical'">
+  Flip the icon horizontally or vertically.
+</ParamField>
+
+<ParamField path="rotated" type="'90' | '180' | '270'">
+  Rotate the icon by the specified degrees.
+</ParamField>
+
+<ParamField path="ariaLabel" type="string">
+  Accessible label for the icon (for screen readers).
+</ParamField>
+
+<ParamField path="ariaHidden" type="string" default="'true'">
+  Whether the icon is hidden from screen readers.
+</ParamField>
+
+<ParamField path="onClick" type="(event: React.MouseEvent) => void">
+  Click handler for the icon.
+</ParamField>
+
+## Icon Categories
+
+Grauity's icons are organized into 14 categories. You can access icon category mappings through the exported constants:
+
+```tsx
+import { ICON_TAGS, TAG_ICONS } from '@newtonschool/grauity';
+
+// ICON_TAGS: Map icon names to their categories
+console.log(ICON_TAGS['sparkle']); // ['Misc']
+
+// TAG_ICONS: Map categories to icon arrays
+console.log(TAG_ICONS['System']); // ['arrow-down', 'check', ...]
+```
+
+### Available Categories
+
+<Tabs>
+  <Tab title="System">
+    **250+ icons** for common UI actions and navigation:
+    - Arrows: `arrow-up`, `arrow-down`, `arrow-left`, `arrow-right`
+    - Chevrons: `chevron-up`, `chevron-down`, `chevron-left`, `chevron-right`
+    - Actions: `check`, `close`, `plus`, `minus`, `search`, `filter`
+    - Controls: `menu`, `gear`, `refresh`, `upload`, `download`
+    - States: `loading`, `check-circle`, `close-circle`, `info-circle`
+    
+    **Example icons**: `check`, `close`, `menu`, `search`, `gear`, `arrow-right`, `chevron-down`, `home`, `book`, `briefcase`, `bulb`, `camera`, `copy`, `email`, `globe`, `link`, `star`
+  </Tab>
+  <Tab title="Media">
+    **30+ icons** for media controls and visibility:
+    - Playback: `play`, `pause`, `play-circle`, `play-rectangle`
+    - Audio: `volume-maximum`, `volume-minimum`, `volume-mute`, `mic`, `micmute`
+    - Video: `video`, `video-off`, `eye-on`, `eye-off`
+    - Devices: `headphone`, `headphone-mic`, `waveform`
+    
+    **Example icons**: `play`, `pause`, `video`, `mic`, `volume-maximum`, `eye-on`, `eye-off`
+  </Tab>
+  <Tab title="Alert">
+    **8 icons** for alerts and notifications:
+    - Info: `info-circle`, `info-circle-filled`
+    - Warning: `exclamation-triangle`, `exclamation-triangle-filled`
+    - Error: `exclamation-circle`, `exclamation-circle-filled`
+    - Question: `question-circle`, `question-circle-filled`
+  </Tab>
+  <Tab title="Reward">
+    **12 icons** for achievements and gamification:
+    - `star`, `star-filled`, `star-half`
+    - `trophy`, `trophy-filled`
+    - `medal`, `medal-filled`
+    - `crown`, `crown-filled`
+    - `gift`, `gift-filled`
+    - `flag`, `flag-filled`
+    - `check-badge`, `leaderboard`
+  </Tab>
+  <Tab title="User">
+    **10 icons** for user profiles and interactions:
+    - `person`, `person-filled`
+    - `users`, `users-filled`
+    - `person-plus`, `person-check`
+    - `bot`, `bot-filled`
+    - `user-speak`, `user-speak-filled`
+  </Tab>
+  <Tab title="Code">
+    **8 icons** for development and coding:
+    - `code`, `code-filled`
+    - `code-alt`, `code-alt-filled`
+    - `terminal`, `terminal-filled`
+    - `project`, `project-filled`
+  </Tab>
+  <Tab title="Docs">
+    **22 icons** for documents and files:
+    - Files: `file`, `file-filled`, `file-alt`, `file-lightning`
+    - Folders: `folder`, `folder-filled`, `folder-open`
+    - Actions: `note`, `pen`, `bookmark`, `label`, `pin`, `archive`
+  </Tab>
+  <Tab title="Time">
+    **12 icons** for time and scheduling:
+    - `clock`, `clock-filled`, `clock-alarm`
+    - `calender`, `calender-filled`, `calender-check`, `calender-plus`
+    - `bell`, `bell-filled`
+    - `stopwatch`, `rewatch`, `hourglass`
+  </Tab>
+  <Tab title="Device">
+    **6 icons** for devices:
+    - `laptop`, `laptop-filled`
+    - `desktop`, `desktop-filled`
+    - `mobile`, `mobile-filled`
+    - `lamp`, `gamepad`
+  </Tab>
+  <Tab title="Social">
+    **14 icons** for social platforms:
+    - `facebook`, `instagram`, `twitter`, `x`, `linkedin`
+    - `youtube`, `github`, `google`, `whatsapp`
+    - `leetcode`, `hackerrank`, `hackerearth`, `codechef`, `codeforces`
+  </Tab>
+  <Tab title="Misc">
+    **45+ icons** for miscellaneous purposes:
+    - Emotions: `smiley`, `heart`, `hearthands`, `smiley-happy`, `smiley-sad`
+    - Communication: `message`, `comment`, `doubt`
+    - Effects: `spark`, `sparkle`, `confetti`, `magic-orb`
+    - Other: `lock`, `target`, `scholar-hat`, `hearing`
+  </Tab>
+  <Tab title="Finance">
+    **4 icons** for financial interfaces:
+    - `currency`, `currency-filled`
+    - `currency-rupee`, `currency-rupee-filled`
+  </Tab>
+  <Tab title="College">
+    **2 icons** specific to educational institutions:
+    - `nst`, `nst-filled` (Newton School of Technology)
+  </Tab>
+</Tabs>
+
+<Note>
+Each icon typically comes in both **outlined** and **filled** variants. For example: `star` and `star-filled`.
+</Note>
+
+## Icon Variants
+
+Many icons support different style variants:
+
+### Filled vs Outlined
+
+<CodeGroup>
+
+```tsx Outlined (Default)
+import { NSIcon } from '@newtonschool/grauity';
+
+<div>
+  <NSIcon name="star" size="24" />
+  <NSIcon name="heart" size="24" />
+  <NSIcon name="bell" size="24" />
+</div>
+```
+
+```tsx Filled
+import { NSIcon } from '@newtonschool/grauity';
+
+<div>
+  <NSIcon name="star-filled" size="24" />
+  <NSIcon name="heart-filled" size="24" />
+  <NSIcon name="bell-filled" size="24" />
+</div>
+```
+
+</CodeGroup>
+
+### Rotations and Flips
+
+```tsx
+import { NSIcon } from '@newtonschool/grauity';
+
+function IconTransforms() {
+  return (
+    <div>
+      {/* Rotations */}
+      <NSIcon name="arrow-up" rotated="90" size="24" />
+      <NSIcon name="arrow-up" rotated="180" size="24" />
+      <NSIcon name="arrow-up" rotated="270" size="24" />
+      
+      {/* Flips */}
+      <NSIcon name="arrow-right" flipped="horizontal" size="24" />
+      <NSIcon name="arrow-down" flipped="vertical" size="24" />
+    </div>
+  );
+}
+```
+
+## Using Icons in Components
+
+Icons integrate seamlessly with other Grauity components:
+
+### With Buttons
+
+```tsx
+import { NSButton } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return (
+    <div>
+      <NSButton icon="sparkle" iconPosition="left">
+        Get Started
+      </NSButton>
+      
+      <NSButton icon="arrow-right" iconPosition="right" variant="secondary">
+        Next
+      </NSButton>
+      
+      <NSButton icon="check" iconPosition="left" color="success">
+        Save Changes
+      </NSButton>
+    </div>
+  );
+}
+```
+
+### Standalone Icons
+
+```tsx
+import { NSIcon } from '@newtonschool/grauity';
+
+function StatusIndicator({ status }) {
+  const iconMap = {
+    success: { name: 'check-circle-filled', color: 'var(--success-500)' },
+    error: { name: 'close-circle-filled', color: 'var(--error-500)' },
+    warning: { name: 'exclamation-triangle-filled', color: 'var(--warning-500)' },
+    info: { name: 'info-circle-filled', color: 'var(--brand-500)' },
+  };
+  
+  const icon = iconMap[status];
+  
+  return (
+    <NSIcon 
+      name={icon.name} 
+      size="20" 
+      color={icon.color}
+    />
+  );
+}
+```
+
+## Icon Font Build Process
+
+<Warning>
+The icon font is built from the `iconland` Git submodule. Do not edit the generated font files directly.
+</Warning>
+
+Grauity's icon system uses a custom build process:
+
+1. **Source**: Icons are stored as SVG files in the `iconland` submodule
+2. **Build**: The build process converts SVGs to an icon font
+3. **Output**: Generated files in `ui/fonts/`:
+   - `grauity-icons.eot`
+   - `grauity-icons.ttf`
+   - `grauity-icons.woff`
+   - `grauity-icons.woff2`
+4. **CSS**: The `grauity-icons.scss` file defines icon classes and mappings
+
+### Adding New Icons
+
+To add new icons to Grauity:
+
+1. Add SVG files to the `iconland` submodule
+2. Update the icon mappings in `ui/core/icons/iconTags.ts`
+3. Rebuild the icon font
+4. Update the CSS
+
+## Accessibility
+
+Grauity icons are designed with accessibility in mind:
+
+<CodeGroup>
+
+```tsx Decorative Icon
+// For purely decorative icons
+<NSIcon name="sparkle" size="20" ariaHidden="true" />
+```
+
+```tsx Semantic Icon
+// For icons that convey meaning
+<NSIcon 
+  name="close" 
+  size="20" 
+  ariaLabel="Close dialog"
+  link
+  onClick={handleClose}
+/>
+```
+
+```tsx Icon with Text
+// When icon accompanies text, hide from screen readers
+<button>
+  <NSIcon name="download" size="16" ariaHidden="true" />
+  <span>Download</span>
+</button>
+```
+
+</CodeGroup>
+
+<Note>
+By default, icons have `aria-hidden="true"`. Always provide an `ariaLabel` when an icon is used as a standalone interactive element.
+</Note>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Consistent Sizing" icon="ruler">
+    Use consistent icon sizes throughout your app. Common sizes: 16px, 20px, 24px, 32px.
+  </Card>
+  <Card title="Filled vs Outlined" icon="circle-dot">
+    Use filled icons for active/selected states, outlined for inactive/default states.
+  </Card>
+  <Card title="Accessibility" icon="universal-access">
+    Always provide aria labels for standalone interactive icons.
+  </Card>
+  <Card title="Loading States" icon="spinner">
+    Use the `loading` prop with the `loading` icon for async actions.
+  </Card>
+</CardGroup>
+
+## Finding Icons
+
+To explore all available icons, check:
+
+- **Source code**: `ui/core/icons/iconTags.ts` contains the complete icon list
+- **Storybook**: Browse icons interactively in the Grauity Storybook
+- **Constants**: Import `ICON_TAGS` and `TAG_ICONS` to programmatically access icon lists
+
+```tsx
+import { TAG_ICONS, ICON_TAGS } from '@newtonschool/grauity';
+
+// Get all system icons
+const systemIcons = TAG_ICONS['System'];
+
+// Get category for a specific icon
+const category = ICON_TAGS['sparkle']; // ['Misc']
+```
+
+## Related
+
+- [NSButton](/components/ui/button) - Using icons in buttons
+- [NSIconButton](/components/ui/button) - Icon-only button component
+- [Design Tokens](/fundamentals/design-tokens) - Color tokens for styling icons

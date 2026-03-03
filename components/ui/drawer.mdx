@@ -1,0 +1,168 @@
+---
+title: Drawer
+description: A slide-out panel component that appears from the left or right side of the screen.
+---
+
+## Overview
+
+The Drawer component provides a slide-out panel interface, ideal for navigation menus, settings panels, or additional content that doesn't need to occupy the main viewport.
+
+## Basic Usage
+
+```tsx
+import Drawer from '@grauity/ui/elements/Drawer';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Drawer</Button>
+      
+      <Drawer
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        position="left"
+        width="300px"
+      >
+        <h2>Drawer Content</h2>
+        <p>Your drawer content goes here</p>
+      </Drawer>
+    </>
+  );
+}
+```
+
+## Props
+
+<ParamField path="isOpen" type="boolean" default={false}>
+  Controls whether the drawer is visible.
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback function when the drawer should be closed.
+</ParamField>
+
+<ParamField path="position" type="string" default="left">
+  Side from which the drawer opens.
+  
+  **Available choices:** `left`, `right`
+</ParamField>
+
+<ParamField path="width" type="string" default="30%">
+  Width of the drawer.
+</ParamField>
+
+<ParamField path="fullScreen" type="boolean" default={false}>
+  Make the drawer take up the full screen.
+</ParamField>
+
+<ParamField path="closeOnBackdropClick" type="boolean" default={true}>
+  Close the drawer when clicking outside of it.
+</ParamField>
+
+<ParamField path="shouldFocusOnFirstElement" type="boolean" default={true}>
+  Automatically focus the first focusable element when opened.
+</ParamField>
+
+<ParamField path="shouldDisableScroll" type="boolean" default={true}>
+  Disable background scrolling when drawer is open.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Content to display inside the drawer.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name.
+</ParamField>
+
+<ParamField path="styles" type="React.CSSProperties">
+  Custom inline styles to override default styling.
+</ParamField>
+
+## Left Drawer
+
+```tsx
+<Drawer
+  isOpen={isOpen}
+  onClose={onClose}
+  position="left"
+  width="300px"
+>
+  <h3>Left Navigation</h3>
+  <ul>
+    <li>Menu Item 1</li>
+    <li>Menu Item 2</li>
+    <li>Menu Item 3</li>
+  </ul>
+</Drawer>
+```
+
+## Right Drawer
+
+```tsx
+<Drawer
+  isOpen={isOpen}
+  onClose={onClose}
+  position="right"
+  width="400px"
+>
+  <h3>Settings Panel</h3>
+  <p>Drawer content from the right side</p>
+</Drawer>
+```
+
+## Full Screen Drawer
+
+```tsx
+<Drawer
+  isOpen={isOpen}
+  onClose={onClose}
+  fullScreen={true}
+>
+  <h2>Full Screen Content</h2>
+  <p>This drawer takes up the entire screen</p>
+</Drawer>
+```
+
+## Custom Width
+
+```tsx
+<Drawer
+  isOpen={isOpen}
+  onClose={onClose}
+  width="500px"
+>
+  <p>Drawer with custom width</p>
+</Drawer>
+```
+
+## Without Backdrop Close
+
+```tsx
+<Drawer
+  isOpen={isOpen}
+  onClose={onClose}
+  closeOnBackdropClick={false}
+>
+  <p>Click the close button to dismiss</p>
+  <Button onClick={onClose}>Close</Button>
+</Drawer>
+```
+
+## Custom Styles
+
+```tsx
+<Drawer
+  isOpen={isOpen}
+  onClose={onClose}
+  styles={{
+    backgroundColor: '#f5f5f5',
+    padding: '24px',
+  }}
+>
+  <p>Drawer with custom styles</p>
+</Drawer>
+```

@@ -1,0 +1,545 @@
+---
+title: DropdownMenu
+description: A flexible and feature-rich dropdown menu component with search, multi-select, and custom item types
+icon: list
+---
+
+## Overview
+
+`NSDropdownMenu` is a comprehensive dropdown menu component that supports single and multi-select modes, searchable options, custom headers and footers, and various item types including options, dividers, and subheaders.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Flexible Selection" icon="check-square">
+    Support for both single and multi-select modes
+  </Card>
+  <Card title="Built-in Search" icon="magnifying-glass">
+    Optional search functionality to filter options
+  </Card>
+  <Card title="Rich Item Types" icon="list-tree">
+    Options, dividers, and subheaders for organized menus
+  </Card>
+  <Card title="Action Buttons" icon="hand-pointer">
+    Optional Apply and Clear All buttons for batch selection
+  </Card>
+</CardGroup>
+
+## Import
+
+```tsx
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+```
+
+## Basic Usage
+
+<CodeGroup>
+
+```tsx Single Select
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+import { useState } from 'react';
+
+function SingleSelectExample() {
+  const [selected, setSelected] = useState(null);
+
+  const items = [
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Option 1',
+      value: 'option1',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Option 2',
+      value: 'option2',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Option 3',
+      value: 'option3',
+    },
+  ];
+
+  return (
+    <NSDropdownMenu
+      items={items}
+      onChange={(value) => setSelected(value)}
+      value={selected}
+    />
+  );
+}
+```
+
+```tsx Multi Select
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+import { useState } from 'react';
+
+function MultiSelectExample() {
+  const [selected, setSelected] = useState([]);
+
+  const items = [
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Option 1',
+      value: 'option1',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Option 2',
+      value: 'option2',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Option 3',
+      value: 'option3',
+    },
+  ];
+
+  return (
+    <NSDropdownMenu
+      multiple
+      items={items}
+      onChange={(values) => setSelected(values)}
+      value={selected}
+    />
+  );
+}
+```
+
+```tsx With Search
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+
+function SearchableExample() {
+  const items = Array.from({ length: 20 }, (_, i) => ({
+    type: NSDropdownMenuBaseItemType.OPTION,
+    label: `Option ${i + 1}`,
+    value: `option${i + 1}`,
+  }));
+
+  return (
+    <NSDropdownMenu
+      searchable
+      searchPlaceholder="Search options..."
+      items={items}
+    />
+  );
+}
+```
+
+</CodeGroup>
+
+## Props
+
+### Display Configuration
+
+<ParamField path="showHeader" type="boolean" default="true">
+  Whether to show the header of the dropdown menu. If false, `title`, `overline`, and `subtext` will be ignored.
+</ParamField>
+
+<ParamField path="title" type="string" default="'Select'">
+  The title text displayed in the dropdown menu header.
+</ParamField>
+
+<ParamField path="overline" type="string" default="''">
+  Small text displayed above the title in the header.
+</ParamField>
+
+<ParamField path="subtext" type="string" default="''">
+  Descriptive text displayed below the title in the header.
+</ParamField>
+
+<ParamField path="customHeader" type="React.ReactNode">
+  Custom header component. If provided, `showHeader`, `title`, `overline`, and `subtext` will be ignored.
+</ParamField>
+
+### Search Configuration
+
+<ParamField path="searchable" type="boolean" default="false">
+  Whether the dropdown menu is searchable.
+</ParamField>
+
+<ParamField path="searchPlaceholder" type="string" default="'Search'">
+  Placeholder text for the search input.
+</ParamField>
+
+<ParamField path="searchIcon" type="grauityIconName" default="'search'">
+  Icon name for the search input.
+</ParamField>
+
+<ParamField path="onSearchInputChange" type="(value: string) => void">
+  Callback function called when the search input value changes. If not provided, a default search method filters on label and description.
+</ParamField>
+
+### Selection Configuration
+
+<ParamField path="multiple" type="boolean" default="false">
+  Whether multiple items can be selected.
+</ParamField>
+
+<ParamField path="items" type="BaseItemProps[]" required>
+  List of items to display in the dropdown menu. Can include options, dividers, and subheaders. See [Item Types](#item-types) below.
+</ParamField>
+
+<ParamField path="value" type="BaseItemOptionProps | BaseItemOptionProps[]">
+  The currently selected value(s). Single object for single-select, array for multi-select.
+</ParamField>
+
+<ParamField path="onChange" type="(items: BaseItemOptionProps | BaseItemOptionProps[]) => void">
+  Callback function called when selection changes. Returns single object or array depending on `multiple` prop.
+</ParamField>
+
+### Action Buttons
+
+<ParamField path="showActionButtons" type="boolean" default="false">
+  Whether to show Apply and Clear All buttons. If true, `onChange` will only be called when Apply is clicked, not on option selection.
+</ParamField>
+
+<ParamField path="showClearAllButton" type="boolean" default="true">
+  Whether to show the Clear All button (only applies when `showActionButtons` is true and `multiple` is true).
+</ParamField>
+
+<ParamField path="clearAllButtonText" type="string" default="'Clear All'">
+  Text for the Clear All button.
+</ParamField>
+
+<ParamField path="applyButtonText" type="string" default="'Apply'">
+  Text for the Apply button.
+</ParamField>
+
+<ParamField path="onClearAll" type="() => void">
+  Callback function called when the Clear All button is clicked.
+</ParamField>
+
+### Advanced Configuration
+
+<ParamField path="applyOnOptionSelectInMultipleMode" type="boolean" default="false">
+  In multi-select mode without action buttons, whether to call `onChange` immediately on option selection (true) or only when clicking outside (false).
+</ParamField>
+
+<ParamField path="onScrollToBottom" type="() => void">
+  Callback function called when the dropdown menu is scrolled to the bottom. Useful for infinite scrolling.
+</ParamField>
+
+<ParamField path="emptyStateMessage" type="string" default="'No options available'">
+  Message displayed when there are no items in the dropdown.
+</ParamField>
+
+### Styling
+
+<ParamField path="width" type="string" default="'300px'">
+  The width of the dropdown menu.
+</ParamField>
+
+<ParamField path="maxHeight" type="string" default="'500px'">
+  The maximum height of the dropdown menu.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names for the dropdown menu.
+</ParamField>
+
+<ParamField path="styles" type="React.CSSProperties">
+  Inline styles for the dropdown menu.
+</ParamField>
+
+<ParamField path="id" type="string">
+  ID attribute for the dropdown menu element.
+</ParamField>
+
+## Item Types
+
+The `items` prop accepts an array of different item types:
+
+### Option Item
+
+Represents a selectable option in the dropdown:
+
+```tsx
+{
+  type: NSDropdownMenuBaseItemType.OPTION,
+  label: 'Option Label',
+  value: 'option-value',
+  description: 'Optional description text',
+  leftIcon: 'check-circle',
+  rightIcon: 'arrow-right',
+  disabled: false,
+  scrollToOnOpen: false,
+}
+```
+
+<ParamField path="type" type="'option'" required>
+  Must be `NSDropdownMenuBaseItemType.OPTION`.
+</ParamField>
+
+<ParamField path="label" type="string" required>
+  The display text for the option.
+</ParamField>
+
+<ParamField path="value" type="string | number" required>
+  The unique value for this option.
+</ParamField>
+
+<ParamField path="description" type="string">
+  Optional description text shown below the label.
+</ParamField>
+
+<ParamField path="leftIcon" type="grauityIconName">
+  Icon displayed on the left side of the option.
+</ParamField>
+
+<ParamField path="rightIcon" type="grauityIconName">
+  Icon displayed on the right side of the option.
+</ParamField>
+
+<ParamField path="disabled" type="boolean">
+  Whether the option is disabled.
+</ParamField>
+
+<ParamField path="scrollToOnOpen" type="boolean">
+  Whether to scroll to this item when the dropdown opens.
+</ParamField>
+
+### Subheader Item
+
+A non-selectable header to organize sections:
+
+```tsx
+{
+  type: NSDropdownMenuBaseItemType.SUB_HEADER,
+  title: 'Section Title',
+  scrollToOnOpen: false,
+}
+```
+
+<ParamField path="type" type="'subheader'" required>
+  Must be `NSDropdownMenuBaseItemType.SUB_HEADER`.
+</ParamField>
+
+<ParamField path="title" type="string" required>
+  The text to display in the subheader.
+</ParamField>
+
+### Divider Item
+
+A visual separator between items:
+
+```tsx
+{
+  type: NSDropdownMenuBaseItemType.DIVIDER,
+}
+```
+
+<ParamField path="type" type="'divider'" required>
+  Must be `NSDropdownMenuBaseItemType.DIVIDER`.
+</ParamField>
+
+## Advanced Examples
+
+### Organized Menu with All Item Types
+
+```tsx
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+
+function OrganizedMenu() {
+  const items = [
+    {
+      type: NSDropdownMenuBaseItemType.SUB_HEADER,
+      title: 'DIFFICULTY',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Easy',
+      value: 'easy',
+      description: 'Beginner friendly tasks',
+      leftIcon: 'check-circle',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Medium',
+      value: 'medium',
+      description: 'Moderate challenge',
+      leftIcon: 'check-circle',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Hard',
+      value: 'hard',
+      description: 'Advanced users only',
+      leftIcon: 'check-circle',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.DIVIDER,
+    },
+    {
+      type: NSDropdownMenuBaseItemType.SUB_HEADER,
+      title: 'CATEGORIES',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Development',
+      value: 'dev',
+      leftIcon: 'code',
+    },
+    {
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: 'Design',
+      value: 'design',
+      leftIcon: 'palette',
+    },
+  ];
+
+  return (
+    <NSDropdownMenu
+      title="Filter Tasks"
+      items={items}
+      searchable
+    />
+  );
+}
+```
+
+### Multi-Select with Action Buttons
+
+```tsx
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+import { useState } from 'react';
+
+function MultiSelectWithActions() {
+  const [selectedValues, setSelectedValues] = useState([]);
+
+  const items = Array.from({ length: 20 }, (_, i) => ({
+    type: NSDropdownMenuBaseItemType.OPTION,
+    label: `Option ${i + 1}`,
+    value: `option${i + 1}`,
+  }));
+
+  return (
+    <NSDropdownMenu
+      title="Select Multiple"
+      subtext="Choose one or more options"
+      multiple
+      items={items}
+      value={selectedValues}
+      onChange={(values) => setSelectedValues(values)}
+      showActionButtons
+      showClearAllButton
+      searchable
+      onClearAll={() => setSelectedValues([])}
+    />
+  );
+}
+```
+
+### Custom Search Handler
+
+```tsx
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+import { useState } from 'react';
+
+function CustomSearch() {
+  const [allItems] = useState([
+    // Your full list of items
+  ]);
+  const [filteredItems, setFilteredItems] = useState(allItems);
+
+  const handleSearch = (searchValue: string) => {
+    if (!searchValue) {
+      setFilteredItems(allItems);
+      return;
+    }
+
+    // Custom search logic - e.g., fuzzy search, API call, etc.
+    const filtered = allItems.filter(item => 
+      item.type === NSDropdownMenuBaseItemType.OPTION &&
+      item.label.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredItems(filtered);
+  };
+
+  return (
+    <NSDropdownMenu
+      searchable
+      onSearchInputChange={handleSearch}
+      items={filteredItems}
+    />
+  );
+}
+```
+
+### Infinite Scroll
+
+```tsx
+import { NSDropdownMenu, NSDropdownMenuBaseItemType } from '@grauity/ui';
+import { useState } from 'react';
+
+function InfiniteScrollDropdown() {
+  const [items, setItems] = useState(
+    Array.from({ length: 20 }, (_, i) => ({
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: `Item ${i + 1}`,
+      value: `item${i + 1}`,
+    }))
+  );
+
+  const loadMore = () => {
+    const currentLength = items.length;
+    const newItems = Array.from({ length: 10 }, (_, i) => ({
+      type: NSDropdownMenuBaseItemType.OPTION,
+      label: `Item ${currentLength + i + 1}`,
+      value: `item${currentLength + i + 1}`,
+    }));
+    setItems([...items, ...newItems]);
+  };
+
+  return (
+    <NSDropdownMenu
+      items={items}
+      onScrollToBottom={loadMore}
+      maxHeight="300px"
+    />
+  );
+}
+```
+
+## Behavior Notes
+
+<Note>
+  **onChange Callback Timing**:
+  
+  - **Single-select without action buttons**: Called immediately when an option is clicked
+  - **Multi-select without action buttons**: Called when clicking outside the dropdown (or immediately if `applyOnOptionSelectInMultipleMode` is true)
+  - **With action buttons**: Called only when the Apply button is clicked
+</Note>
+
+<Info>
+  **Search Behavior**: When `searchable` is true and no `onSearchInputChange` is provided, the component uses a default search method that filters items based on their label and description properties.
+</Info>
+
+## Accessibility
+
+The component includes proper ARIA attributes and keyboard navigation:
+
+- Use `Arrow Up` and `Arrow Down` to navigate options
+- Press `Enter` to select an option
+- Press `Escape` to apply changes (when action buttons are not shown)
+- Search input is automatically focused when `searchable` is true
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Filter Panels">
+    Use dropdown menus to create powerful filter interfaces with multiple selection options and categories.
+  </Accordion>
+  
+  <Accordion title="Tag Selection">
+    Multi-select mode is perfect for allowing users to select multiple tags or categories.
+  </Accordion>
+  
+  <Accordion title="Settings Menus">
+    Organize related settings using subheaders and dividers for a clean, organized interface.
+  </Accordion>
+  
+  <Accordion title="Data Tables">
+    Provide column filtering or bulk action selection in data table interfaces.
+  </Accordion>
+</AccordionGroup>

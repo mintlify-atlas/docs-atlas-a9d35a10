@@ -1,0 +1,183 @@
+---
+title: Typography
+description: A flexible typography component for rendering text with consistent design system styles.
+---
+
+## Overview
+
+The Typography component provides a consistent way to render text throughout your application using predefined variants that match your design system.
+
+## Basic Usage
+
+```tsx
+import Typography from '@grauity/ui/elements/Typography';
+
+function MyComponent() {
+  return (
+    <Typography variant="paragraph-md-p1">
+      The quick brown fox jumps over the lazy dog!
+    </Typography>
+  );
+}
+```
+
+## Props
+
+<ParamField path="variant" type="TypographyVariantType" required>
+  Variant of the Typography element that defines its visual style.
+  
+  **Available variants:**
+  - Display: `display-bd-d1`, `display-bd-d2`, `display-bd-d3`
+  - Heading: `heading-sb-h1` through `heading-sb-h6`
+  - Paragraph Semibold: `paragraph-sb-p1` through `paragraph-sb-p4`, `paragraph-sb-l1`, `paragraph-sb-l2`
+  - Paragraph Medium: `paragraph-md-p1` through `paragraph-md-p4`, `paragraph-md-c1`, `paragraph-md-l1`, `paragraph-md-l2`
+  - Overline: `overline-sb-ol1`, `overline-sb-ol2`
+  - Action: `action-sb-p1`, `action-sb-p2`, `action-sb-lk1`
+</ParamField>
+
+<ParamField path="as" type="string" default="auto">
+  Determines the HTML element to render. When set to `auto`, it automatically selects the appropriate tag based on the variant.
+  
+  **Available choices:** `h1`, `h2`, `h3`, `h4`, `h5`, `h6`, `p`, `span`, `div`, `label`, `caption`, `code`, `auto`
+</ParamField>
+
+<ParamField path="color" type="string" default="var(--text-emphasis-primary-default, #16191d)">
+  Color of the text element.
+</ParamField>
+
+<ParamField path="textAlign" type="string">
+  Text alignment of the typography element.
+</ParamField>
+
+<ParamField path="textTransform" type="string">
+  Text transformation (e.g., `uppercase`, `lowercase`, `capitalize`).
+</ParamField>
+
+<ParamField path="fontSize" type="string">
+  Custom font size override.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name for styling.
+</ParamField>
+
+<ParamField path="title" type="string">
+  Native HTML title attribute (shows tooltip on hover).
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode" required>
+  Content to be displayed.
+</ParamField>
+
+## Display Variants
+
+Large display text for hero sections and prominent headlines.
+
+```tsx
+<Typography variant="display-bd-d1">Display D1 - 76px</Typography>
+<Typography variant="display-bd-d2">Display D2 - 64px</Typography>
+<Typography variant="display-bd-d3">Display D3 - 52px</Typography>
+```
+
+## Heading Variants
+
+Semibold headings for section titles and content hierarchy.
+
+```tsx
+<Typography variant="heading-sb-h1">Heading H1 - 40px</Typography>
+<Typography variant="heading-sb-h2">Heading H2 - 36px</Typography>
+<Typography variant="heading-sb-h3">Heading H3 - 28px</Typography>
+<Typography variant="heading-sb-h4">Heading H4 - 24px</Typography>
+<Typography variant="heading-sb-h5">Heading H5 - 20px</Typography>
+<Typography variant="heading-sb-h6">Heading H6 - 16px</Typography>
+```
+
+## Paragraph Variants
+
+### Semibold Paragraphs
+
+```tsx
+<Typography variant="paragraph-sb-p1">Paragraph SB P1 - 18px</Typography>
+<Typography variant="paragraph-sb-p2">Paragraph SB P2 - 16px</Typography>
+<Typography variant="paragraph-sb-p3">Paragraph SB P3 - 14px</Typography>
+<Typography variant="paragraph-sb-p4">Paragraph SB P4 - 12px</Typography>
+```
+
+### Medium Weight Paragraphs
+
+```tsx
+<Typography variant="paragraph-md-p1">Paragraph MD P1 - 18px</Typography>
+<Typography variant="paragraph-md-p2">Paragraph MD P2 - 16px</Typography>
+<Typography variant="paragraph-md-p3">Paragraph MD P3 - 14px</Typography>
+<Typography variant="paragraph-md-p4">Paragraph MD P4 - 12px</Typography>
+```
+
+### Code Variant
+
+```tsx
+<Typography variant="paragraph-md-c1">Code text with monospace font</Typography>
+```
+
+### Label Variants
+
+```tsx
+<Typography variant="paragraph-sb-l1">Semibold Label - 14px</Typography>
+<Typography variant="paragraph-sb-l2">Semibold Label - 12px</Typography>
+<Typography variant="paragraph-md-l1">Medium Label - 14px</Typography>
+<Typography variant="paragraph-md-l2">Medium Label - 12px</Typography>
+```
+
+## Overline Variants
+
+Uppercase text for labels and categories.
+
+```tsx
+<Typography variant="overline-sb-ol1">OVERLINE 1</Typography>
+<Typography variant="overline-sb-ol2">OVERLINE 2</Typography>
+```
+
+## Action Variants
+
+For interactive text elements like buttons and links.
+
+```tsx
+<Typography variant="action-sb-p1">Action P1 - 16px</Typography>
+<Typography variant="action-sb-p2">Action P2 - 14px</Typography>
+<Typography variant="action-sb-lk1">ACTION LINK</Typography>
+```
+
+## Custom Element Type
+
+```tsx
+<Typography variant="paragraph-md-p1" as="span">
+  This renders as a span element
+</Typography>
+
+<Typography variant="paragraph-md-p1" as="div">
+  This renders as a div element
+</Typography>
+```
+
+## Custom Color
+
+```tsx
+<Typography 
+  variant="heading-sb-h1" 
+  color="var(--text-emphasis-brand-default)"
+>
+  Branded Heading
+</Typography>
+```
+
+## Constants
+
+```tsx
+import { 
+  TYPOGRAPHY_VARIANTS_ENUM,
+  TYPOGRAPHY_AS_ENUM,
+  TYPOGRAPHY_VARIANT_AS_MAPPING 
+} from '@grauity/ui/elements/Typography';
+
+// Usage
+<Typography variant={TYPOGRAPHY_VARIANTS_ENUM.HEADING_SB_H1} />
+```

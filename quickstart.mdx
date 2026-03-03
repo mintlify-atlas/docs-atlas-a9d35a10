@@ -1,80 +1,646 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Build your first component with Grauity in minutes
 ---
 
-## Get started in three steps
+# Quickstart
 
-Get your documentation site running locally and make your first customization.
+This guide will walk you through building your first component with Grauity. You'll create a simple user profile card using multiple Grauity components.
 
-### Step 1: Set up your local environment
+<Note>
+  **Prerequisites:** Make sure you've completed the [installation](/installation) steps before proceeding.
+</Note>
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+## What you'll build
+
+You'll create a user profile card with:
+- An avatar placeholder
+- User information with typography
+- Action buttons
+- A text field for editing
+- Theme switching
+
+<Steps>
+  <Step title="Install Grauity">
+    If you haven't already, install Grauity and its peer dependencies:
+
+    <CodeGroup>
+    ```bash npm
+    npm install @newtonschool/grauity react react-dom styled-components
+    ```
+
+    ```bash yarn
+    yarn add @newtonschool/grauity react react-dom styled-components
+    ```
+
+    ```bash pnpm
+    pnpm add @newtonschool/grauity react react-dom styled-components
+    ```
+    </CodeGroup>
+
+    Import the icon styles in your root CSS/SCSS file:
+
+    ```scss global-styles.scss
+    @import '~@newtonschool/grauity/dist/css/index.scss';
+    ```
+  </Step>
+
+  <Step title="Set up the theme provider">
+    Wrap your application with `GrauityThemeProvider` to enable theming:
+
+    ```tsx App.tsx
+    import React, { useState } from 'react';
+    import { GrauityThemeProvider } from '@newtonschool/grauity';
+import UserProfile from './UserProfile';
+
+    function App() {
+      const [theme, setTheme] = useState('light');
+
+      return (
+        <GrauityThemeProvider rootThemeScopeTheme={theme}>
+          <div style={{ padding: '40px', minHeight: '100vh' }}>
+            <UserProfile onThemeToggle={() => 
+              setTheme(theme === 'light' ? 'dark' : 'light')
+            } />
+          </div>
+        </GrauityThemeProvider>
+      );
+    }
+
+    export default App;
+    ```
+
+    <Tip>
+      The `rootThemeScopeTheme` prop accepts `"light"` or `"dark"` and controls the global theme.
+    </Tip>
+  </Step>
+
+  <Step title="Create your first component">
+    Now let's build a user profile card using Grauity components:
+
+    ```tsx UserProfile.tsx
+    import React, { useState } from 'react';
+    import {
+      NSButton,
+      NSTextField,
+      NSTypography,
+      NSIcon,
+      NSTag,
+      BUTTON_VARIANTS_ENUM,
+    } from '@newtonschool/grauity';
+
+    interface UserProfileProps {
+      onThemeToggle: () => void;
+    }
+
+    function UserProfile({ onThemeToggle }: UserProfileProps) {
+      const [name, setName] = useState('Jane Cooper');
+      const [email, setEmail] = useState('jane.cooper@example.com');
+      const [isEditing, setIsEditing] = useState(false);
+
+      const handleSave = () => {
+        setIsEditing(false);
+        // Save logic here
+        console.log('Saved:', { name, email });
+      };
+
+      return (
+        <div
+          style={{
+            maxWidth: '600px',
+            margin: '0 auto',
+            padding: '32px',
+            borderRadius: '12px',
+            backgroundColor: 'var(--color-background-surface)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          {/* Header with theme toggle */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '24px',
+            }}
+          >
+            <NSTypography variant="heading-2" as="h2">
+              User Profile
+            </NSTypography>
+            
+            <NSButton
+              variant="tertiary"
+              icon="moon"
+              onClick={onThemeToggle}
+              tooltip="Toggle theme"
+            >
+              Toggle Theme
+            </NSButton>
+          </div>
+
+          {/* Avatar section */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              marginBottom: '24px',
+            }}
+          >
+            <div
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-brand-base)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <NSIcon name="user" size="40" color="white" />
+            </div>
+            
+            <div>
+              <NSTypography variant="heading-3" as="h3">
+                {name}
+              </NSTypography>
+              <NSTypography variant="body-1" as="p">
+                {email}
+              </NSTypography>
+              <div style={{ marginTop: '8px' }}>
+                <NSTag>Premium Member</NSTag>
+              </div>
+            </div>
+          </div>
+
+          {/* Editable fields */}
+          {isEditing ? (
+            <div style={{ marginBottom: '24px' }}>
+              <NSTextField
+                name="name"
+                label="Full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name"
+                isRequired
+                style={{ marginBottom: '16px' }}
+              />
+              
+              <NSTextField
+                name="email"
+                label="Email address"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                isRequired
+                adornments={{
+                  start: <NSIcon name="mail" color="currentColor" />,
+                }}
+              />
+            </div>
+          ) : (
+            <div style={{ marginBottom: '24px' }}>
+              <NSTypography variant="label" as="label">
+                Contact Information
+              </NSTypography>
+              <NSTypography variant="body-2" as="p">
+                You can edit your profile information by clicking the edit button below.
+              </NSTypography>
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {isEditing ? (
+              <>
+                <NSButton
+                  variant="primary"
+                  color="brand"
+                  icon="check"
+                  onClick={handleSave}
+                  fullWidth
+                >
+                  Save Changes
+                </NSButton>
+                
+                <NSButton
+                  variant="secondary"
+                  color="neutral"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </NSButton>
+              </>
+            ) : (
+              <>
+                <NSButton
+                  variant="primary"
+                  color="brand"
+                  icon="edit"
+                  onClick={() => setIsEditing(true)}
+                  fullWidth
+                >
+                  Edit Profile
+                </NSButton>
+                
+                <NSButton
+                  variant="secondary"
+                  color="error"
+                  icon="trash"
+                >
+                  Delete
+                </NSButton>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    export default UserProfile;
+    ```
+
+    <Tip>
+      Notice how we're using CSS variables like `var(--color-background-surface)` and `var(--color-brand-base)`. These are provided by the theme system and automatically update when you switch themes.
+    </Tip>
+  </Step>
+
+  <Step title="Run your application">
+    Start your development server and you should see your user profile card:
+
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    ```
+
+    Try clicking the "Toggle Theme" button to switch between light and dark modes!
+  </Step>
+</Steps>
+
+## Understanding the components
+
+Let's break down the Grauity components used in this example:
+
+### NSButton
+
+The button component supports multiple variants and colors:
+
+```tsx
+<NSButton
+  variant="primary"     // primary | secondary | tertiary | text
+  color="brand"         // brand | neutral | error | success | warning
+  size="medium"         // extra-small | small | medium | large | extra-large
+  icon="check"          // Icon name from Grauity icon set
+  iconPosition="left"   // left | right
+  fullWidth={false}     // Make button full width
+  disabled={false}      // Disable button
+  loading={false}       // Show loading spinner
+  onClick={() => {}}
+>
+  Button Text
+</NSButton>
+```
+
+<Card title="Button variants" icon="palette">
+  - **primary** - Solid background with white text
+  - **secondary** - Outlined with transparent background
+  - **tertiary** - Borderless with transparent background
+  - **text** - Text only with no padding
+</Card>
+
+### NSTextField
+
+The text field component provides a full-featured input with validation:
+
+```tsx
+<NSTextField
+  name="email"
+  label="Email address"
+  placeholder="Enter your email"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  type="email"           // text | email | password | number | etc.
+  isRequired={true}
+  isDisabled={false}
+  isReadOnly={false}
+  size="medium"          // small | medium | large
+  errorMessage="This field is required"
+  helpMessage="We'll never share your email"
+  maxLength={100}
+  adornments={{
+    start: <NSIcon name="mail" />,
+    end: <NSButton size="small">Send</NSButton>,
+  }}
+/>
+```
+
+<Note>
+  Text fields support **adornments** on both sides, allowing you to add icons, text, or even buttons inside the input.
+</Note>
+
+### NSTypography
+
+The typography component provides consistent text styling:
+
+```tsx
+<NSTypography
+  variant="heading-1"    // heading-1 to heading-6, body-1, body-2, label, etc.
+  as="h1"                // HTML element to render
+  color="inherit"        // Any CSS color or "inherit"
+>
+  Text content
+</NSTypography>
+```
+
+### NSIcon
+
+The icon component renders icons from the Grauity icon font:
+
+```tsx
+<NSIcon
+  name="check-circle"    // Icon name from icon set
+  size="24"              // Size in pixels: 16, 20, 24, 32, 40, 48, 64
+  color="currentColor"   // Any CSS color
+  loading={false}        // Show loading animation
+/>
+```
+
+### NSTag
+
+Simple tag component for labels and badges:
+
+```tsx
+<NSTag>
+  Premium Member
+</NSTag>
+```
+
+## Component props and TypeScript
+
+Grauity provides full TypeScript support with exported types:
+
+```tsx
+import {
+  NSButton,
+  NSTextField,
+  ButtonProps,
+  TextFieldProps,
+  BUTTON_VARIANTS_ENUM,
+  BUTTON_SIZES_ENUM,
+} from '@newtonschool/grauity';
+
+// Use types in your components
+const MyButton: React.FC<ButtonProps> = (props) => {
+  return <NSButton {...props} />;
+};
+
+// Use enums for type-safe values
+const variant = BUTTON_VARIANTS_ENUM.PRIMARY; // "primary"
+const size = BUTTON_SIZES_ENUM.MEDIUM;        // "medium"
+```
+
+<Tip>
+  Import types alongside components for full type safety and autocomplete support in your IDE.
+</Tip>
+
+## Using theme variables
+
+Grauity provides CSS variables for colors, spacing, and other design tokens:
+
+```tsx
+<div
+  style={{
+    // Colors
+    backgroundColor: 'var(--color-background-surface)',
+    color: 'var(--color-text-primary)',
+    borderColor: 'var(--color-border-default)',
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    // Spacing
+    padding: 'var(--spacing-16px)',
+    margin: 'var(--spacing-8px)',
+    gap: 'var(--spacing-12px)',
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    // Border radius
+    borderRadius: 'var(--corner-radius-8px)',
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    // Typography
+    fontSize: 'var(--font-size-14px)',
+    lineHeight: 'var(--line-height-20px)',
+  }}
+>
+  Content
+</div>
+```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+These variables automatically update when you switch themes using `NSThemeScope` or `GrauityThemeProvider`.
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
-
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Explore components" icon="grid" href="https://grauity.newtonschool.co">
+    Browse the full component library with live examples
+  </Card>
+  
+  <Card title="Form management" icon="file-lines" href="https://grauity.newtonschool.co/?path=/docs/elements-form-useform--docs">
+    Learn about the powerful useNSForm hook
+  </Card>
+  
+  <Card title="Theming guide" icon="palette" href="https://grauity.newtonschool.co/?path=/docs/elements-themescope--docs">
+    Deep dive into advanced theming with NSThemeScope
+  </Card>
+  
+  <Card title="Icon library" icon="icons" href="https://grauity.newtonschool.co/?path=/docs/elements-icon--docs">
+    Explore all available icons
+  </Card>
 </CardGroup>
 
+## Common patterns
+
+### Form with validation
+
+```tsx
+import { useState } from 'react';
+import { NSTextField, NSButton } from '@newtonschool/grauity';
+
+function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({ email: '', password: '' });
+
+  const handleSubmit = () => {
+    const newErrors = { email: '', password: '' };
+    
+    if (!email) newErrors.email = 'Email is required';
+    if (!password) newErrors.password = 'Password is required';
+    
+    setErrors(newErrors);
+    
+    if (!newErrors.email && !newErrors.password) {
+      // Submit form
+      console.log('Form submitted:', { email, password });
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: '400px' }}>
+      <NSTextField
+        name="email"
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        errorMessage={errors.email}
+        isRequired
+      />
+      
+      <NSTextField
+        name="password"
+        label="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        errorMessage={errors.password}
+        isRequired
+        style={{ marginTop: '16px' }}
+      />
+      
+      <NSButton
+        variant="primary"
+        color="brand"
+        fullWidth
+        onClick={handleSubmit}
+        style={{ marginTop: '24px' }}
+      >
+        Sign In
+      </NSButton>
+    </div>
+  );
+}
+```
+
+### Modal dialog
+
+```tsx
+import { useState } from 'react';
+import { NSModal, NSButton, NSTypography } from '@newtonschool/grauity';
+
+function ModalExample() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <NSButton onClick={() => setIsOpen(true)}>
+        Open Modal
+      </NSButton>
+      
+      <NSModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Confirm Action"
+      >
+        <NSTypography variant="body-1">
+          Are you sure you want to proceed with this action?
+        </NSTypography>
+        
+        <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+          <NSButton
+            variant="primary"
+            color="brand"
+            onClick={() => {
+              console.log('Confirmed');
+              setIsOpen(false);
+            }}
+          >
+            Confirm
+          </NSButton>
+          
+          <NSButton
+            variant="secondary"
+            onClick={() => setIsOpen(false)}
+          >
+            Cancel
+          </NSButton>
+        </div>
+      </NSModal>
+    </>
+  );
+}
+```
+
+### Loading states
+
+```tsx
+import { NSButton, NSPlaceholder } from '@newtonschool/grauity';
+
+function LoadingExample() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsLoading(false);
+  };
+
+  return (
+    <NSButton
+      variant="primary"
+      loading={isLoading}
+      onClick={handleClick}
+    >
+      {isLoading ? 'Loading...' : 'Click Me'}
+    </NSButton>
+  );
+}
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Components not styled correctly">
+    Make sure you've wrapped your app with `GrauityThemeProvider`:
+    
+    ```tsx
+    <GrauityThemeProvider rootThemeScopeTheme="light">
+      <App />
+    </GrauityThemeProvider>
+    ```
+  </Accordion>
+
+  <Accordion title="Icons not displaying">
+    Verify you've imported the icon CSS in your root stylesheet:
+    
+    ```scss
+    @import '~@newtonschool/grauity/dist/css/index.scss';
+    ```
+  </Accordion>
+
+  <Accordion title="TypeScript errors with props">
+    Make sure you're importing the correct types:
+    
+    ```tsx
+    import { NSButton, type ButtonProps } from '@newtonschool/grauity';
+    ```
+  </Accordion>
+
+  <Accordion title="Theme not switching">
+    Ensure you're updating the `rootThemeScopeTheme` prop when changing themes:
+    
+    ```tsx
+    const [theme, setTheme] = useState('light');
+    
+    <GrauityThemeProvider rootThemeScopeTheme={theme}>
+      {/* Your app */}
+    </GrauityThemeProvider>
+    ```
+  </Accordion>
+</AccordionGroup>
+
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  **Need more help?** Check out the [full documentation](https://grauity.newtonschool.co) or [open an issue](https://github.com/Newton-School/grauity/issues) on GitHub.
 </Note>

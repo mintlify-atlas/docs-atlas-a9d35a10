@@ -1,0 +1,214 @@
+---
+title: Tooltip
+description: A tooltip component for displaying helpful information on hover or focus.
+---
+
+## Overview
+
+The Tooltip component wraps any element and displays additional information when the user hovers over or focuses on it.
+
+## Basic Usage
+
+```tsx
+import Tooltip from '@grauity/ui/elements/Tooltip';
+import Button from '@grauity/ui/elements/Button';
+
+function MyComponent() {
+  return (
+    <Tooltip content="This is a helpful tooltip">
+      <Button variant="primary">Hover over me!</Button>
+    </Tooltip>
+  );
+}
+```
+
+## Props
+
+<ParamField path="content" type="React.ReactNode">
+  The content to display inside the tooltip.
+</ParamField>
+
+<ParamField path="placement" type="string" default="top">
+  Position of the tooltip relative to the wrapped element.
+  
+  **Available choices:** `top`, `bottom`, `left`, `right`, `top-start`, `top-end`, `bottom-start`, `bottom-end`, `left-start`, `left-end`, `right-start`, `right-end`
+</ParamField>
+
+<ParamField path="fixedPositioning" type="boolean" default={false}>
+  Use fixed positioning instead of absolute.
+</ParamField>
+
+<ParamField path="hidden" type="boolean" default={false}>
+  Hide the tooltip.
+</ParamField>
+
+<ParamField path="hideArrow" type="boolean" default={false}>
+  Hide the tooltip arrow indicator.
+</ParamField>
+
+<ParamField path="defaultOpen" type="boolean" default={false}>
+  Show the tooltip by default on mount.
+</ParamField>
+
+<ParamField path="isOpen" type="boolean | null" default={null}>
+  Controlled state for tooltip visibility. When provided, the tooltip becomes controlled.
+</ParamField>
+
+<ParamField path="color" type="string" default="var(--text-emphasis-invert-primary-default, #ffffff)">
+  Text color of the tooltip.
+</ParamField>
+
+<ParamField path="backgroundColor" type="string" default="var(--bg-subtle-invert-primary-default, #0b0c0e)">
+  Background color of the tooltip.
+</ParamField>
+
+<ParamField path="config" type="TooltipConfig">
+  Configuration object for customizing tooltip appearance.
+  
+  **Structure:** `{ tooltip: { maxWidth?: string, padding?: string, backgroundColor?: string } }`
+</ParamField>
+
+<ParamField path="recomputedTrigger" type="any">
+  A value that triggers tooltip position recalculation when changed.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode" required>
+  The element that the tooltip wraps.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name.
+</ParamField>
+
+## Placement Options
+
+```tsx
+<Tooltip content="Top tooltip" placement="top">
+  <Button>Top</Button>
+</Tooltip>
+
+<Tooltip content="Bottom tooltip" placement="bottom">
+  <Button>Bottom</Button>
+</Tooltip>
+
+<Tooltip content="Left tooltip" placement="left">
+  <Button>Left</Button>
+</Tooltip>
+
+<Tooltip content="Right tooltip" placement="right">
+  <Button>Right</Button>
+</Tooltip>
+```
+
+## Without Arrow
+
+```tsx
+<Tooltip 
+  content="Tooltip without arrow" 
+  hideArrow={true}
+>
+  <Button>No Arrow</Button>
+</Tooltip>
+```
+
+## Custom Content
+
+```tsx
+<Tooltip
+  content={
+    <div>
+      <Typography variant="paragraph-sb-p4">Custom Tooltip</Typography>
+      <Typography variant="paragraph-md-p4">
+        With multiple lines and rich content
+      </Typography>
+    </div>
+  }
+>
+  <Button>Rich Content</Button>
+</Tooltip>
+```
+
+## Custom Colors
+
+```tsx
+<Tooltip
+  content="Custom colored tooltip"
+  backgroundColor="#1976d2"
+  color="#ffffff"
+>
+  <Button>Custom Colors</Button>
+</Tooltip>
+```
+
+## Custom Configuration
+
+```tsx
+<Tooltip
+  content="Configured tooltip"
+  config={{
+    tooltip: {
+      maxWidth: '300px',
+      padding: '16px',
+    },
+  }}
+>
+  <Button>Configured</Button>
+</Tooltip>
+```
+
+## Controlled Tooltip
+
+```tsx
+import { useState } from 'react';
+
+function ControlledTooltipExample() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <Tooltip content="Controlled tooltip" isOpen={isOpen}>
+        <Button>Hover me</Button>
+      </Tooltip>
+      
+      <Button onClick={() => setIsOpen(!isOpen)}>
+        Toggle Tooltip
+      </Button>
+    </div>
+  );
+}
+```
+
+## Default Open
+
+```tsx
+<Tooltip 
+  content="This tooltip is open by default" 
+  defaultOpen={true}
+>
+  <Button>Default Open</Button>
+</Tooltip>
+```
+
+## With Icon
+
+```tsx
+<Tooltip content="Help information">
+  <Icon name="info-circle" size="20" />
+</Tooltip>
+```
+
+## Advanced Placement
+
+```tsx
+<Tooltip content="Top Start" placement="top-start">
+  <Button>Top Start</Button>
+</Tooltip>
+
+<Tooltip content="Bottom End" placement="bottom-end">
+  <Button>Bottom End</Button>
+</Tooltip>
+
+<Tooltip content="Left Start" placement="left-start">
+  <Button>Left Start</Button>
+</Tooltip>
+```

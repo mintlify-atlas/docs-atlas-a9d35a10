@@ -1,0 +1,385 @@
+---
+title: 'WeeklyCalendar'
+description: 'A week-based calendar component with hourly time slots for detailed schedule viewing'
+icon: 'calendar-week'
+---
+
+## Overview
+
+The `WeeklyCalendar` component displays events in a week-long view with hourly time slots from 12 AM to 11 PM. It automatically handles overlapping events, displays a current time indicator, and supports custom scroll positioning. Perfect for applications requiring detailed time-based scheduling.
+
+## Import
+
+```tsx
+import { WeeklyCalendar } from '@grauity/ui';
+import type { WeeklyCalendarProps, CalendarEvent } from '@grauity/ui';
+```
+
+## Basic Usage
+
+```tsx
+import { WeeklyCalendar } from '@grauity/ui';
+import { useState } from 'react';
+
+function MyWeeklyCalendar() {
+  const [date, setDate] = useState(new Date());
+
+  const events = [
+    {
+      title: 'Team Meeting',
+      start: new Date(2024, 2, 18, 10, 0),
+      end: new Date(2024, 2, 18, 11, 0),
+    },
+    {
+      title: 'Client Call',
+      start: new Date(2024, 2, 19, 14, 0),
+      end: new Date(2024, 2, 19, 15, 30),
+    },
+  ];
+
+  return (
+    <WeeklyCalendar
+      events={events}
+      date={date}
+      onDateChange={setDate}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="events" type="CalendarEvent<T>[]" default="[]">
+  Array of events to display in the calendar. Each event must have `start` and `end` dates.
+</ParamField>
+
+<ParamField path="eventRenderer" type="(item: CalendarEvent<T>) => React.ReactNode">
+  Function to render each event. If not provided, events use the default rendering.
+</ParamField>
+
+<ParamField path="date" type="Date" default="new Date()">
+  The date to show in the calendar. The calendar will display the week containing this date.
+</ParamField>
+
+<ParamField path="onDateChange" type="(date: Date) => void">
+  Callback fired when the date changes through week navigation controls. Receives the first day of the new week.
+</ParamField>
+
+<ParamField path="shouldShowWeekControls" type="boolean" default="true">
+  Whether to show week navigation controls (previous/next arrows and Today button).
+</ParamField>
+
+<ParamField path="header" type="React.ReactNode" default="null">
+  Custom header content to display above the calendar.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Whether the calendar is in a loading state. Shows placeholder UI when true.
+</ParamField>
+
+<ParamField path="defaultScrollHour" type="number" default="8.5">
+  The time in hours (24-hour format) to show at the top initially. Default is 8.5 (8:30 AM).
+</ParamField>
+
+<ParamField path="shouldScrollToFirstEvent" type="boolean" default="true">
+  Whether to automatically scroll to the first event when the calendar loads. Takes precedence over `defaultScrollHour`.
+</ParamField>
+
+<ParamField path="className" type="string" default="''">
+  Additional class name for the calendar wrapper element.
+</ParamField>
+
+### Deprecated Props
+
+<Warning>
+  The following props are deprecated and will be removed in a future version. Use the recommended alternatives instead.
+</Warning>
+
+<ParamField path="weekOffset" type="number" default="undefined">
+  **Deprecated:** Use `date` prop instead.
+  
+  The offset for the week relative to the current week, where 0 represents the current week.
+</ParamField>
+
+<ParamField path="onWeekChange" type="(weekOffset: number) => void">
+  **Deprecated:** Use `onDateChange` instead.
+  
+  Callback function called when the week changes.
+</ParamField>
+
+## Event Data Structure
+
+The `CalendarEvent` interface defines the structure for calendar events:
+
+```tsx
+interface CalendarEvent<T = {}> {
+  id?: string | number;
+  title?: string;
+  start: Date;        // Required: Event start time
+  end: Date;          // Required: Event end time
+  allDay?: boolean;
+  render?: (event: CalendarEvent<T>) => React.ReactNode;
+  focused?: boolean;  // Highlights the event
+}
+```
+
+## Overlapping Events
+
+The WeeklyCalendar automatically handles overlapping events by:
+
+1. Detecting time conflicts between events
+2. Calculating optimal width and positioning
+3. Stacking events side-by-side when they overlap
+
+```tsx
+const overlappingEvents = [
+  {
+    title: 'Event 1',
+    start: new Date(2024, 2, 18, 11, 0),
+    end: new Date(2024, 2, 18, 13, 0),
+  },
+  {
+    title: 'Event 2',
+    start: new Date(2024, 2, 18, 12, 0),
+    end: new Date(2024, 2, 18, 14, 0),
+  },
+  {
+    title: 'Event 3',
+    start: new Date(2024, 2, 18, 13, 0),
+    end: new Date(2024, 2, 18, 15, 0),
+  },
+];
+
+<WeeklyCalendar events={overlappingEvents} />
+```
+
+Events that overlap will be displayed side-by-side with appropriate widths calculated automatically.
+
+## Custom Event Rendering
+
+```tsx
+import { WeeklyCalendar, CalendarEvent } from '@grauity/ui';
+import CalendarEvent from '@grauity/ui/CalendarEvent';
+
+function CustomWeeklyCalendar() {
+  const events = [
+    {
+      title: 'Design Review',
+      start: new Date(2024, 2, 18, 14, 0),
+      end: new Date(2024, 2, 18, 15, 30),
+      focused: true,
+    },
+  ];
+
+  return (
+    <WeeklyCalendar
+      events={events}
+      eventRenderer={(event) => (
+        <CalendarEvent
+          title={event.title}
+          start={event.start}
+          end={event.end}
+          focused={event.focused}
+          chipContent="Important"
+          backgroundColor="var(--bg-emphasis-brand-default, #0673f9)"
+          textColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+        />
+      )}
+    />
+  );
+}
+```
+
+## Scroll Control
+
+<CodeGroup>
+```tsx Scroll to specific hour
+<WeeklyCalendar
+  defaultScrollHour={9}  // Scroll to 9:00 AM
+  shouldScrollToFirstEvent={false}
+  events={events}
+/>
+```
+
+```tsx Scroll to first event
+<WeeklyCalendar
+  shouldScrollToFirstEvent={true}
+  events={events}
+/>
+```
+</CodeGroup>
+
+## Week Navigation
+
+<Steps>
+  <Step title="Previous Week">
+    Click the left arrow to navigate to the previous week. The calendar updates to show events for that week.
+  </Step>
+  
+  <Step title="Next Week">
+    Click the right arrow to navigate to the next week.
+  </Step>
+  
+  <Step title="Today Button">
+    Click "Today" to quickly return to the current week.
+  </Step>
+</Steps>
+
+## Current Time Indicator
+
+The calendar displays a horizontal line showing the current time position. This indicator:
+
+- Updates every 5 minutes
+- Only appears on today's date
+- Provides visual context for scheduling
+
+## Complete Example
+
+```tsx
+import { WeeklyCalendar, CalendarEvent } from '@grauity/ui';
+import { useState } from 'react';
+
+function ScheduleApp() {
+  const [date, setDate] = useState(new Date());
+  
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+  const currentDate = new Date().getDate();
+  const currentDay = new Date().getDay();
+  const weekStartDate = currentDate - currentDay;
+
+  const events = [
+    {
+      title: 'Morning Standup',
+      start: new Date(currentYear, currentMonth, weekStartDate + 1, 9, 0),
+      end: new Date(currentYear, currentMonth, weekStartDate + 1, 9, 30),
+    },
+    {
+      title: 'Development Work',
+      start: new Date(currentYear, currentMonth, weekStartDate + 1, 10, 0),
+      end: new Date(currentYear, currentMonth, weekStartDate + 1, 12, 0),
+    },
+    {
+      title: 'Lunch Break',
+      start: new Date(currentYear, currentMonth, weekStartDate + 1, 12, 0),
+      end: new Date(currentYear, currentMonth, weekStartDate + 1, 13, 0),
+    },
+    {
+      title: 'Code Review',
+      start: new Date(currentYear, currentMonth, weekStartDate + 3, 14, 0),
+      end: new Date(currentYear, currentMonth, weekStartDate + 3, 15, 30),
+    },
+  ];
+
+  return (
+    <div style={{ height: '100vh' }}>
+      <WeeklyCalendar
+        events={events}
+        date={date}
+        onDateChange={(newDate) => {
+          console.log('Week changed to:', newDate);
+          setDate(newDate);
+        }}
+        shouldShowWeekControls
+        defaultScrollHour={8}
+        shouldScrollToFirstEvent
+        header={
+          <div style={{ padding: '16px', borderBottom: '1px solid #e1e5ea' }}>
+            <h2>Weekly Schedule</h2>
+          </div>
+        }
+      />
+    </div>
+  );
+}
+```
+
+## Multi-day Events
+
+Events spanning multiple days are automatically handled:
+
+```tsx
+const multiDayEvent = {
+  title: 'Conference',
+  start: new Date(2024, 2, 18, 9, 0),
+  end: new Date(2024, 2, 20, 17, 0),  // Ends 2 days later
+};
+```
+
+The calendar will:
+1. Display the event on the start date
+2. Truncate it at 11:59 PM of the start date
+3. Store information about the full event duration
+
+## Accessibility
+
+- Full keyboard navigation support
+- ARIA labels on all interactive elements
+- Screen reader announcements for week changes
+- Focus management for events
+- Semantic HTML structure
+
+<Note>
+  The calendar uses `tabIndex={0}` on the timeline to enable keyboard scrolling for accessibility.
+</Note>
+
+## Performance Considerations
+
+<AccordionGroup>
+  <Accordion title="Event Processing">
+    The calendar processes overlapping events efficiently using async operations. For weeks with hundreds of events, this ensures the UI remains responsive.
+  </Accordion>
+  
+  <Accordion title="Scroll Optimization">
+    Scroll positioning uses `scrollTo` with `behavior: 'auto'` for instant positioning on mount, improving perceived performance.
+  </Accordion>
+  
+  <Accordion title="Time Indicator Updates">
+    The current time indicator updates every 5 minutes instead of every minute to reduce unnecessary re-renders.
+  </Accordion>
+</AccordionGroup>
+
+## TypeScript
+
+The component supports generic typing for custom event data:
+
+```tsx
+interface MeetingData {
+  attendees: string[];
+  room: string;
+  isVirtual: boolean;
+}
+
+const meetings: CalendarEvent<MeetingData>[] = [
+  {
+    title: 'Team Sync',
+    start: new Date(2024, 2, 18, 10, 0),
+    end: new Date(2024, 2, 18, 11, 0),
+    attendees: ['john@example.com', 'jane@example.com'],
+    room: 'Conference Room A',
+    isVirtual: false,
+  },
+];
+
+<WeeklyCalendar<MeetingData>
+  events={meetings}
+  eventRenderer={(event) => (
+    <div>
+      <div>{event.title}</div>
+      <div>{event.room}</div>
+      <div>{event.attendees.length} attendees</div>
+    </div>
+  )}
+/>
+```
+
+## Related Components
+
+<CardGroup cols={2}>
+  <Card title="UnifiedCalendar" icon="calendar" href="/components/calendar/unified-calendar">
+    Combined monthly and weekly calendar with view switching
+  </Card>
+  <Card title="MonthlyCalendar" icon="calendar-days" href="/components/calendar/monthly-calendar">
+    Traditional month grid view calendar
+  </Card>
+</CardGroup>

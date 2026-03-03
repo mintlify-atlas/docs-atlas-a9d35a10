@@ -1,0 +1,411 @@
+---
+title: Theming
+description: Learn how to implement light and dark themes in Grauity with GrauityThemeProvider and ThemeScope
+---
+
+# Theming
+
+Grauity provides a powerful theming system that supports multiple themes (light and dark) with scoped theme switching. The theming system is built on styled-components and provides CSS variables for easy customization.
+
+## Overview
+
+The theming system consists of two main components:
+
+- **GrauityThemeProvider**: The root theme provider that wraps your entire application
+- **NSThemeScope**: A component for applying different themes to specific sections of your app
+
+<Note>
+All Grauity components automatically adapt to the active theme using CSS variables and theme context.
+</Note>
+
+## GrauityThemeProvider
+
+The `GrauityThemeProvider` is the foundation of Grauity's theming system. It should wrap your root-level element (e.g., in your App component) to enable theming throughout your application.
+
+### Basic Usage
+
+<CodeGroup>
+
+```tsx App.tsx
+import { GrauityThemeProvider } from '@newtonschool/grauity';
+
+function App() {
+  return (
+    <GrauityThemeProvider rootThemeScopeTheme="light">
+      {/* Your app content */}
+    </GrauityThemeProvider>
+  );
+}
+```
+
+```tsx Dark Mode
+import { GrauityThemeProvider } from '@newtonschool/grauity';
+
+function App() {
+  return (
+    <GrauityThemeProvider rootThemeScopeTheme="dark">
+      {/* Your app content */}
+    </GrauityThemeProvider>
+  );
+}
+```
+
+</CodeGroup>
+
+### Props
+
+<ParamField path="themeConfig" type="object" default="{ light: LIGHT_THEME_OBJ, dark: DARK_THEME_OBJ }">
+  Configuration object containing theme definitions for light and dark themes.
+</ParamField>
+
+<ParamField path="rootThemeScopeTheme" type="'light' | 'dark'" default="'light'">
+  The initial theme to apply at the root level.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Your application content.
+</ParamField>
+
+## Theme Configuration
+
+Grauity comes with pre-defined light and dark theme configurations that you can use or customize.
+
+### Default Theme Objects
+
+<Tabs>
+  <Tab title="Light Theme">
+    The `NS_LIGHT_THEME_CONFIG` constant (exported from `ui/themes/lightThemeConstants.ts:3`) defines all light theme values:
+
+    ```tsx
+    import { NS_LIGHT_THEME_CONFIG } from '@newtonschool/grauity';
+
+    // Theme structure
+    const lightTheme = {
+      colors: {
+        bg: {
+          subtle: {
+            primary: {
+              default: 'var(--neutral-0, #FFF)',
+              hover: 'var(--neutral-100, #F6F7F9)',
+              disabled: 'var(--neutral-200, #EDEFF3)',
+            },
+            brand: {
+              default: 'var(--brand-0, #E5F1FF)',
+            },
+            // ... more color tokens
+          },
+          emphasis: {
+            brand: {
+              default: 'var(--brand-500, #0673F9)',
+              hover: 'var(--brand-400, #2989FF)',
+              disabled: 'var(--brand-200, #94C4FF)',
+            },
+            // ... more emphasis colors
+          }
+        },
+        text: { /* ... */ },
+        border: { /* ... */ },
+      },
+      visibility: {
+        lightVisible: 'block',
+        darkVisible: 'none',
+      },
+    };
+    ```
+  </Tab>
+  <Tab title="Dark Theme">
+    The `NS_DARK_THEME_CONFIG` constant (exported from `ui/themes/darkThemeConstants.ts:3`) defines all dark theme values:
+
+    ```tsx
+    import { NS_DARK_THEME_CONFIG } from '@newtonschool/grauity';
+
+    // Theme structure
+    const darkTheme = {
+      colors: {
+        bg: {
+          subtle: {
+            primary: {
+              default: 'var(--neutral-1000, #0B0C0E)',
+              hover: 'var(--neutral-900, #16191D)',
+              disabled: 'var(--neutral-800, #23282F)',
+            },
+            brand: {
+              default: 'var(--brand-900, #002452)',
+            },
+            // ... more color tokens
+          },
+          emphasis: {
+            brand: {
+              default: 'var(--brand-500, #0673F9)',
+              hover: 'var(--brand-400, #2989FF)',
+              disabled: 'var(--brand-800, #003270)',
+            },
+            // ... more emphasis colors
+          }
+        },
+        text: { /* ... */ },
+        border: { /* ... */ },
+      },
+      visibility: {
+        lightVisible: 'none',
+        darkVisible: 'block',
+      },
+    };
+    ```
+  </Tab>
+</Tabs>
+
+### Custom Theme Configuration
+
+You can provide your own theme configuration by passing a custom `themeConfig` prop:
+
+```tsx
+import { GrauityThemeProvider } from '@newtonschool/grauity';
+
+const customThemeConfig = {
+  light: {
+    colors: {
+      // Your custom light theme colors
+    },
+    visibility: {
+      lightVisible: 'block',
+      darkVisible: 'none',
+    },
+  },
+  dark: {
+    colors: {
+      // Your custom dark theme colors
+    },
+    visibility: {
+      lightVisible: 'none',
+      darkVisible: 'block',
+    },
+  },
+};
+
+function App() {
+  return (
+    <GrauityThemeProvider 
+      themeConfig={customThemeConfig}
+      rootThemeScopeTheme="light"
+    >
+      {/* Your app */}
+    </GrauityThemeProvider>
+  );
+}
+```
+
+## Scoped Theming with NSThemeScope
+
+The `NSThemeScope` component (defined in `ui/elements/ThemeScope/ThemeScope.tsx:21`) allows you to apply different themes to specific sections of your application without affecting the global theme.
+
+### Basic Usage
+
+<CodeGroup>
+
+```tsx Apply Specific Theme
+import { NSThemeScope } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return (
+    <div>
+      <p>This is in light theme</p>
+      
+      <NSThemeScope applyTheme="dark">
+        <p>This section is in dark theme</p>
+      </NSThemeScope>
+      
+      <p>Back to light theme</p>
+    </div>
+  );
+}
+```
+
+```tsx Invert Current Theme
+import { NSThemeScope } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return (
+    <div>
+      <p>Current theme (e.g., light)</p>
+      
+      <NSThemeScope invert>
+        <p>Inverted theme (dark)</p>
+      </NSThemeScope>
+    </div>
+  );
+}
+```
+
+```tsx Custom Element
+import { NSThemeScope } from '@newtonschool/grauity';
+
+function MyComponent() {
+  return (
+    <NSThemeScope applyTheme="dark" as="section" className="dark-section">
+      <h2>Dark themed section</h2>
+      <p>All content here uses dark theme</p>
+    </NSThemeScope>
+  );
+}
+```
+
+</CodeGroup>
+
+### Props
+
+<ParamField path="applyTheme" type="'light' | 'dark'">
+  Explicitly set the theme for this scope.
+</ParamField>
+
+<ParamField path="invert" type="boolean">
+  Invert the current theme (light becomes dark, dark becomes light).
+</ParamField>
+
+<ParamField path="as" type="React.ElementType" default="'div'">
+  The HTML element or component to render as.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Content to render within the themed scope.
+</ParamField>
+
+<Note>
+NSThemeScope provides a `scopedTheme` prop in styled-components that you can access via `props.theme.scopedTheme` to detect the locally scoped theme.
+</Note>
+
+## Legacy Theme Classes
+
+Grauity also supports legacy theme classes that can be applied directly to the body element or any container:
+
+- `.grauity-theme-light` - Applies light theme
+- `.grauity-theme-dark` - Applies dark theme
+
+These classes are automatically managed by the `ThemeContext` (see `ui/themes/ThemeContext.tsx:106`) and applied to `document.body` when using the `NSThemeWrapper` component.
+
+<CodeGroup>
+
+```tsx Using ThemeWrapper
+import { NSThemeWrapper } from '@newtonschool/grauity';
+
+function App() {
+  return (
+    <NSThemeWrapper defaultTheme="light">
+      {/* Theme class automatically applied to body */}
+      {/* Your app content */}
+    </NSThemeWrapper>
+  );
+}
+```
+
+```tsx Manual Class Application
+// The body element will have the class applied
+// <body class="grauity-theme-light">
+
+function toggleTheme() {
+  const body = document.body;
+  if (body.classList.contains('grauity-theme-light')) {
+    body.classList.remove('grauity-theme-light');
+    body.classList.add('grauity-theme-dark');
+  } else {
+    body.classList.remove('grauity-theme-dark');
+    body.classList.add('grauity-theme-light');
+  }
+}
+```
+
+</CodeGroup>
+
+## System Preference Detection
+
+The `NSThemeWrapper` component can automatically detect and respond to the user's system color scheme preference:
+
+```tsx
+import { NSThemeWrapper } from '@newtonschool/grauity';
+
+function App() {
+  return (
+    <NSThemeWrapper 
+      defaultTheme="light" 
+      usePreferredColorScheme={true}
+    >
+      {/* Theme automatically matches system preference */}
+      {/* Your app content */}
+    </NSThemeWrapper>
+  );
+}
+```
+
+When `usePreferredColorScheme` is enabled, Grauity listens to the `prefers-color-scheme` media query and automatically switches themes when the system preference changes.
+
+## Theme Context and Hooks
+
+For advanced use cases, you can access theme context directly:
+
+```tsx
+import { NSThemeContext } from '@newtonschool/grauity';
+import { useContext } from 'react';
+
+function MyComponent() {
+  const { theme, handleToggleTheme } = useContext(NSThemeContext);
+  
+  return (
+    <div>
+      <p>Current theme: {theme.themeName}</p>
+      <button onClick={() => handleToggleTheme('dark')}>
+        Switch to Dark
+      </button>
+      <button onClick={() => handleToggleTheme('light')}>
+        Switch to Light
+      </button>
+    </div>
+  );
+}
+```
+
+For detecting the scoped theme in child components, use the `useThemeScope` hook:
+
+```tsx
+import { useThemeScope } from '@newtonschool/grauity';
+
+function ThemedComponent() {
+  const { theme } = useThemeScope();
+  
+  return (
+    <div>
+      <p>Current scoped theme: {theme}</p>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Use Theme Tokens" icon="palette">
+    Always use CSS variables and theme tokens instead of hardcoded colors for automatic theme switching.
+  </Card>
+  <Card title="Scope Themes Sparingly" icon="layer-group">
+    Use NSThemeScope only when necessary. Most apps should use a single global theme.
+  </Card>
+  <Card title="Test Both Themes" icon="moon">
+    Always test your components in both light and dark themes to ensure proper contrast and readability.
+  </Card>
+  <Card title="Respect User Preference" icon="user">
+    Consider using `usePreferredColorScheme` to respect users' system-level theme preferences.
+  </Card>
+</CardGroup>
+
+<Warning>
+When nesting multiple NSThemeScope components, be aware that each creates a new theme context. Child scopes inherit from their parent scope, not the root theme.
+</Warning>
+
+## Related
+
+- [Design Tokens](/fundamentals/design-tokens) - Learn about the CSS variables used in themes
+- [Colors](/tokens/colors) - View all available color tokens
+- [NSThemeScope](/advanced/theme-scope) - Advanced scoped theming component

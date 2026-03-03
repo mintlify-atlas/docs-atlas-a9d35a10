@@ -1,0 +1,337 @@
+---
+title: Colors
+description: Color tokens in the Grauity design system
+---
+
+Grauity uses a comprehensive color system with foundation colors and semantic color tokens that adapt to light and dark themes.
+
+## Foundation Colors
+
+Foundation colors are theme-agnostic base colors that all other color tokens reference. These are defined as CSS variables and remain consistent across themes.
+
+### Neutral Colors
+
+<Note>
+Neutral colors range from white (`--neutral-0`) to near-black (`--neutral-1000`), providing a full grayscale palette.
+</Note>
+
+| Token | Hex Value | Usage |
+|-------|-----------|-------|
+| `--neutral-0` | `#FFFFFF` | Pure white |
+| `--neutral-100` | `#F6F7F9` | Lightest gray |
+| `--neutral-200` | `#EDEFF3` | Very light gray |
+| `--neutral-300` | `#E1E5EA` | Light gray |
+| `--neutral-400` | `#C9CFD9` | Medium-light gray |
+| `--neutral-500` | `#B2B9C7` | Medium gray |
+| `--neutral-600` | `#8C95A6` | Medium-dark gray |
+| `--neutral-700` | `#5B6271` | Dark gray |
+| `--neutral-750` | `#30363D` | Very dark gray |
+| `--neutral-800` | `#23282F` | Darker gray |
+| `--neutral-900` | `#16191D` | Near-black |
+| `--neutral-1000` | `#0B0C0E` | Darkest |
+
+### Brand Colors
+
+Brand colors represent the primary identity of your application.
+
+| Token | Hex Value |
+|-------|----------|
+| `--brand-0` | `#E5F1FF` |
+| `--brand-100` | `#C2DDFF` |
+| `--brand-200` | `#94C4FF` |
+| `--brand-300` | `#61A8FF` |
+| `--brand-400` | `#2989FF` |
+| `--brand-500` | `#0673F9` |
+| `--brand-600` | `#005ED1` |
+| `--brand-700` | `#004599` |
+| `--brand-800` | `#003270` |
+| `--brand-900` | `#002452` |
+
+### Semantic Colors
+
+Semantic colors convey meaning and state.
+
+#### Success Colors
+
+| Token | Hex Value |
+|-------|----------|
+| `--success-0` | `#D9FCED` |
+| `--success-100` | `#ACF7D3` |
+| `--success-200` | `#7EE7B8` |
+| `--success-300` | `#50CE99` |
+| `--success-400` | `#13B97C` |
+| `--success-500` | `#009965` |
+| `--success-600` | `#007A51` |
+| `--success-700` | `#005C3D` |
+| `--success-800` | `#003D29` |
+| `--success-900` | `#002D1E` |
+
+#### Error Colors
+
+| Token | Hex Value |
+|-------|----------|
+| `--error-0` | `#FFE5E7` |
+| `--error-100` | `#FBBBBF` |
+| `--error-200` | `#FA9499` |
+| `--error-300` | `#F8636B` |
+| `--error-400` | `#EE3F44` |
+| `--error-500` | `#D22D3A` |
+| `--error-600` | `#A01B22` |
+| `--error-700` | `#7E1219` |
+| `--error-800` | `#63080D` |
+| `--error-900` | `#4A040A` |
+
+#### Warning Colors
+
+| Token | Hex Value |
+|-------|----------|
+| `--warning-0` | `#FFF1E5` |
+| `--warning-100` | `#FFD2BA` |
+| `--warning-200` | `#FFB286` |
+| `--warning-300` | `#FD9254` |
+| `--warning-400` | `#F37216` |
+| `--warning-500` | `#DE5A02` |
+| `--warning-600` | `#A83E00` |
+| `--warning-700` | `#802D00` |
+| `--warning-800` | `#5C1F00` |
+| `--warning-900` | `#441704` |
+
+#### Yellow Colors
+
+| Token | Hex Value |
+|-------|----------|
+| `--yellow-0` | `#FFF3D6` |
+| `--yellow-100` | `#FFE4AD` |
+| `--yellow-200` | `#FFD580` |
+| `--yellow-300` | `#FEC553` |
+| `--yellow-400` | `#FEB000` |
+| `--yellow-500` | `#F59700` |
+| `--yellow-600` | `#D17300` |
+| `--yellow-700` | `#944500` |
+| `--yellow-800` | `#5C2900` |
+| `--yellow-900` | `#3D1A00` |
+
+#### Purple Colors
+
+| Token | Hex Value |
+|-------|----------|
+| `--purple-0` | `#F5E5FF` |
+| `--purple-100` | `#E1D1FF` |
+| `--purple-200` | `#CEBCFE` |
+| `--purple-300` | `#B49DFE` |
+| `--purple-400` | `#967CFD` |
+| `--purple-500` | `#7B55EE` |
+| `--purple-600` | `#6138D3` |
+| `--purple-700` | `#46279B` |
+| `--purple-800` | `#331D72` |
+| `--purple-900` | `#221056` |
+
+### Alpha Colors
+
+Alpha colors provide transparency for overlays and interactive states.
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--alpha-20` | `rgba(255, 255, 255, 0.20)` | Light overlay |
+| `--alpha-12` | `rgba(255, 255, 255, 0.12)` | Subtle overlay |
+| `--alpha-80` | `rgba(255, 255, 255, 0.80)` | Strong overlay |
+| `--alpha-overlay` | `rgba(22, 25, 29, 0.80)` | Dark overlay |
+| `--alpha-hover` | `var(--alpha-20)` | Hover state |
+| `--alpha-pressed` | `var(--alpha-12)` | Pressed state |
+
+## Semantic Color Tokens
+
+Semantic color tokens are theme-aware and automatically adapt between light and dark modes. They follow a structured naming convention:
+
+```
+--{category}-{intensity}-{variant}-{state}
+```
+
+### Categories
+
+- **bg**: Background colors
+- **text**: Text colors
+- **border**: Border colors
+
+### Intensities
+
+- **subtle**: Low contrast, used for backgrounds
+- **moderate**: Medium contrast
+- **emphasis**: High contrast, used for important elements
+
+### Variants
+
+- **primary**: Primary neutral colors
+- **invert-primary**: Inverted primary colors
+- **secondary**: Secondary neutral colors
+- **tertiary**: Tertiary neutral colors
+- **brand**: Brand colors
+- **success**: Success state
+- **error**: Error state
+- **warning**: Warning state
+- **yellow**: Yellow accent
+- **purple**: Purple accent
+- **white**: White color
+
+### States
+
+- **default**: Default state
+- **hover**: Hover state
+- **disabled**: Disabled state
+
+## Background Colors
+
+### Subtle Backgrounds
+
+| Token | Light Theme | Dark Theme |
+|-------|-------------|------------|
+| `--bg-subtle-primary-default` | `#FFF` | `#0B0C0E` |
+| `--bg-subtle-primary-hover` | `#F6F7F9` | `#16191D` |
+| `--bg-subtle-primary-disabled` | `#EDEFF3` | `#23282F` |
+| `--bg-subtle-secondary-default` | `#F6F7F9` | `#16191D` |
+| `--bg-subtle-tertiary-default` | `#EDEFF3` | `#23282F` |
+| `--bg-subtle-brand-default` | `#E5F1FF` | `#002452` |
+| `--bg-subtle-success-default` | `#D9FCED` | `#003D29` |
+| `--bg-subtle-error-default` | `#FFE5E7` | `#4A040A` |
+| `--bg-subtle-warning-default` | `#FFF1E5` | `#441704` |
+| `--bg-subtle-yellow-default` | `#FFF3D6` | `#3D1A00` |
+| `--bg-subtle-purple-default` | `#F5E5FF` | `#331D72` |
+
+### Emphasis Backgrounds
+
+| Token | Light Theme | Dark Theme |
+|-------|-------------|------------|
+| `--bg-emphasis-brand-default` | `#0673F9` | `#0673F9` |
+| `--bg-emphasis-brand-hover` | `#2989FF` | `#2989FF` |
+| `--bg-emphasis-brand-disabled` | `#94C4FF` | `#003270` |
+| `--bg-emphasis-success-default` | `#009965` | `#009965` |
+| `--bg-emphasis-success-hover` | `#13B97C` | `#13B97C` |
+| `--bg-emphasis-error-default` | `#D22D3A` | `#D22D3A` |
+| `--bg-emphasis-error-hover` | `#EE3F44` | `#EE3F44` |
+| `--bg-emphasis-warning-default` | `#F37216` | `#F37216` |
+| `--bg-emphasis-yellow-default` | `#F59700` | `#F59700` |
+| `--bg-emphasis-purple-default` | `#6138D3` | `#6138D3` |
+
+## Text Colors
+
+### Emphasis Text
+
+| Token | Light Theme | Dark Theme |
+|-------|-------------|------------|
+| `--text-emphasis-primary-default` | `#16191D` | `#FFF` |
+| `--text-emphasis-primary-disabled` | `#8C95A6` | `#5B6271` |
+| `--text-emphasis-secondary-default` | `#5B6271` | `#B2B9C7` |
+| `--text-emphasis-secondary-disabled` | `#C9CFD9` | `#23282F` |
+| `--text-emphasis-white-default` | `#FFF` | `#FFF` |
+| `--text-emphasis-brand-default` | `#0673F9` | `#61A8FF` |
+| `--text-emphasis-success-default` | `#007A51` | `#50CE99` |
+| `--text-emphasis-error-default` | `#D22D3A` | `#F8636B` |
+| `--text-emphasis-warning-default` | `#DE5A02` | `#FD9254` |
+| `--text-emphasis-yellow-default` | `#D17300` | `#FEC553` |
+| `--text-emphasis-purple-default` | `#6138D3` | `#B49DFE` |
+
+## Border Colors
+
+### Subtle Borders
+
+| Token | Light Theme | Dark Theme |
+|-------|-------------|------------|
+| `--border-subtle-primary-default` | `#E1E5EA` | `#30363D` |
+| `--border-subtle-primary-disabled` | `#EDEFF3` | `#23282F` |
+| `--border-subtle-brand-default` | `#61A8FF` | `#003270` |
+| `--border-subtle-success-default` | `#ACF7D3` | `#005C3D` |
+| `--border-subtle-error-default` | `#FBBBBF` | `#63080D` |
+| `--border-subtle-warning-default` | `#FFD2BA` | `#802D00` |
+| `--border-subtle-yellow-default` | `#FFD580` | `#5C2900` |
+| `--border-subtle-purple-default` | `#CEBCFE` | `#46279B` |
+
+### Moderate Borders
+
+| Token | Light Theme | Dark Theme |
+|-------|-------------|------------|
+| `--border-moderate-primary-default` | `#C9CFD9` | `#30363D` |
+| `--border-moderate-brand-default` | `#2989FF` | `#003270` |
+| `--border-moderate-success-default` | `#50CE99` | `#005C3D` |
+| `--border-moderate-error-default` | `#F8636B` | `#63080D` |
+| `--border-moderate-warning-default` | `#FD9254` | `#802D00` |
+| `--border-moderate-yellow-default` | `#FEB000` | `#5C2900` |
+| `--border-moderate-purple-default` | `#967CFD` | `#46279B` |
+
+### Emphasis Borders
+
+| Token | Light Theme | Dark Theme |
+|-------|-------------|------------|
+| `--border-emphasis-primary-default` | `#FFF` | `#16191D` |
+| `--border-emphasis-brand-default` | `#0673F9` | `#61A8FF` |
+| `--border-emphasis-success-default` | `#009965` | `#009965` |
+| `--border-emphasis-error-default` | `#D22D3A` | `#F8636B` |
+| `--border-emphasis-warning-default` | `#DE5A02` | `#FD9254` |
+| `--border-emphasis-yellow-default` | `#D17300` | `#FEC553` |
+| `--border-emphasis-purple-default` | `#6138D3` | `#B49DFE` |
+
+## Usage
+
+### Using Foundation Colors
+
+```css
+.my-element {
+  background-color: var(--brand-500);
+  color: var(--neutral-0);
+}
+```
+
+### Using Semantic Tokens
+
+```css
+.my-component {
+  /* These automatically adapt to theme */
+  background-color: var(--bg-subtle-primary-default);
+  color: var(--text-emphasis-primary-default);
+  border: 1px solid var(--border-subtle-primary-default);
+}
+
+.my-component:hover {
+  background-color: var(--bg-subtle-primary-hover);
+}
+
+.my-component:disabled {
+  background-color: var(--bg-subtle-primary-disabled);
+  color: var(--text-emphasis-primary-disabled);
+}
+```
+
+### In React Components
+
+```jsx
+import styled from 'styled-components';
+
+const Button = styled.button`
+  background-color: var(--bg-emphasis-brand-default);
+  color: var(--text-emphasis-white-default);
+  border: 1px solid var(--border-emphasis-brand-default);
+  
+  &:hover {
+    background-color: var(--bg-emphasis-brand-hover);
+  }
+  
+  &:disabled {
+    background-color: var(--bg-emphasis-brand-disabled);
+    color: var(--text-emphasis-brand-disabled);
+  }
+`;
+```
+
+## Legacy Color Tokens
+
+<Note>
+Legacy color tokens are maintained for backward compatibility. New projects should use the semantic color tokens described above.
+</Note>
+
+Legacy tokens include simplified names like `--text-primary`, `--bg-primary`, `--border`, etc. These map to the foundation colors and are defined in `lightThemeConstants.ts` and `darkThemeConstants.ts`.
+
+## Source Files
+
+- **Foundation Colors**: `ui/themes/GlobalStyle.ts`
+- **Light Theme**: `ui/themes/lightThemeConstants.ts`
+- **Dark Theme**: `ui/themes/darkThemeConstants.ts`
+- **Stories**: `stories/atoms/Colors/`

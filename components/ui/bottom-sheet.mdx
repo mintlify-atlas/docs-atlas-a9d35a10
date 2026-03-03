@@ -1,0 +1,154 @@
+---
+title: BottomSheet
+description: A mobile-friendly slide-up panel component that appears from the bottom of the screen.
+---
+
+## Overview
+
+The BottomSheet component provides a slide-up panel interface, commonly used in mobile applications for actions, menus, or additional content.
+
+## Basic Usage
+
+```tsx
+import BottomSheet from '@grauity/ui/elements/BottomSheet';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Bottom Sheet</Button>
+      
+      <BottomSheet
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        height="50%"
+        showDragHandle={true}
+      >
+        <h2>Bottom Sheet Content</h2>
+        <p>Your content goes here</p>
+      </BottomSheet>
+    </>
+  );
+}
+```
+
+## Props
+
+<ParamField path="isOpen" type="boolean" default={false}>
+  Controls whether the bottom sheet is visible.
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback function when the bottom sheet should be closed.
+</ParamField>
+
+<ParamField path="height" type="string" default="50%">
+  Height of the bottom sheet.
+</ParamField>
+
+<ParamField path="fullScreen" type="boolean" default={false}>
+  Make the bottom sheet take up the full screen.
+</ParamField>
+
+<ParamField path="showDragHandle" type="boolean" default={true}>
+  Display a drag handle at the top of the bottom sheet.
+</ParamField>
+
+<ParamField path="closeOnPullDown" type="boolean" default={true}>
+  Close the bottom sheet when pulled down.
+</ParamField>
+
+<ParamField path="closeOnBackdropClick" type="boolean" default={true}>
+  Close the bottom sheet when clicking outside of it.
+</ParamField>
+
+<ParamField path="shouldFocusOnFirstElement" type="boolean" default={true}>
+  Automatically focus the first focusable element when opened.
+</ParamField>
+
+<ParamField path="shouldDisableScroll" type="boolean" default={true}>
+  Disable background scrolling when bottom sheet is open.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Content to display inside the bottom sheet.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name.
+</ParamField>
+
+## Custom Height
+
+```tsx
+<BottomSheet
+  isOpen={isOpen}
+  onClose={onClose}
+  height="70%"
+>
+  <p>Bottom sheet with custom height</p>
+</BottomSheet>
+```
+
+## Full Screen
+
+```tsx
+<BottomSheet
+  isOpen={isOpen}
+  onClose={onClose}
+  fullScreen={true}
+>
+  <h2>Full Screen Content</h2>
+  <p>This bottom sheet takes up the entire screen</p>
+</BottomSheet>
+```
+
+## Without Drag Handle
+
+```tsx
+<BottomSheet
+  isOpen={isOpen}
+  onClose={onClose}
+  showDragHandle={false}
+>
+  <p>No drag handle shown</p>
+</BottomSheet>
+```
+
+## Disable Pull to Close
+
+```tsx
+<BottomSheet
+  isOpen={isOpen}
+  onClose={onClose}
+  closeOnPullDown={false}
+>
+  <p>Must use close button to dismiss</p>
+  <Button onClick={onClose}>Close</Button>
+</BottomSheet>
+```
+
+## Action Sheet Example
+
+```tsx
+<BottomSheet
+  isOpen={isOpen}
+  onClose={onClose}
+  height="auto"
+>
+  <div style={{ padding: '20px' }}>
+    <Typography variant="heading-sb-h5">Choose an action</Typography>
+    <Button fullWidth variant="tertiary" onClick={handleEdit}>
+      Edit
+    </Button>
+    <Button fullWidth variant="tertiary" onClick={handleShare}>
+      Share
+    </Button>
+    <Button fullWidth variant="tertiary" color="error" onClick={handleDelete}>
+      Delete
+    </Button>
+  </div>
+</BottomSheet>
+```

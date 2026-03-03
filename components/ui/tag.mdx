@@ -1,0 +1,196 @@
+---
+title: Tag
+description: A removable tag component for displaying labels with a close button.
+---
+
+## Overview
+
+The Tag component displays a label with an optional close button, perfect for showing selected items, filters, or removable categories.
+
+## Basic Usage
+
+```tsx
+import Tag from '@grauity/ui/elements/Tag';
+
+function MyComponent() {
+  return (
+    <Tag 
+      onButtonClick={() => console.log('Tag removed')}
+    >
+      Selected Item
+    </Tag>
+  );
+}
+```
+
+## Props
+
+<ParamField path="children" type="React.ReactNode" required>
+  Content to display in the tag.
+</ParamField>
+
+<ParamField path="onButtonClick" type="function">
+  Callback function when the close button is clicked.
+  
+  **Signature:** `(e: React.MouseEvent<HTMLButtonElement>) => void`
+</ParamField>
+
+<ParamField path="buttonIcon" type="grauityIconName" default="close">
+  Icon to display in the close button.
+</ParamField>
+
+<ParamField path="icon" type="grauityIconName" default="null">
+  Icon to display at the start of the tag (always positioned left).
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Disable the close button.
+</ParamField>
+
+<ParamField path="shouldTruncateText" type="boolean" default={true}>
+  Truncate text with ellipsis if it overflows.
+</ParamField>
+
+<ParamField path="truncateLength" type="string | number" default="200px">
+  Maximum width before text truncation occurs.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name.
+</ParamField>
+
+## Basic Tag
+
+```tsx
+<Tag onButtonClick={() => handleRemove('tag1')}>
+  Technology
+</Tag>
+```
+
+## With Icon
+
+```tsx
+<Tag 
+  icon="star" 
+  onButtonClick={() => handleRemove('favorite')}
+>
+  Favorite
+</Tag>
+
+<Tag 
+  icon="user" 
+  onButtonClick={() => handleRemove('user')}
+>
+  John Doe
+</Tag>
+```
+
+## Disabled Close Button
+
+```tsx
+<Tag 
+  isDisabled={true}
+  onButtonClick={() => console.log('Cannot remove')}
+>
+  Permanent Tag
+</Tag>
+```
+
+## Custom Close Icon
+
+```tsx
+<Tag 
+  buttonIcon="x"
+  onButtonClick={() => handleRemove()}
+>
+  Custom Close Icon
+</Tag>
+```
+
+## Text Truncation
+
+```tsx
+<Tag 
+  shouldTruncateText={true}
+  truncateLength="150px"
+  onButtonClick={() => handleRemove()}
+>
+  This is a very long tag label that will be truncated with an ellipsis
+</Tag>
+
+<Tag 
+  shouldTruncateText={false}
+  onButtonClick={() => handleRemove()}
+>
+  This long text will not be truncated
+</Tag>
+```
+
+## Selected Items Example
+
+```tsx
+function SelectedItemsExample() {
+  const [selectedItems, setSelectedItems] = useState([
+    { id: 1, label: 'React', icon: 'code' },
+    { id: 2, label: 'TypeScript', icon: 'code' },
+    { id: 3, label: 'JavaScript', icon: 'code' },
+  ]);
+
+  const handleRemove = (id: number) => {
+    setSelectedItems(items => items.filter(item => item.id !== id));
+  };
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      {selectedItems.map(item => (
+        <Tag
+          key={item.id}
+          icon={item.icon}
+          onButtonClick={() => handleRemove(item.id)}
+        >
+          {item.label}
+        </Tag>
+      ))}
+    </div>
+  );
+}
+```
+
+## Filter Tags
+
+```tsx
+function FilterTags() {
+  const [filters, setFilters] = useState([
+    'Active',
+    'In Progress',
+    'Completed',
+  ]);
+
+  const removeFilter = (filter: string) => {
+    setFilters(filters => filters.filter(f => f !== filter));
+  };
+
+  return (
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+      {filters.map(filter => (
+        <Tag
+          key={filter}
+          onButtonClick={() => removeFilter(filter)}
+        >
+          {filter}
+        </Tag>
+      ))}
+    </div>
+  );
+}
+```
+
+## Read-only Tags
+
+For display-only tags without removal functionality, consider using the Chip component instead:
+
+```tsx
+import Chip from '@grauity/ui/elements/Chip';
+
+<Chip variant="brand">Read-only Label</Chip>
+```

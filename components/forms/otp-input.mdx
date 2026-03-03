@@ -1,0 +1,346 @@
+---
+title: OtpInput
+description: An OTP (One-Time Password) input field component with validation states
+---
+
+## Overview
+
+OtpInput is a specialized input component for entering one-time passwords or verification codes. It automatically handles input focus, paste functionality, and provides visual feedback for correct or incorrect codes.
+
+## Basic Usage
+
+```jsx
+import { OtpInputField } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [otp, setOtp] = useState('');
+
+  const handleChange = (e) => {
+    setOtp(e.target.value);
+  };
+
+  return (
+    <OtpInputField
+      name="otp"
+      label="Enter OTP"
+      length={6}
+      value={otp}
+      onChange={handleChange}
+    />
+  );
+}
+```
+
+## With Validation
+
+```jsx
+import { OtpInputField } from 'grauity';
+import { useState } from 'react';
+
+function OtpVerification() {
+  const [otp, setOtp] = useState('');
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [isWrong, setIsWrong] = useState(false);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setOtp(value);
+    setIsWrong(false);
+    setIsCorrect(false);
+  };
+
+  const handleBlur = (e) => {
+    const value = e.target.value;
+    if (value.length === 6) {
+      // Verify OTP
+      if (value === '123456') {
+        setIsCorrect(true);
+        setIsWrong(false);
+      } else {
+        setIsCorrect(false);
+        setIsWrong(true);
+      }
+    }
+  };
+
+  return (
+    <OtpInputField
+      name="otp"
+      label="Enter Verification Code"
+      length={6}
+      value={otp}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      isOtpCorrect={isCorrect}
+      isOtpWrong={isWrong}
+      errorMessage="Invalid code. Please try again."
+      successMessage="Code verified successfully!"
+    />
+  );
+}
+```
+
+## Different Lengths
+
+```jsx
+import { OtpInputField } from 'grauity';
+
+// 4-digit OTP
+<OtpInputField
+  name="otp4"
+  label="4-Digit Code"
+  length={4}
+  value={otp}
+  onChange={handleChange}
+/>
+
+// 6-digit OTP (default)
+<OtpInputField
+  name="otp6"
+  label="6-Digit Code"
+  length={6}
+  value={otp}
+  onChange={handleChange}
+/>
+
+// 8-digit OTP
+<OtpInputField
+  name="otp8"
+  label="8-Digit Code"
+  length={8}
+  value={otp}
+  onChange={handleChange}
+/>
+```
+
+## Complete Example with Auto-Submit
+
+```jsx
+import { OtpInputField } from 'grauity';
+import { useState, useEffect } from 'react';
+
+function AutoSubmitOtp() {
+  const [otp, setOtp] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [isWrong, setIsWrong] = useState(false);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setOtp(value);
+    setIsWrong(false);
+  };
+
+  useEffect(() => {
+    if (otp.length === 6) {
+      verifyOtp(otp);
+    }
+  }, [otp]);
+
+  const verifyOtp = async (code) => {
+    setIsVerifying(true);
+    try {
+      const response = await fetch('/api/verify-otp', {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+      });
+      const data = await response.json();
+      
+      if (data.valid) {
+        setIsCorrect(true);
+        // Redirect or proceed
+      } else {
+        setIsWrong(true);
+        setOtp(''); // Clear on error
+      }
+    } catch (error) {
+      setIsWrong(true);
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  return (
+    <div>
+      <OtpInputField
+        name="otp"
+        label="Enter Verification Code"
+        length={6}
+        value={otp}
+        onChange={handleChange}
+        isOtpCorrect={isCorrect}
+        isOtpWrong={isWrong}
+        isDisabled={isVerifying}
+        errorMessage="Invalid code. Please try again."
+        successMessage="Code verified successfully!"
+      />
+      {isVerifying && <p>Verifying...</p>}
+    </div>
+  );
+}
+```
+
+## Props
+
+<ParamField path="name" type="string" required>
+  The name of the OTP input field.
+</ParamField>
+
+<ParamField path="onChange" type="function" required>
+  Callback fired when the OTP value changes.
+  
+  ```tsx
+  (event: { target: { name: string; value: string } }) => void
+  ```
+</ParamField>
+
+<ParamField path="value" type="string" default="''">
+  The current value of the OTP input. Should be a string of digits.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label displayed above the OTP input fields.
+</ParamField>
+
+<ParamField path="length" type="number" default={4}>
+  The number of OTP input boxes. Common values are 4, 6, or 8.
+</ParamField>
+
+<ParamField path="isOtpCorrect" type="boolean" default={false}>
+  Whether the entered OTP is correct. Shows success message and styling.
+</ParamField>
+
+<ParamField path="isOtpWrong" type="boolean" default={false}>
+  Whether the entered OTP is incorrect. Shows error message and styling.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether the OTP input is disabled (e.g., during verification).
+</ParamField>
+
+<ParamField path="errorMessage" type="string" default="'Wrong OTP. Please try again'">
+  Error message displayed when `isOtpWrong` is true.
+</ParamField>
+
+<ParamField path="successMessage" type="string" default="'OTP is correct'">
+  Success message displayed when `isOtpCorrect` is true.
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  Color theme for the input fields. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="onBlur" type="function">
+  Callback fired when the entire OTP input field loses focus.
+  
+  ```tsx
+  (event: { target: { name: string; value: string } }) => void
+  ```
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Inline styles applied to individual input boxes.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name for the container.
+</ParamField>
+
+## Features
+
+### Auto-Focus
+When a digit is entered, focus automatically moves to the next input box.
+
+### Paste Support
+Pasting a complete code automatically distributes the digits across all input boxes.
+
+### Keyboard Navigation
+- **Arrow Left/Right**: Move between input boxes
+- **Backspace**: Delete current digit and move to previous box if empty
+- **Arrow Up/Down**: Disabled to prevent accidental changes
+- **Tab**: Standard tab navigation
+
+### Input Validation
+Only numeric input is accepted. Non-numeric characters are automatically rejected.
+
+## TypeScript
+
+```tsx
+import { OtpInputFieldProps } from 'grauity';
+
+type OtpFieldColors = 'brand' | 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+```
+
+## Accessibility
+
+- Each input box is properly labeled for screen readers
+- Focus management for keyboard navigation
+- ARIA attributes for validation states
+- Error and success messages are announced
+- Numeric input mode on mobile devices
+
+<Note>
+  The component automatically sets `inputMode="numeric"` to show the numeric keyboard on mobile devices.
+</Note>
+
+## Best Practices
+
+1. **Clear on error**: Reset the OTP field after failed verification
+2. **Auto-submit**: Automatically verify when all digits are entered
+3. **Show feedback**: Provide immediate visual feedback on verification
+4. **Resend option**: Include a way to request a new code
+5. **Rate limiting**: Implement rate limiting on the backend
+6. **Expiration**: Set a reasonable expiration time for codes
+7. **Length**: Use 6 digits as the standard (good balance of security and UX)
+
+## Common Patterns
+
+### With Resend Timer
+
+```jsx
+function OtpWithResend() {
+  const [otp, setOtp] = useState('');
+  const [canResend, setCanResend] = useState(false);
+  const [timer, setTimer] = useState(60);
+
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => setTimer(t => t - 1), 1000);
+      return () => clearInterval(interval);
+    } else {
+      setCanResend(true);
+    }
+  }, [timer]);
+
+  const handleResend = async () => {
+    await sendNewCode();
+    setTimer(60);
+    setCanResend(false);
+    setOtp('');
+  };
+
+  return (
+    <div>
+      <OtpInputField
+        name="otp"
+        label="Enter Code"
+        length={6}
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+      />
+      {canResend ? (
+        <button onClick={handleResend}>Resend Code</button>
+      ) : (
+        <p>Resend code in {timer}s</p>
+      )}
+    </div>
+  );
+}
+```
+
+## Source
+
+View the source code on GitHub:
+- [OtpInputField.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/OtpInputField/OtpInputField.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/OtpInputField/types.ts:1)

@@ -1,0 +1,622 @@
+---
+title: Design Tokens
+description: Comprehensive guide to Grauity's design token system including colors, spacing, typography, and more
+---
+
+# Design Tokens
+
+Design tokens are the foundational design decisions of Grauity, expressed as variables. They ensure consistency across your application and make theming and customization straightforward.
+
+## Overview
+
+Grauity's design tokens are defined as CSS variables in the `:root` scope (see `ui/themes/GlobalStyle.ts:207`) and are available throughout your application. These tokens are theme-agnostic foundation values, with theme-specific colors applied via the `.grauity-theme-light` and `.grauity-theme-dark` classes.
+
+<Note>
+For detailed color, spacing, typography, and other token values, visit the **Design Tokens** tab in the main navigation.
+</Note>
+
+## Token Categories
+
+Grauity provides design tokens across several categories:
+
+<CardGroup cols={2}>
+  <Card title="Colors" icon="palette" href="#colors">
+    Foundation colors, semantic colors, and theme-aware color tokens
+  </Card>
+  <Card title="Spacing" icon="arrows-left-right" href="#spacing">
+    Consistent spacing values from 0px to 160px
+  </Card>
+  <Card title="Typography" icon="font" href="#typography">
+    Font sizes, weights, and families
+  </Card>
+  <Card title="Corner Radius" icon="square" href="#corner-radius">
+    Border radius values for consistent rounded corners
+  </Card>
+  <Card title="Shadows & Blur" icon="sparkles" href="#backdrop-blur">
+    Backdrop blur and shadow effects
+  </Card>
+  <Card title="Z-Index" icon="layer-group" href="#z-index">
+    Stacking order for overlays, modals, and popovers
+  </Card>
+</CardGroup>
+
+## Colors
+
+Grauity's color system is built on foundation colors with semantic color tokens that adapt to light and dark themes.
+
+### Foundation Colors
+
+Foundation colors are theme-agnostic base colors available in both themes:
+
+<Tabs>
+  <Tab title="Neutral">
+    ```css
+    --neutral-0: #FFFFFF
+    --neutral-100: #F6F7F9
+    --neutral-200: #EDEFF3
+    --neutral-300: #E1E5EA
+    --neutral-400: #C9CFD9
+    --neutral-500: #B2B9C7
+    --neutral-600: #8C95A6
+    --neutral-700: #5B6271
+    --neutral-750: #30363D
+    --neutral-800: #23282F
+    --neutral-900: #16191D
+    --neutral-1000: #0B0C0E
+    ```
+  </Tab>
+  <Tab title="Brand">
+    ```css
+    --brand-0: #E5F1FF
+    --brand-100: #C2DDFF
+    --brand-200: #94C4FF
+    --brand-300: #61A8FF
+    --brand-400: #2989FF
+    --brand-500: #0673F9
+    --brand-600: #005ED1
+    --brand-700: #004599
+    --brand-800: #003270
+    --brand-900: #002452
+    ```
+  </Tab>
+  <Tab title="Success">
+    ```css
+    --success-0: #D9FCED
+    --success-100: #ACF7D3
+    --success-200: #7EE7B8
+    --success-300: #50CE99
+    --success-400: #13B97C
+    --success-500: #009965
+    --success-600: #007A51
+    --success-700: #005C3D
+    --success-800: #003D29
+    --success-900: #002D1E
+    ```
+  </Tab>
+  <Tab title="Error">
+    ```css
+    --error-0: #FFE5E7
+    --error-100: #FBBBBF
+    --error-200: #FA9499
+    --error-300: #F8636B
+    --error-400: #EE3F44
+    --error-500: #D22D3A
+    --error-600: #A01B22
+    --error-700: #7E1219
+    --error-800: #63080D
+    --error-900: #4A040A
+    ```
+  </Tab>
+  <Tab title="Warning">
+    ```css
+    --warning-0: #FFF1E5
+    --warning-100: #FFD2BA
+    --warning-200: #FFB286
+    --warning-300: #FD9254
+    --warning-400: #F37216
+    --warning-500: #DE5A02
+    --warning-600: #A83E00
+    --warning-700: #802D00
+    --warning-800: #5C1F00
+    --warning-900: #441704
+    ```
+  </Tab>
+  <Tab title="Other">
+    ```css
+    /* Yellow */
+    --yellow-0 through --yellow-900
+    
+    /* Purple */
+    --purple-0 through --purple-900
+    
+    /* Alpha values */
+    --alpha-20: rgba(255, 255, 255, 0.20)
+    --alpha-12: rgba(255, 255, 255, 0.12)
+    --alpha-80: rgba(255, 255, 255, 0.80)
+    --alpha-overlay: rgba(22, 25, 29, 0.80)
+    --alpha-hover: var(--alpha-20)
+    --alpha-pressed: var(--alpha-12)
+    ```
+  </Tab>
+</Tabs>
+
+### Semantic Color Tokens
+
+Semantic tokens automatically adapt to the active theme (`.grauity-theme-light` or `.grauity-theme-dark`):
+
+<Accordion title="Background Colors">
+  ```css
+  /* Subtle backgrounds */
+  --bg-subtle-primary-default
+  --bg-subtle-primary-hover
+  --bg-subtle-primary-disabled
+  --bg-subtle-brand-default
+  --bg-subtle-success-default
+  --bg-subtle-error-default
+  --bg-subtle-warning-default
+  
+  /* Emphasis backgrounds */
+  --bg-emphasis-brand-default
+  --bg-emphasis-brand-hover
+  --bg-emphasis-brand-disabled
+  --bg-emphasis-success-default
+  --bg-emphasis-error-default
+  
+  /* Legacy backgrounds (deprecated) */
+  --bg-primary, --bg-secondary, --bg-tertiary
+  --bg-brand, --bg-success, --bg-error, --bg-warning
+  --bg-action-brand, --bg-action-success, etc.
+  ```
+</Accordion>
+
+<Accordion title="Text Colors">
+  ```css
+  /* Emphasis text */
+  --text-emphasis-primary-default
+  --text-emphasis-primary-disabled
+  --text-emphasis-secondary-default
+  --text-emphasis-white-default
+  --text-emphasis-brand-default
+  --text-emphasis-success-default
+  --text-emphasis-error-default
+  
+  /* Legacy text (deprecated) */
+  --text-primary, --text-secondary, --text-disabled
+  --text-brand, --text-success, --text-error
+  ```
+</Accordion>
+
+<Accordion title="Border Colors">
+  ```css
+  /* Subtle borders */
+  --border-subtle-primary-default
+  --border-subtle-primary-disabled
+  --border-subtle-brand-default
+  --border-subtle-success-default
+  --border-subtle-error-default
+  
+  /* Moderate borders */
+  --border-moderate-primary-default
+  --border-moderate-brand-default
+  
+  /* Emphasis borders */
+  --border-emphasis-brand-default
+  --border-emphasis-success-default
+  --border-emphasis-error-default
+  
+  /* Legacy borders (deprecated) */
+  --border, --border-brand, --border-success
+  ```
+</Accordion>
+
+<Note>
+For a complete reference of all color tokens and their values in both themes, visit the [**Colors**](/tokens/colors) section.
+</Note>
+
+## Spacing
+
+Spacing tokens provide consistent spacing values across your application:
+
+```css
+--spacing-0px: 0px
+--spacing-1px: 1px
+--spacing-2px: 2px
+--spacing-3px: 3px
+--spacing-4px: 4px
+--spacing-5px: 5px
+--spacing-6px: 6px
+--spacing-7px: 7px
+--spacing-8px: 8px
+--spacing-9px: 9px
+--spacing-10px: 10px
+--spacing-12px: 12px
+--spacing-14px: 14px
+--spacing-16px: 16px
+--spacing-18px: 18px
+--spacing-20px: 20px
+--spacing-24px: 24px
+--spacing-28px: 28px
+--spacing-32px: 32px
+--spacing-36px: 36px
+--spacing-40px: 40px
+--spacing-48px: 48px
+--spacing-56px: 56px
+--spacing-64px: 64px
+--spacing-72px: 72px
+--spacing-80px: 80px
+--spacing-128px: 128px
+--spacing-160px: 160px
+```
+
+### Usage Examples
+
+<CodeGroup>
+
+```css Using in CSS
+.my-component {
+  padding: var(--spacing-16px);
+  margin-bottom: var(--spacing-24px);
+  gap: var(--spacing-8px);
+}
+```
+
+```tsx Inline Styles
+function MyComponent() {
+  return (
+    <div style={{ padding: 'var(--spacing-16px)' }}>
+      <h1 style={{ marginBottom: 'var(--spacing-12px)' }}>Title</h1>
+      <p>Content</p>
+    </div>
+  );
+}
+```
+
+```tsx Styled Components
+import styled from 'styled-components';
+
+const Container = styled.div`
+  padding: var(--spacing-24px);
+  
+  > * + * {
+    margin-top: var(--spacing-16px);
+  }
+`;
+```
+
+</CodeGroup>
+
+<Info>
+See the [**Spacing**](/tokens/spacing) section for a complete reference of all spacing values.
+</Info>
+
+## Typography
+
+### Font Families
+
+```css
+--font-family: "Mona Sans", sans-serif
+--font-family-code: "Fira Code", monospace
+```
+
+### Font Sizes
+
+```css
+--font-size-2px: 2px
+--font-size-4px: 4px
+--font-size-6px: 6px
+--font-size-8px: 8px
+--font-size-10px: 10px
+--font-size-11px: 11px
+--font-size-12px: 12px
+--font-size-14px: 14px
+--font-size-16px: 16px
+--font-size-18px: 18px
+--font-size-20px: 20px
+--font-size-24px: 24px
+--font-size-28px: 28px
+--font-size-32px: 32px
+--font-size-36px: 36px
+--font-size-40px: 40px
+--font-size-48px: 48px
+--font-size-56px: 56px
+--font-size-64px: 64px
+--font-size-72px: 72px
+--font-size-80px: 80px
+--font-size-96px: 96px
+```
+
+### Font Weights
+
+```css
+--font-weight-100: 100
+--font-weight-200: 200
+--font-weight-300: 300
+--font-weight-400: 400  /* Regular */
+--font-weight-450: 450
+--font-weight-500: 500
+--font-weight-550: 550
+--font-weight-600: 600
+--font-weight-650: 650
+--font-weight-700: 700  /* Bold */
+--font-weight-800: 800
+--font-weight-900: 900
+
+/* Semantic aliases */
+--font-weight-medium: var(--font-weight-450)
+--font-weight-semibold: var(--font-weight-550)
+--font-weight-bold: var(--font-weight-650)
+```
+
+<Info>
+Explore font sizes and weights in the [**Typography**](/tokens/typography) section.
+</Info>
+
+## Corner Radius
+
+Consistent border radius values for rounded corners:
+
+```css
+--corner-radius-0px: 0px
+--corner-radius-2px: 2px
+--corner-radius-4px: 4px
+--corner-radius-8px: 8px
+--corner-radius-12px: 12px
+--corner-radius-16px: 16px
+--corner-radius-20px: 20px
+--corner-radius-24px: 24px
+--corner-radius-32px: 32px
+--corner-radius-40px: 40px
+--corner-radius-50percent: 50%
+--corner-radius-100percent: 100%
+```
+
+<CodeGroup>
+
+```css Rounded Cards
+.card {
+  border-radius: var(--corner-radius-12px);
+}
+
+.card-large {
+  border-radius: var(--corner-radius-16px);
+}
+```
+
+```css Circular Elements
+.avatar {
+  border-radius: var(--corner-radius-50percent);
+}
+
+.rounded-button {
+  border-radius: var(--corner-radius-100percent);
+}
+```
+
+</CodeGroup>
+
+<Info>
+View corner radius tokens in the [**Corner Radius**](/tokens/corner-radius) section.
+</Info>
+
+## Backdrop Blur
+
+Blur effects for glassmorphism and overlay effects:
+
+```css
+--backdrop-blur-0: blur(0px)
+--backdrop-blur-4px: blur(4px)
+--backdrop-blur-8px: blur(8px)
+--backdrop-blur-12px: blur(12px)
+--backdrop-blur-16px: blur(16px)
+--backdrop-blur-20px: blur(20px)
+
+/* Default backdrop blur */
+--backdrop-blur: var(--backdrop-blur-8px)
+```
+
+### Usage Example
+
+```css
+.glass-panel {
+  background: var(--alpha-20);
+  backdrop-filter: var(--backdrop-blur);
+}
+
+.frosted-overlay {
+  backdrop-filter: var(--backdrop-blur-16px);
+}
+```
+
+## Z-Index
+
+Z-index tokens ensure proper stacking order for overlays, modals, and other layered UI elements:
+
+```css
+--z-index-tooltip: 3000
+--z-index-overlay-hoc: 2000
+--z-index-dropdown: 1400
+--z-index-bottomsheet: 1300
+--z-index-bottomsheet-overlay: 1250
+--z-index-popover: 1200
+--z-index-popover-overlay: 1150
+--z-index-modal: 1100
+--z-index-modal-overlay: 1050
+--z-index-drawer: 1000
+--z-index-drawer-overlay: 950
+--z-index-floating-action-button: 500
+```
+
+### Stacking Order
+
+<Steps>
+  <Step title="Base Layer (0-499)">
+    Normal document flow and standard UI elements
+  </Step>
+  <Step title="Floating Elements (500-999)">
+    Floating action buttons and persistent UI
+  </Step>
+  <Step title="Overlays (1000-1999)">
+    Drawers, modals, popovers, and their overlays
+  </Step>
+  <Step title="Tooltips (3000+)">
+    Tooltips appear above all other elements
+  </Step>
+</Steps>
+
+## Using Tokens in Your Components
+
+### CSS/SCSS
+
+```css
+.my-component {
+  /* Colors */
+  background: var(--bg-subtle-primary-default);
+  color: var(--text-emphasis-primary-default);
+  border: 1px solid var(--border-subtle-primary-default);
+  
+  /* Spacing */
+  padding: var(--spacing-16px);
+  margin-bottom: var(--spacing-24px);
+  gap: var(--spacing-8px);
+  
+  /* Typography */
+  font-family: var(--font-family);
+  font-size: var(--font-size-16px);
+  font-weight: var(--font-weight-medium);
+  
+  /* Corner radius */
+  border-radius: var(--corner-radius-8px);
+  
+  /* Z-index */
+  z-index: var(--z-index-dropdown);
+}
+```
+
+### Styled Components
+
+```tsx
+import styled from 'styled-components';
+
+const Card = styled.div`
+  background: var(--bg-subtle-primary-default);
+  border: 1px solid var(--border-subtle-primary-default);
+  border-radius: var(--corner-radius-12px);
+  padding: var(--spacing-24px);
+  
+  &:hover {
+    background: var(--bg-subtle-primary-hover);
+  }
+`;
+
+const Title = styled.h2`
+  color: var(--text-emphasis-primary-default);
+  font-size: var(--font-size-24px);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-16px);
+`;
+```
+
+### Inline Styles
+
+```tsx
+function MyComponent() {
+  return (
+    <div
+      style={{
+        padding: 'var(--spacing-16px)',
+        backgroundColor: 'var(--bg-subtle-brand-default)',
+        borderRadius: 'var(--corner-radius-8px)',
+      }}
+    >
+      <h1
+        style={{
+          fontSize: 'var(--font-size-24px)',
+          fontWeight: 'var(--font-weight-semibold)',
+          color: 'var(--text-emphasis-brand-default)',
+        }}
+      >
+        Title
+      </h1>
+    </div>
+  );
+}
+```
+
+## Accessing Tokens Programmatically
+
+You can access design token values in JavaScript:
+
+```tsx
+// Get token value
+const spacing16 = getComputedStyle(document.documentElement)
+  .getPropertyValue('--spacing-16px');
+
+// Set custom token
+document.documentElement.style.setProperty(
+  '--my-custom-color',
+  '#FF5733'
+);
+
+// Use in styled components
+import styled from 'styled-components';
+
+const Box = styled.div<{ spacing?: string }>`
+  padding: ${props => props.spacing || 'var(--spacing-16px)'};
+`;
+```
+
+## Atoms Stories Reference
+
+For interactive visualizations of design tokens, explore the Grauity Storybook atoms:
+
+- **Colors**: `stories/atoms/Colors/index.stories.tsx`
+- **Spacing**: `stories/atoms/Spacing/index.stories.tsx`
+- **Typography**: `stories/atoms/Font/FontSize.stories.tsx` and `FontWeight.stories.tsx`
+- **Corner Radius**: `stories/atoms/CornerRadius/index.stories.tsx`
+- **Foundation Colors**: `stories/atoms/Colors/FoundationColors.stories.tsx`
+
+These stories provide interactive tables and visual representations of all token values.
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Always Use Tokens" icon="bookmark">
+    Use design tokens instead of hardcoded values for consistency and easy theme switching.
+  </Card>
+  <Card title="Semantic Over Foundation" icon="lightbulb">
+    Prefer semantic tokens (e.g., `--bg-subtle-primary-default`) over foundation colors for theme compatibility.
+  </Card>
+  <Card title="Spacing Scale" icon="ruler-horizontal">
+    Stick to the spacing scale (4px, 8px, 12px, 16px, etc.) for visual harmony.
+  </Card>
+  <Card title="Z-Index Layers" icon="layer-group">
+    Use the predefined z-index tokens to maintain proper stacking order.
+  </Card>
+</CardGroup>
+
+<Warning>
+Avoid creating custom CSS variables that conflict with Grauity's token naming. Use a prefix for custom tokens (e.g., `--my-app-custom-color`).
+</Warning>
+
+## Legacy Tokens
+
+Some legacy color tokens are deprecated but still supported for backward compatibility:
+
+```css
+/* Deprecated - use semantic tokens instead */
+--text-primary  /* Use --text-emphasis-primary-default */
+--bg-primary    /* Use --bg-subtle-primary-default */
+--border        /* Use --border-subtle-primary-default */
+```
+
+<Info>
+When working with existing code, gradually migrate from legacy tokens to the new semantic token system for better theme support.
+</Info>
+
+## Related
+
+- [Theming](/fundamentals/theming) - Learn about light and dark theme implementation
+- [Colors](/tokens/colors) - Detailed color token documentation
+- [Typography](/tokens/typography) - Font size and weight tokens
+- [Spacing](/tokens/spacing) - Spacing scale reference
+- [Corner Radius](/tokens/corner-radius) - Border radius tokens

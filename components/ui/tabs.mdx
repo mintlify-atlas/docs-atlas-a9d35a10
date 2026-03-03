@@ -1,0 +1,141 @@
+---
+title: Tabs
+description: A tab navigation component for switching between different content views.
+---
+
+## Overview
+
+The Tabs component provides a simple tab interface for navigating between different content sections.
+
+## Basic Usage
+
+```tsx
+import Tabs from '@grauity/ui/elements/Tabs';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [activeTab, setActiveTab] = useState(0);
+
+  return (
+    <>
+      <Tabs
+        tabItems={['Weekly', 'Monthly', 'Yearly']}
+        initialActiveTab={activeTab}
+        onTabFocusChange={(index) => setActiveTab(index)}
+      />
+      
+      {activeTab === 0 && <div>Weekly content</div>}
+      {activeTab === 1 && <div>Monthly content</div>}
+      {activeTab === 2 && <div>Yearly content</div>}
+    </>
+  );
+}
+```
+
+## Props
+
+<ParamField path="tabItems" type="React.ReactNode[]" required>
+  Array of tab items to be rendered. Each item can be any React node (string, element, etc.).
+</ParamField>
+
+<ParamField path="onTabFocusChange" type="function">
+  Callback function called when the focused tab changes.
+  
+  **Signature:** `(tabIndex: number) => void`
+</ParamField>
+
+<ParamField path="initialActiveTab" type="number" default={0}>
+  Index of the tab that should be initially focused.
+</ParamField>
+
+<ParamField path="backgroundColor" type="string">
+  Background color for the tab container.
+</ParamField>
+
+<ParamField path="focusBackgroundColor" type="string">
+  Background color for the active/focused tab.
+</ParamField>
+
+<ParamField path="focusColor" type="string">
+  Text color for the active/focused tab.
+</ParamField>
+
+<ParamField path="color" type="string">
+  Default text color for inactive tabs.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name for styling.
+</ParamField>
+
+## String Tabs
+
+```tsx
+<Tabs
+  tabItems={['Tab 1', 'Tab 2', 'Tab 3']}
+  onTabFocusChange={(index) => console.log('Tab changed:', index)}
+/>
+```
+
+## With Custom Components
+
+```tsx
+<Tabs
+  tabItems={[
+    <span><Icon name="calendar" /> Weekly</span>,
+    <span><Icon name="chart" /> Monthly</span>,
+  ]}
+  onTabFocusChange={(index) => handleTabChange(index)}
+/>
+```
+
+## Custom Colors
+
+```tsx
+<Tabs
+  tabItems={['Design', 'Development', 'Marketing']}
+  backgroundColor="#f5f5f5"
+  focusBackgroundColor="#1976d2"
+  focusColor="#ffffff"
+  color="#666666"
+/>
+```
+
+## Controlled Tabs
+
+```tsx
+function ControlledTabs() {
+  const [currentTab, setCurrentTab] = useState(0);
+
+  return (
+    <div>
+      <Tabs
+        tabItems={['Profile', 'Settings', 'Notifications']}
+        initialActiveTab={currentTab}
+        onTabFocusChange={setCurrentTab}
+      />
+      
+      <Button onClick={() => setCurrentTab(1)}>
+        Go to Settings
+      </Button>
+      
+      <div>
+        {currentTab === 0 && <ProfileContent />}
+        {currentTab === 1 && <SettingsContent />}
+        {currentTab === 2 && <NotificationsContent />}
+      </div>
+    </div>
+  );
+}
+```
+
+## Styled Container
+
+```tsx
+<div style={{ width: '400px' }}>
+  <Tabs
+    tabItems={['Option A', 'Option B', 'Option C']}
+    className="custom-tabs"
+  />
+</div>
+```

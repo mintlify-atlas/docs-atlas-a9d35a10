@@ -1,0 +1,216 @@
+---
+title: Pill
+description: An interactive pill button component for filters, selections, and toggleable options.
+---
+
+## Overview
+
+The Pill component is an interactive button-like element ideal for filters, tags, or selectable options with support for icons, counts, and various states.
+
+## Basic Usage
+
+```tsx
+import Pill from '@grauity/ui/elements/Pill';
+
+function MyComponent() {
+  return (
+    <Pill 
+      onClick={() => console.log('Clicked')}
+    >
+      Filter Option
+    </Pill>
+  );
+}
+```
+
+## Props
+
+<ParamField path="children" type="React.ReactNode">
+  Label content for the pill.
+</ParamField>
+
+<ParamField path="count" type="number">
+  Optional count to display in the pill.
+</ParamField>
+
+<ParamField path="leftIconName" type="grauityIconName" default="null">
+  Icon to display on the left side.
+</ParamField>
+
+<ParamField path="rightIconName" type="grauityIconName">
+  Icon to display on the right side.
+</ParamField>
+
+<ParamField path="isActive" type="boolean" default={false}>
+  Highlights the pill in an active state.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Disables the pill and applies disabled styles.
+</ParamField>
+
+<ParamField path="isReadOnly" type="boolean" default={false}>
+  Makes the pill read-only with appropriate styles.
+</ParamField>
+
+<ParamField path="size" type="string" default="medium">
+  Size of the pill.
+  
+  **Available choices:** `small`, `medium`, `large`
+</ParamField>
+
+<ParamField path="color" type="string" default="brand">
+  Color theme when the pill is active.
+  
+  **Available choices:** `brand`, `error`, `success`, `warning`, `yellow`, `purple`
+</ParamField>
+
+<ParamField path="onClick" type="function">
+  Callback function when the pill is clicked.
+  
+  **Signature:** `(event: React.MouseEvent<HTMLButtonElement>) => void`
+</ParamField>
+
+<ParamField path="ariaLabel" type="string">
+  Aria label for accessibility.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Additional inline styles.
+</ParamField>
+
+## Active State
+
+```tsx
+<Pill isActive={true} color="brand">
+  Active Filter
+</Pill>
+
+<Pill isActive={false}>
+  Inactive Filter
+</Pill>
+```
+
+## With Count
+
+```tsx
+<Pill count={5}>
+  Category
+</Pill>
+
+<Pill isActive={true} count={12} color="brand">
+  Selected Items
+</Pill>
+```
+
+## With Icons
+
+```tsx
+<Pill leftIconName="filter">
+  Filter
+</Pill>
+
+<Pill leftIconName="star" rightIconName="chevron-down">
+  Favorites
+</Pill>
+
+<Pill isActive={true} leftIconName="check" color="success">
+  Completed
+</Pill>
+```
+
+## Sizes
+
+```tsx
+<Pill size="small">Small</Pill>
+<Pill size="medium">Medium</Pill>
+<Pill size="large">Large</Pill>
+```
+
+## Colors
+
+```tsx
+<Pill isActive={true} color="brand">Brand</Pill>
+<Pill isActive={true} color="success">Success</Pill>
+<Pill isActive={true} color="error">Error</Pill>
+<Pill isActive={true} color="warning">Warning</Pill>
+<Pill isActive={true} color="yellow">Yellow</Pill>
+<Pill isActive={true} color="purple">Purple</Pill>
+```
+
+## Disabled State
+
+```tsx
+<Pill isDisabled={true}>
+  Disabled
+</Pill>
+
+<Pill isDisabled={true} count={3}>
+  Disabled with Count
+</Pill>
+```
+
+## Read-Only State
+
+```tsx
+<Pill isReadOnly={true}>
+  Read Only
+</Pill>
+```
+
+## Filter Pills Example
+
+```tsx
+function FilterExample() {
+  const [filters, setFilters] = useState({
+    active: false,
+    pending: false,
+    completed: false,
+  });
+
+  return (
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Pill
+        isActive={filters.active}
+        onClick={() => setFilters({ ...filters, active: !filters.active })}
+        leftIconName="check-circle"
+        count={15}
+      >
+        Active
+      </Pill>
+      
+      <Pill
+        isActive={filters.pending}
+        onClick={() => setFilters({ ...filters, pending: !filters.pending })}
+        leftIconName="clock"
+        count={8}
+      >
+        Pending
+      </Pill>
+      
+      <Pill
+        isActive={filters.completed}
+        onClick={() => setFilters({ ...filters, completed: !filters.completed })}
+        leftIconName="check"
+        count={42}
+        color="success"
+      >
+        Completed
+      </Pill>
+    </div>
+  );
+}
+```
+
+## Constants
+
+```tsx
+import { PILL_SIZES_ENUM } from '@grauity/ui/elements/Pill';
+
+// Usage
+<Pill size={PILL_SIZES_ENUM.MEDIUM} />
+```

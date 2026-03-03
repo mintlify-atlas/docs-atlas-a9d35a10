@@ -1,0 +1,248 @@
+---
+title: RadioButton
+description: A radio button component for single selection from multiple options
+---
+
+## Overview
+
+RadioButton is a form input component that allows users to select one option from a set of mutually exclusive choices. Radio buttons should be used in groups where only one option can be selected at a time.
+
+## Basic Usage
+
+```jsx
+import { RadioButton } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [selected, setSelected] = useState('option1');
+
+  return (
+    <div>
+      <RadioButton
+        name="choice"
+        value="option1"
+        label="Option 1"
+        checked={selected === 'option1'}
+        onChange={(e) => setSelected(e.target.value)}
+      />
+      <RadioButton
+        name="choice"
+        value="option2"
+        label="Option 2"
+        checked={selected === 'option2'}
+        onChange={(e) => setSelected(e.target.value)}
+      />
+      <RadioButton
+        name="choice"
+        value="option3"
+        label="Option 3"
+        checked={selected === 'option3'}
+        onChange={(e) => setSelected(e.target.value)}
+      />
+    </div>
+  );
+}
+```
+
+<Note>
+  All radio buttons in a group should share the same `name` prop to ensure mutual exclusivity.
+</Note>
+
+## With Validation
+
+```jsx
+import { RadioButton } from 'grauity';
+import { useState } from 'react';
+
+function ValidatedRadioGroup() {
+  const [plan, setPlan] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = () => {
+    if (!plan) {
+      setError('Please select a plan');
+    } else {
+      setError('');
+      // Submit form
+    }
+  };
+
+  return (
+    <>
+      <div>
+        <RadioButton
+          name="plan"
+          value="free"
+          label="Free Plan"
+          checked={plan === 'free'}
+          onChange={(e) => {
+            setPlan(e.target.value);
+            setError('');
+          }}
+          helpMessage="Basic features included"
+        />
+        <RadioButton
+          name="plan"
+          value="pro"
+          label="Pro Plan"
+          checked={plan === 'pro'}
+          onChange={(e) => {
+            setPlan(e.target.value);
+            setError('');
+          }}
+          helpMessage="All features + priority support"
+        />
+        <RadioButton
+          name="plan"
+          value="enterprise"
+          label="Enterprise Plan"
+          checked={plan === 'enterprise'}
+          onChange={(e) => {
+            setPlan(e.target.value);
+            setError('');
+          }}
+          helpMessage="Custom solutions"
+          errorMessage={error}
+        />
+      </div>
+      <button onClick={handleSubmit}>Continue</button>
+    </>
+  );
+}
+```
+
+## Sizes
+
+RadioButton comes in three sizes: `small`, `medium` (default), and `large`.
+
+```jsx
+<RadioButton name="size" value="small" label="Small" size="small" />
+<RadioButton name="size" value="medium" label="Medium" size="medium" />
+<RadioButton name="size" value="large" label="Large" size="large" />
+```
+
+## Colors
+
+```jsx
+<RadioButton name="color" value="brand" label="Brand color" color="brand" checked />
+<RadioButton name="color" value="success" label="Success color" color="success" checked />
+<RadioButton name="color" value="danger" label="Danger color" color="danger" checked />
+<RadioButton name="color" value="warning" label="Warning color" color="warning" checked />
+```
+
+## Disabled State
+
+```jsx
+<RadioButton
+  name="disabled"
+  value="option1"
+  label="Disabled option"
+  isDisabled
+/>
+<RadioButton
+  name="disabled"
+  value="option2"
+  label="Disabled and checked"
+  checked
+  isDisabled
+/>
+```
+
+## Props
+
+<ParamField path="name" type="string" required>
+  The name of the radio button group. All radio buttons in a group must share the same name.
+</ParamField>
+
+<ParamField path="value" type="string | number" required>
+  The value of this radio button option.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label text displayed next to the radio button.
+</ParamField>
+
+<ParamField path="checked" type="boolean" default={false}>
+  Whether this radio button is selected.
+</ParamField>
+
+<ParamField path="size" type="string" default="'medium'">
+  The size of the radio button. Options: `'small'` | `'medium'` | `'large'`
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  The color theme for the radio button. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="isRequired" type="boolean" default={false}>
+  Whether the radio button group is required. Displays a required indicator.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether this radio button is disabled.
+</ParamField>
+
+<ParamField path="errorMessage" type="string">
+  Error message to display below the radio button.
+</ParamField>
+
+<ParamField path="helpMessage" type="string">
+  Helper text displayed below the radio button.
+</ParamField>
+
+<ParamField path="state" type="string" default="'default'">
+  **Deprecated:** Use `color` prop instead. Options: `'default'` | `'error'` | `'success'`
+</ParamField>
+
+<ParamField path="onChange" type="function">
+  Callback fired when the radio button is selected.
+  
+  ```tsx
+  (event: React.ChangeEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name for the container.
+</ParamField>
+
+## TypeScript
+
+```tsx
+import { RadioButtonProps } from 'grauity';
+
+type RadioButtonSize = 'small' | 'medium' | 'large';
+type RadioButtonColors = 'brand' | 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+```
+
+## Accessibility
+
+- Uses semantic `<input type="radio">` element
+- Properly associated `<label>` element
+- Keyboard accessible (Tab to navigate between groups, Arrow keys to select within a group)
+- Screen reader announces the selected state
+- Required state is properly conveyed
+
+<Warning>
+  For better organization and validation, consider using the RadioButtonGroup component instead of managing individual RadioButton components.
+</Warning>
+
+## Best Practices
+
+1. **Use descriptive labels**: Each option should be clearly labeled
+2. **Provide a default**: Consider pre-selecting a sensible default option
+3. **Group related options**: Keep radio buttons in logical groups
+4. **Limit options**: For more than 5-7 options, consider using a Dropdown instead
+5. **Show all options**: Unlike dropdowns, all options should be visible
+
+## Related Components
+
+- [Checkbox](/components/forms/checkbox) - For selecting multiple options
+- [Dropdown](/components/forms/dropdown) - For selecting from many options
+- [useForm](/components/forms/use-form) - For form validation and state management
+
+## Source
+
+View the source code on GitHub:
+- [RadioButton.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/RadioButton/RadioButton.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/RadioButton/types.ts:1)

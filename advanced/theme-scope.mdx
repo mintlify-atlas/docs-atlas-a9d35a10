@@ -1,0 +1,363 @@
+---
+title: ThemeScope
+description: Apply scoped light and dark themes to specific sections of your application
+icon: palette
+---
+
+## Overview
+
+`NSThemeScope` is a powerful component that enables you to apply different themes (light or dark) to specific sections of your application. It creates a scoped theme context that can be nested and inherited, allowing for complex theme hierarchies.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Theme Isolation" icon="layer-group">
+    Apply different themes to specific UI sections without affecting the rest of your app
+  </Card>
+  <Card title="Nesting Support" icon="sitemap">
+    Nest ThemeScope components to create complex theme hierarchies
+  </Card>
+  <Card title="Theme Inversion" icon="repeat">
+    Automatically invert the parent theme with a simple prop
+  </Card>
+  <Card title="Custom Components" icon="puzzle-piece">
+    Render any HTML element or React component as the theme container
+  </Card>
+</CardGroup>
+
+## Import
+
+```tsx
+import { NSThemeScope, useThemeScope } from '@grauity/ui';
+```
+
+## Basic Usage
+
+<CodeGroup>
+
+```tsx Apply Light Theme
+import { NSThemeScope, NSButton } from '@grauity/ui';
+
+function App() {
+  return (
+    <NSThemeScope applyTheme="light">
+      <div>
+        <h1>Light Theme Section</h1>
+        <NSButton>Click Me</NSButton>
+      </div>
+    </NSThemeScope>
+  );
+}
+```
+
+```tsx Apply Dark Theme
+import { NSThemeScope, NSButton } from '@grauity/ui';
+
+function App() {
+  return (
+    <NSThemeScope applyTheme="dark">
+      <div>
+        <h1>Dark Theme Section</h1>
+        <NSButton>Click Me</NSButton>
+      </div>
+    </NSThemeScope>
+  );
+}
+```
+
+```tsx Invert Parent Theme
+import { NSThemeScope, NSButton } from '@grauity/ui';
+
+function App() {
+  return (
+    <NSThemeScope applyTheme="light">
+      <div>
+        <h1>Light Theme</h1>
+        <NSThemeScope invert>
+          <div>
+            <h2>Dark Theme (Inverted)</h2>
+            <NSButton>Click Me</NSButton>
+          </div>
+        </NSThemeScope>
+      </div>
+    </NSThemeScope>
+  );
+}
+```
+
+</CodeGroup>
+
+## Props
+
+<ParamField path="applyTheme" type="'light' | 'dark'" default="undefined">
+  The theme to apply within this scope. If not provided, it will inherit from the parent scope. Takes precedence over the `invert` prop.
+</ParamField>
+
+<ParamField path="invert" type="boolean" default="false">
+  If true, applies the inverse of the parent theme. If the parent is light, this scope becomes dark, and vice versa.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType" default="'div'">
+  The HTML element (like `'div'`, `'section'`) or React component to render as the root of this theme scope. If a React component is used, it must accept a `className` prop and apply it at the outermost HTML element for the theme to work correctly.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the root element.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  The content to render within this theme scope.
+</ParamField>
+
+## Advanced Examples
+
+### Nested Theme Scopes
+
+Create complex theme hierarchies by nesting multiple `NSThemeScope` components:
+
+```tsx
+import { NSThemeScope } from '@grauity/ui';
+
+function NestedThemes() {
+  return (
+    <NSThemeScope applyTheme="light">
+      <div style={{ padding: '20px' }}>
+        <h1>Light Theme</h1>
+        
+        <NSThemeScope applyTheme="dark">
+          <div style={{ padding: '20px' }}>
+            <h2>Dark Theme</h2>
+            
+            <NSThemeScope applyTheme="light">
+              <div style={{ padding: '20px' }}>
+                <h3>Back to Light</h3>
+              </div>
+            </NSThemeScope>
+          </div>
+        </NSThemeScope>
+      </div>
+    </NSThemeScope>
+  );
+}
+```
+
+### Using Custom Components
+
+Render the theme scope using a custom component or styled element:
+
+```tsx
+import styled from 'styled-components';
+import { NSThemeScope } from '@grauity/ui';
+
+const Card = styled.div`
+  padding: 24px;
+  border-radius: 8px;
+  background-color: var(--grauity-color-background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+`;
+
+function ThemedCard() {
+  return (
+    <NSThemeScope applyTheme="dark" as={Card}>
+      <h2>Dark Themed Card</h2>
+      <p>This card has a dark theme applied.</p>
+    </NSThemeScope>
+  );
+}
+```
+
+### Alternating Themes
+
+Create an alternating theme pattern using the `invert` prop:
+
+```tsx
+import { NSThemeScope } from '@grauity/ui';
+import styled from 'styled-components';
+
+const Section = styled.div`
+  padding: 40px;
+  min-height: 200px;
+`;
+
+function AlternatingThemes() {
+  return (
+    <div>
+      <NSThemeScope applyTheme="light" as={Section}>
+        <h2>Section 1 - Light</h2>
+      </NSThemeScope>
+      
+      <NSThemeScope invert as={Section}>
+        <h2>Section 2 - Dark</h2>
+      </NSThemeScope>
+      
+      <NSThemeScope invert as={Section}>
+        <h2>Section 3 - Light</h2>
+      </NSThemeScope>
+    </div>
+  );
+}
+```
+
+## useThemeScope Hook
+
+The `useThemeScope` hook allows you to access the current theme context from any child component within a `NSThemeScope`.
+
+### Usage
+
+```tsx
+import { NSThemeScope, useThemeScope } from '@grauity/ui';
+
+function ThemeAwareComponent() {
+  const { theme, themeClassName } = useThemeScope();
+  
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <p>Theme class: {themeClassName}</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <NSThemeScope applyTheme="dark">
+      <ThemeAwareComponent />
+    </NSThemeScope>
+  );
+}
+```
+
+### Return Values
+
+<ResponseField name="theme" type="'light' | 'dark'">
+  The current scoped theme name.
+</ResponseField>
+
+<ResponseField name="themeClassName" type="string">
+  The CSS class name used for applying the theme (e.g., `grauity-theme-light` or `grauity-theme-dark`).
+</ResponseField>
+
+## Styled Components Integration
+
+`NSThemeScope` automatically provides theme information to styled-components via the theme context. You can access the scoped theme in your styled components:
+
+```tsx
+import styled from 'styled-components';
+import { NSThemeScope } from '@grauity/ui';
+
+const ThemedDiv = styled.div`
+  background-color: ${props => 
+    props.theme.scopedTheme === 'dark' ? '#1a1a1a' : '#ffffff'
+  };
+  color: ${props => 
+    props.theme.scopedTheme === 'dark' ? '#ffffff' : '#000000'
+  };
+  padding: 20px;
+`;
+
+function App() {
+  return (
+    <NSThemeScope applyTheme="dark">
+      <ThemedDiv>
+        This component automatically adapts to the scoped theme
+      </ThemedDiv>
+    </NSThemeScope>
+  );
+}
+```
+
+## Theme Inheritance
+
+<Info>
+  When `applyTheme` is not specified and `invert` is false, the component inherits the theme from its parent `NSThemeScope`. If there is no parent, it defaults to `'light'`.
+</Info>
+
+```tsx
+import { NSThemeScope } from '@grauity/ui';
+
+function InheritedTheme() {
+  return (
+    <NSThemeScope applyTheme="dark">
+      <div>
+        <p>This is dark theme</p>
+        
+        {/* This inherits dark theme from parent */}
+        <NSThemeScope>
+          <div>
+            <p>This is also dark theme (inherited)</p>
+          </div>
+        </NSThemeScope>
+      </div>
+    </NSThemeScope>
+  );
+}
+```
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Modal and Overlay Theming">
+    Apply different themes to modals and overlays that appear above your main content:
+    
+    ```tsx
+    <NSThemeScope applyTheme="light">
+      <MainContent />
+      <NSModal>
+        <NSThemeScope applyTheme="dark">
+          <ModalContent />
+        </NSThemeScope>
+      </NSModal>
+    </NSThemeScope>
+    ```
+  </Accordion>
+  
+  <Accordion title="Card-Based Layouts">
+    Create visually distinct cards with alternating themes:
+    
+    ```tsx
+    <div className="card-grid">
+      {cards.map((card, index) => (
+        <NSThemeScope 
+          key={card.id}
+          applyTheme={index % 2 === 0 ? 'light' : 'dark'}
+          as={Card}
+        >
+          <CardContent {...card} />
+        </NSThemeScope>
+      ))}
+    </div>
+    ```
+  </Accordion>
+  
+  <Accordion title="Navigation and Sidebar Theming">
+    Apply a different theme to sidebars or navigation areas:
+    
+    ```tsx
+    <div className="app-layout">
+      <NSThemeScope applyTheme="dark" as="aside">
+        <Sidebar />
+      </NSThemeScope>
+      <NSThemeScope applyTheme="light" as="main">
+        <MainContent />
+      </NSThemeScope>
+    </div>
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Note>
+  - Use `applyTheme` when you need explicit control over the theme
+  - Use `invert` when you want to create contrast relative to the parent
+  - Ensure custom components passed to `as` accept and apply the `className` prop
+  - Consider using `useThemeScope` hook for theme-aware conditional logic
+</Note>
+
+<Warning>
+  The component passed to the `as` prop **must** accept a `className` prop and apply it to its outermost element. Otherwise, the theme styles will not be applied correctly.
+</Warning>
+
+## Accessibility
+
+Ensure that theme changes maintain sufficient color contrast for WCAG compliance. Test your themed sections with accessibility tools to verify readability.

@@ -1,0 +1,605 @@
+---
+title: useForm
+description: A powerful React hook for building complex forms with validation, state management, and rendering
+---
+
+## Overview
+
+useNSForm (or useForm) is a comprehensive form management hook that handles form state, validation using Yup schemas, automatic rendering, and submission. It supports all Grauity form components and provides a declarative API for building complex forms.
+
+## Basic Usage
+
+```jsx
+import { useNSForm, FormFieldType } from 'grauity';
+import { object, string } from 'yup';
+
+function MyForm() {
+  const { formData, formRenderer } = useNSForm({
+    formConfig: {
+      fieldNames: ['firstName', 'lastName', 'email'],
+      initialState: {
+        firstName: '',
+        lastName: '',
+        email: '',
+      },
+      rows: [
+        {
+          widths: '1fr 1fr',
+          items: [
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'firstName',
+                label: 'First Name',
+                placeholder: 'John',
+                isRequired: true,
+              },
+            },
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'lastName',
+                label: 'Last Name',
+                placeholder: 'Doe',
+                isRequired: true,
+              },
+            },
+          ],
+        },
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'email',
+                label: 'Email',
+                type: 'email',
+                placeholder: 'john@example.com',
+                isRequired: true,
+              },
+            },
+          ],
+        },
+      ],
+      schema: object({
+        firstName: string().required('First name is required'),
+        lastName: string().required('Last name is required'),
+        email: string().email('Invalid email').required('Email is required'),
+      }),
+    },
+    onSubmit: (data) => {
+      console.log('Form submitted:', data);
+    },
+  });
+
+  return <div>{formRenderer}</div>;
+}
+```
+
+## Form Field Types
+
+The hook supports all Grauity form components through the `FormFieldType` enum:
+
+```tsx
+enum FormFieldType {
+  TEXTFIELD = 'textfield',
+  DROPDOWN = 'dropdown',
+  COMBOBOX = 'combobox',
+  CHECKBOX_GROUP = 'checkbox-group',
+  RADIOBUTTON_GROUP = 'radio-button-group',
+  CUSTOM = 'custom',
+}
+```
+
+## Complete Example
+
+```jsx
+import { useNSForm, FormFieldType } from 'grauity';
+import { object, string, array } from 'yup';
+
+function CompleteForm() {
+  const { formData, formRenderer, errors, submit } = useNSForm({
+    formConfig: {
+      fieldNames: [
+        'first_name',
+        'last_name',
+        'hobbies',
+        'profession',
+        'consent',
+        'age',
+      ],
+      initialState: {
+        first_name: '',
+        last_name: '',
+        hobbies: [],
+        profession: null,
+        consent: [],
+        age: null,
+      },
+      rows: [
+        {
+          widths: '1fr 1fr',
+          items: [
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'first_name',
+                label: 'First Name',
+                placeholder: 'John',
+                isRequired: true,
+              },
+            },
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'last_name',
+                label: 'Last Name',
+                placeholder: 'Doe',
+                isRequired: true,
+              },
+            },
+          ],
+        },
+        {
+          widths: '2fr 1fr',
+          items: [
+            {
+              type: FormFieldType.DROPDOWN,
+              rendererProps: {
+                name: 'hobbies',
+                label: 'Select Hobbies',
+                multiple: true,
+                isRequired: true,
+                items: [
+                  { type: 'option', label: 'Reading', value: 'reading' },
+                  { type: 'option', label: 'Writing', value: 'writing' },
+                  { type: 'option', label: 'Gaming', value: 'gaming' },
+                ],
+              },
+            },
+            {
+              type: FormFieldType.DROPDOWN,
+              rendererProps: {
+                name: 'profession',
+                label: 'Select Profession',
+                multiple: false,
+                isRequired: true,
+                items: [
+                  { type: 'option', label: 'Developer', value: 'developer' },
+                  { type: 'option', label: 'Designer', value: 'designer' },
+                  { type: 'option', label: 'Manager', value: 'manager' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.RADIOBUTTON_GROUP,
+              rendererProps: {
+                name: 'age',
+                label: 'Select Age',
+                isRequired: true,
+                items: [
+                  { label: '< 18', value: '< 18' },
+                  { label: '18 - 30', value: '18 - 30' },
+                  { label: '31 - 50', value: '31 - 50' },
+                  { label: '> 50', value: '> 50' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.CHECKBOX_GROUP,
+              rendererProps: {
+                name: 'consent',
+                isRequired: true,
+                items: [
+                  {
+                    label: 'I agree to the terms and conditions',
+                    value: 'true',
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+      schema: object({
+        first_name: string().required('First name is required'),
+        last_name: string().required('Last name is required'),
+        hobbies: array().min(1, 'Select at least one hobby'),
+        profession: object().nullable().required('Select a profession'),
+        consent: array().min(1, 'Please agree to the terms'),
+        age: string().required('Select age'),
+      }),
+    },
+    onSubmit: (data) => {
+      console.log('Form submitted:', data);
+      // Handle form submission
+    },
+  });
+
+  return (
+    <div>
+      {formRenderer}
+      <pre>{JSON.stringify(formData, null, 2)}</pre>
+    </div>
+  );
+}
+```
+
+## Validation Modes
+
+```jsx
+import { useNSForm, FormValidationType } from 'grauity';
+
+// Validate on blur
+const { formRenderer } = useNSForm({
+  formConfig: { /* ... */ },
+  whenToValidate: FormValidationType.ON_BLUR,
+});
+
+// Validate on change
+const { formRenderer } = useNSForm({
+  formConfig: { /* ... */ },
+  whenToValidate: FormValidationType.ON_CHANGE,
+});
+
+// Validate on submit only (default)
+const { formRenderer } = useNSForm({
+  formConfig: { /* ... */ },
+  // whenToValidate not specified
+});
+```
+
+## Custom Submit Button
+
+```jsx
+import { useNSForm } from 'grauity';
+
+function CustomSubmitForm() {
+  const { formRenderer, submit, formData } = useNSForm({
+    formConfig: { /* ... */ },
+    shouldShowSubmitButton: false, // Hide default submit button
+    onSubmit: (data) => {
+      console.log('Submitted:', data);
+    },
+  });
+
+  return (
+    <div>
+      {formRenderer}
+      <button onClick={submit} disabled={!formData.email}>
+        Custom Submit
+      </button>
+    </div>
+  );
+}
+```
+
+## Custom Form Fields
+
+```jsx
+import { useNSForm, FormFieldType } from 'grauity';
+
+function FormWithCustomField() {
+  const { formRenderer } = useNSForm({
+    formConfig: {
+      fieldNames: ['username', 'customField'],
+      initialState: {
+        username: '',
+        customField: '',
+      },
+      rows: [
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'username',
+                label: 'Username',
+              },
+            },
+          ],
+        },
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.CUSTOM,
+              renderer: ({ formData, handleChange, error }) => (
+                <div>
+                  <label>Custom Field</label>
+                  <input
+                    value={formData.customField}
+                    onChange={(e) =>
+                      handleChange({
+                        name: 'customField',
+                        value: e.target.value,
+                      })
+                    }
+                  />
+                  {error && <span>{error}</span>}
+                </div>
+              ),
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  return <div>{formRenderer}</div>;
+}
+```
+
+## Conditional Props
+
+```jsx
+import { useNSForm, FormFieldType } from 'grauity';
+
+function ConditionalForm() {
+  const { formRenderer } = useNSForm({
+    formConfig: {
+      fieldNames: ['accountType', 'companyName'],
+      initialState: {
+        accountType: 'personal',
+        companyName: '',
+      },
+      rows: [
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.DROPDOWN,
+              rendererProps: {
+                name: 'accountType',
+                label: 'Account Type',
+                items: [
+                  { type: 'option', label: 'Personal', value: 'personal' },
+                  { type: 'option', label: 'Business', value: 'business' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          widths: '1fr',
+          items: [
+            {
+              type: FormFieldType.TEXTFIELD,
+              rendererProps: {
+                name: 'companyName',
+                label: 'Company Name',
+              },
+              conditionalProps: [
+                {
+                  prop: 'isRequired',
+                  is: (data) => data.accountType?.value === 'business',
+                  then: true,
+                  otherwise: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  return <div>{formRenderer}</div>;
+}
+```
+
+## Hook API
+
+### Parameters
+
+<ParamField path="formConfig" type="FormConfig" required>
+  The form configuration object containing field definitions, initial state, and validation schema.
+  
+  Properties:
+  - `fieldNames`: Array of field name strings
+  - `initialState`: Object with field names as keys and initial values
+  - `rows`: Array of form row configurations
+  - `schema`: Yup validation schema (optional)
+</ParamField>
+
+<ParamField path="rowStyles" type="React.CSSProperties" default={{}}>
+  CSS styles applied to each form row.
+</ParamField>
+
+<ParamField path="whenToValidate" type="FormValidationType">
+  When to validate form fields. Options:
+  - `FormValidationType.ON_BLUR`: Validate on blur
+  - `FormValidationType.ON_CHANGE`: Validate on change
+  - `undefined`: Validate on submit only (default)
+</ParamField>
+
+<ParamField path="isMobileView" type="boolean" default={false}>
+  Whether the form is in mobile view. Affects layout and column behavior.
+</ParamField>
+
+<ParamField path="shouldFocusOnFirstError" type="boolean" default={true}>
+  Whether to focus the first field with an error after validation.
+</ParamField>
+
+<ParamField path="shouldSubmitOnEnter" type="boolean" default={true}>
+  Whether pressing Enter should submit the form.
+</ParamField>
+
+<ParamField path="shouldShowSubmitButton" type="boolean" default={true}>
+  Whether to show the default submit button.
+</ParamField>
+
+<ParamField path="submitButtonProps" type="ButtonProps">
+  Props passed to the default submit button.
+</ParamField>
+
+<ParamField path="onSubmit" type="function">
+  Callback fired when the form is submitted with valid data.
+  
+  ```tsx
+  (data: FormState) => void
+  ```
+</ParamField>
+
+### Return Values
+
+<ParamField path="formData" type="FormState">
+  The current state of all form fields.
+  
+  ```tsx
+  { [fieldName: string]: any }
+  ```
+</ParamField>
+
+<ParamField path="formRenderer" type="React.ReactNode">
+  The rendered form component. Place this in your JSX to render the form.
+</ParamField>
+
+<ParamField path="errors" type="FormErrors">
+  Current validation errors for each field.
+  
+  ```tsx
+  { [fieldName: string]: string }
+  ```
+</ParamField>
+
+<ParamField path="validate" type="function">
+  Function to manually validate specific fields.
+  
+  ```tsx
+  (fields?: FieldName[], data?: FormState) => FormErrors
+  ```
+</ParamField>
+
+<ParamField path="submit" type="function">
+  Function to manually submit the form. Validates before calling `onSubmit`.
+  
+  ```tsx
+  () => void
+  ```
+</ParamField>
+
+<ParamField path="changeFormData" type="function">
+  Function to update form data programmatically.
+  
+  ```tsx
+  (newData: Partial<FormState>) => void
+  ```
+</ParamField>
+
+## Form Configuration Types
+
+### FormRow
+
+```tsx
+interface FormRow {
+  widths?: string; // CSS grid template columns (e.g., '1fr 1fr', '2fr 1fr')
+  column?: FormRowColumnCondition;
+  items?: FormField[];
+}
+
+enum FormRowColumnCondition {
+  ALWAYS_COLUMN = 'always-column',
+  ALWAYS_ROW = 'always-row',
+  COLUMN_ON_MOBILE = 'column-on-mobile',
+}
+```
+
+### FormField
+
+```tsx
+interface FormFieldBaseProps {
+  type: FormFieldType;
+  renderer?: (props: FormFieldProps) => React.ReactNode;
+  rendererProps?: any;
+  conditionalProps?: ConditionalProp[];
+  configProps?: any;
+}
+
+interface ConditionalProp {
+  prop: string;
+  is: (data: FormState) => boolean;
+  then?: any;
+  otherwise?: any;
+}
+```
+
+## Yup Validation
+
+The hook integrates seamlessly with Yup for schema validation:
+
+```jsx
+import { object, string, array, number } from 'yup';
+
+const schema = object({
+  email: string()
+    .email('Invalid email format')
+    .required('Email is required'),
+  age: number()
+    .positive('Age must be positive')
+    .integer('Age must be an integer')
+    .required('Age is required'),
+  hobbies: array()
+    .min(1, 'Select at least one hobby')
+    .required('Hobbies are required'),
+  acceptTerms: array()
+    .min(1, 'You must accept the terms')
+    .required(),
+});
+```
+
+<Note>
+  For dropdown and combobox fields in single-select mode, use `object().nullable()` in your Yup schema since they return objects.
+</Note>
+
+## Best Practices
+
+1. **Organize fields logically**: Group related fields in rows
+2. **Use appropriate field types**: Choose the right component for each input
+3. **Provide helpful validation messages**: Make error messages clear and actionable
+4. **Set sensible defaults**: Pre-fill fields when possible
+5. **Handle loading states**: Disable submit during async operations
+6. **Preserve form state**: Consider persisting to localStorage for long forms
+7. **Test validation**: Ensure all validation rules work as expected
+
+## TypeScript
+
+```tsx
+import {
+  UseFormProps,
+  UseFormReturnProps,
+  FormConfig,
+  FormState,
+  FormErrors,
+  FormFieldType,
+  FormValidationType,
+  FormRowColumnCondition,
+} from 'grauity';
+
+const { formData, formRenderer, errors, submit, validate, changeFormData }:
+  UseFormReturnProps = useNSForm({
+  formConfig: { /* ... */ },
+  onSubmit: (data: FormState) => {
+    console.log(data);
+  },
+});
+```
+
+## Source
+
+View the source code on GitHub:
+- [useForm.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/useForm/useForm.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/useForm/types.ts:1)
+- [FormRenderer.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/useForm/FormRenderer.tsx:1)

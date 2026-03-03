@@ -1,0 +1,192 @@
+---
+title: AlertBanner
+description: A compact banner component for displaying alert messages across the top or bottom of content areas.
+---
+
+## Overview
+
+The AlertBanner component displays brief alert messages in a horizontal banner format, perfect for notifications, announcements, or status messages.
+
+## Basic Usage
+
+```tsx
+import AlertBanner from '@grauity/ui/elements/AlertBanner';
+
+function MyComponent() {
+  return (
+    <AlertBanner
+      variant="primary"
+      type="filled"
+      icon="auto"
+    >
+      This is an important announcement!
+    </AlertBanner>
+  );
+}
+```
+
+## Props
+
+<ParamField path="type" type="string" default="default">
+  Type/style of the alert banner.
+  
+  **Available choices:**
+  - `default` - Colorless background, colored icon & text
+  - `outlined` - Light colored background with outline
+  - `filled` - Colored background with white text
+</ParamField>
+
+<ParamField path="variant" type="string" default="primary">
+  Variant/color theme of the alert banner.
+  
+  **Available choices:** `primary`, `success`, `warning`, `error`, `default`
+</ParamField>
+
+<ParamField path="icon" type="grauityIconName | 'auto'">
+  Icon to display. Use `auto` to automatically select based on variant.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode" required>
+  Content to display in the banner.
+</ParamField>
+
+<ParamField path="padding" type="string">
+  Custom padding for the banner. Defaults to `var(--spacing-4px, 4px) var(--spacing-8px, 8px)` if action buttons/close button are present, else `var(--spacing-8px, 8px)`.
+</ParamField>
+
+<ParamField path="justifyContent" type="string" default="center">
+  Content alignment.
+  
+  **Available choices:** `center`, `space-between`, `space-around`
+</ParamField>
+
+<ParamField path="showCloseButton" type="boolean" default={false}>
+  Show a close button in the banner.
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback function when the close button is clicked.
+</ParamField>
+
+<ParamField path="actionButtons" type="ButtonProps[]">
+  Array of action button configurations.
+</ParamField>
+
+<ParamField path="position" type="string" default="static">
+  CSS position property.
+  
+  **Available choices:** `static`, `fixed`, `absolute`, `relative`
+</ParamField>
+
+<ParamField path="top" type="string" default="null">
+  Top position value (useful for fixed positioning).
+</ParamField>
+
+<ParamField path="bottom" type="string" default="null">
+  Bottom position value.
+</ParamField>
+
+<ParamField path="left" type="string" default="null">
+  Left position value.
+</ParamField>
+
+<ParamField path="right" type="string" default="null">
+  Right position value.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name.
+</ParamField>
+
+## Banner Types
+
+```tsx
+<AlertBanner type="default" variant="primary" icon="auto">
+  Default banner with colored icon and text
+</AlertBanner>
+
+<AlertBanner type="outlined" variant="success" icon="auto">
+  Outlined banner with light background
+</AlertBanner>
+
+<AlertBanner type="filled" variant="warning" icon="auto">
+  Filled banner with colored background
+</AlertBanner>
+```
+
+## Banner Variants
+
+```tsx
+<AlertBanner variant="primary" type="filled" icon="auto">
+  Primary banner
+</AlertBanner>
+
+<AlertBanner variant="success" type="filled" icon="auto">
+  Success banner
+</AlertBanner>
+
+<AlertBanner variant="warning" type="filled" icon="auto">
+  Warning banner
+</AlertBanner>
+
+<AlertBanner variant="error" type="filled" icon="auto">
+  Error banner
+</AlertBanner>
+```
+
+## With Close Button
+
+```tsx
+<AlertBanner
+  variant="primary"
+  showCloseButton={true}
+  onClose={() => console.log('Banner closed')}
+>
+  This banner can be dismissed
+</AlertBanner>
+```
+
+## With Action Buttons
+
+```tsx
+<AlertBanner
+  variant="warning"
+  icon="auto"
+  actionButtons={[
+    {
+      children: 'Learn More',
+      variant: 'primary',
+      color: 'neutral',
+      size: 'small',
+    },
+  ]}
+>
+  New features available!
+</AlertBanner>
+```
+
+## Fixed Position
+
+```tsx
+<AlertBanner
+  variant="success"
+  type="filled"
+  position="fixed"
+  top="0"
+  left="0"
+  right="0"
+>
+  Fixed banner at the top of the page
+</AlertBanner>
+```
+
+## Custom Alignment
+
+```tsx
+<AlertBanner
+  variant="primary"
+  justifyContent="space-between"
+>
+  Content aligned with space between
+</AlertBanner>
+```

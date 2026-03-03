@@ -1,0 +1,238 @@
+---
+title: Button
+description: A versatile button component for triggering actions with support for icons, loading states, and multiple variants.
+---
+
+## Overview
+
+The Button component is used to trigger actions in your application. It supports text, icons, multiple variants, sizes, colors, and loading states.
+
+## Basic Usage
+
+```tsx
+import Button from '@grauity/ui/elements/Button';
+
+function MyComponent() {
+  return (
+    <Button 
+      variant="primary" 
+      color="brand"
+      onClick={() => console.log('Clicked!')}
+    >
+      Click Me!
+    </Button>
+  );
+}
+```
+
+## Props
+
+<ParamField path="variant" type="string" default="primary">
+  Variant of the button.
+  
+  **Available choices:** `primary` (solid), `secondary` (outlined), `tertiary` (borderless), `text` (transparent background and no padding)
+</ParamField>
+
+<ParamField path="color" type="string" default="brand">
+  Color theme of the button.
+  
+  **Available choices:** `brand`, `neutral`, `error`, `success`, `warning`, `yellow`, `purple`
+</ParamField>
+
+<ParamField path="size" type="string" default="medium">
+  Size of the button.
+  
+  **Available choices:** `extra-small`, `small`, `medium`, `large`, `extra-large`
+</ParamField>
+
+<ParamField path="icon" type="grauityIconName">
+  Icon to be displayed in the button.
+</ParamField>
+
+<ParamField path="iconSize" type="grauityIconSizeName" default="20">
+  Size of the icon.
+</ParamField>
+
+<ParamField path="iconPosition" type="string" default="left">
+  Position of the icon.
+  
+  **Available choices:** `left`, `right`
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default={false}>
+  Show that the button is inactive.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default={false}>
+  Show that the button is in loading state. Displays a loading spinner.
+</ParamField>
+
+<ParamField path="fullWidth" type="boolean" default={false}>
+  Make the button take full width of its container.
+</ParamField>
+
+<ParamField path="type" type="string" default="button">
+  HTML button type attribute.
+  
+  **Available choices:** `button`, `submit`, `reset`
+</ParamField>
+
+<ParamField path="onClick" type="function">
+  Function to be called when the button is clicked.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to be added to the component.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties" default={{}}>
+  Additional inline styles to be applied to the element.
+</ParamField>
+
+<ParamField path="tooltip" type="string">
+  Tooltip text to be displayed on hover (uses the `title` attribute).
+</ParamField>
+
+<ParamField path="ariaLabel" type="string">
+  Aria label for accessibility.
+</ParamField>
+
+<ParamField path="tabIndex" type="number">
+  Tab index of the button for keyboard navigation.
+</ParamField>
+
+<ParamField path="showAnimationOnClick" type="boolean" default={true}>
+  Show button animation on click (scales to 95% of its size).
+</ParamField>
+
+<ParamField path="onMouseEnter" type="function">
+  Function to be called on mouse enter event.
+</ParamField>
+
+<ParamField path="onMouseLeave" type="function">
+  Function to be called on mouse leave event.
+</ParamField>
+
+## Variants
+
+Buttons come in four visual variants:
+
+<CodeGroup>
+```tsx Primary (Solid)
+<Button variant="primary" color="brand">
+  Primary Button
+</Button>
+```
+
+```tsx Secondary (Outlined)
+<Button variant="secondary" color="brand">
+  Secondary Button
+</Button>
+```
+
+```tsx Tertiary (Borderless)
+<Button variant="tertiary" color="brand">
+  Tertiary Button
+</Button>
+```
+
+```tsx Text
+<Button variant="text" color="brand">
+  Text Button
+</Button>
+```
+</CodeGroup>
+
+## Colors
+
+```tsx
+<Button variant="primary" color="brand">Brand</Button>
+<Button variant="primary" color="neutral">Neutral</Button>
+<Button variant="primary" color="error">Error</Button>
+<Button variant="primary" color="success">Success</Button>
+<Button variant="primary" color="warning">Warning</Button>
+<Button variant="primary" color="yellow">Yellow</Button>
+<Button variant="primary" color="purple">Purple</Button>
+```
+
+## Sizes
+
+```tsx
+<Button size="extra-small">Extra Small</Button>
+<Button size="small">Small</Button>
+<Button size="medium">Medium</Button>
+<Button size="large">Large</Button>
+<Button size="extra-large">Extra Large</Button>
+```
+
+## With Icons
+
+```tsx
+<Button 
+  variant="primary" 
+  icon="sparkle" 
+  iconPosition="left"
+>
+  With Icon
+</Button>
+
+<Button 
+  variant="primary" 
+  icon="arrow-right" 
+  iconPosition="right"
+>
+  Icon Right
+</Button>
+```
+
+## Loading State
+
+```tsx
+<Button variant="primary" loading={true}>
+  Loading...
+</Button>
+```
+
+## Disabled State
+
+```tsx
+<Button variant="primary" disabled={true}>
+  Disabled Button
+</Button>
+```
+
+## Full Width
+
+```tsx
+<Button variant="primary" fullWidth={true}>
+  Full Width Button
+</Button>
+```
+
+## Icon Button
+
+For icon-only buttons, use the `IconButton` component:
+
+```tsx
+import { IconButton } from '@grauity/ui/elements/Button';
+
+<IconButton 
+  variant="primary" 
+  icon="sparkle" 
+  size="medium"
+  onClick={() => console.log('Clicked!')}
+/>
+```
+
+## Constants
+
+```tsx
+import { 
+  BUTTON_VARIANTS_ENUM, 
+  BUTTON_SIZES_ENUM,
+  BUTTON_COLORS_ENUM 
+} from '@grauity/ui/elements/Button';
+
+// Usage
+<Button variant={BUTTON_VARIANTS_ENUM.PRIMARY} />
+```

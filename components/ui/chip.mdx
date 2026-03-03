@@ -1,0 +1,203 @@
+---
+title: Chip
+description: A compact element for displaying tags, labels, or small pieces of information.
+---
+
+## Overview
+
+The Chip component displays compact information such as tags, labels, categories, or status indicators with customizable styling.
+
+## Basic Usage
+
+```tsx
+import Chip from '@grauity/ui/elements/Chip';
+
+function MyComponent() {
+  return (
+    <Chip variant="brand" size="medium">
+      Label
+    </Chip>
+  );
+}
+```
+
+## Props
+
+<ParamField path="variant" type="string" default="brand">
+  Visual variant of the chip.
+  
+  **Available choices:** `brand`, `success`, `error`, `warning`, `yellow`, `purple`, `disabled`, `action-brand`, `action-success`, `action-error`, `action-warning`, `action-yellow`, `action-purple`
+</ParamField>
+
+<ParamField path="size" type="string" default="medium">
+  Size of the chip.
+  
+  **Available choices:** `small`, `medium`, `large`, `extra-large`
+</ParamField>
+
+<ParamField path="hasBorder" type="boolean" default={false}>
+  Add a border to the chip.
+</ParamField>
+
+<ParamField path="rounded" type="boolean" default={false}>
+  Make the chip fully rounded (pill shape).
+</ParamField>
+
+<ParamField path="icon" type="grauityIconName" default="null">
+  Icon to display in the chip.
+</ParamField>
+
+<ParamField path="iconSize" type="grauityIconSizeName" default="12">
+  Size of the icon.
+</ParamField>
+
+<ParamField path="iconPosition" type="string" default="left">
+  Position of the icon.
+  
+  **Available choices:** `left`, `right`
+</ParamField>
+
+<ParamField path="iconColor" type="string" default="inherit">
+  Color of the icon.
+</ParamField>
+
+<ParamField path="textColor" type="string" default="null">
+  Custom text color override.
+</ParamField>
+
+<ParamField path="backgroundColor" type="string" default="null">
+  Custom background color override.
+</ParamField>
+
+<ParamField path="borderColor" type="string" default="null">
+  Custom border color override.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Content to display inside the chip.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties" default={{}}>
+  Additional inline styles.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name.
+</ParamField>
+
+## Variants
+
+```tsx
+<Chip variant="brand">Brand</Chip>
+<Chip variant="success">Success</Chip>
+<Chip variant="error">Error</Chip>
+<Chip variant="warning">Warning</Chip>
+<Chip variant="yellow">Yellow</Chip>
+<Chip variant="purple">Purple</Chip>
+<Chip variant="disabled">Disabled</Chip>
+```
+
+## Action Variants
+
+Chips with more prominent styling for interactive elements:
+
+```tsx
+<Chip variant="action-brand">Action Brand</Chip>
+<Chip variant="action-success">Action Success</Chip>
+<Chip variant="action-error">Action Error</Chip>
+<Chip variant="action-warning">Action Warning</Chip>
+```
+
+## Sizes
+
+```tsx
+<Chip size="small">Small</Chip>
+<Chip size="medium">Medium</Chip>
+<Chip size="large">Large</Chip>
+<Chip size="extra-large">Extra Large</Chip>
+```
+
+## With Icons
+
+```tsx
+<Chip variant="brand" icon="check" iconPosition="left">
+  Verified
+</Chip>
+
+<Chip variant="success" icon="star" iconPosition="left">
+  Premium
+</Chip>
+
+<Chip variant="error" icon="exclamation-circle" iconPosition="right">
+  Alert
+</Chip>
+```
+
+## Rounded Chips
+
+```tsx
+<Chip variant="brand" rounded={true}>
+  Rounded
+</Chip>
+
+<Chip variant="success" rounded={true} icon="check">
+  Completed
+</Chip>
+```
+
+## With Border
+
+```tsx
+<Chip variant="brand" hasBorder={true}>
+  Bordered
+</Chip>
+
+<Chip variant="warning" hasBorder={true} rounded={true}>
+  Bordered & Rounded
+</Chip>
+```
+
+## Custom Colors
+
+```tsx
+<Chip
+  textColor="#ffffff"
+  backgroundColor="#1976d2"
+  borderColor="#1565c0"
+  hasBorder={true}
+>
+  Custom Colors
+</Chip>
+```
+
+## Status Indicators
+
+```tsx
+<Chip variant="success" icon="check" size="small">
+  Active
+</Chip>
+
+<Chip variant="warning" icon="clock" size="small">
+  Pending
+</Chip>
+
+<Chip variant="error" icon="x" size="small">
+  Inactive
+</Chip>
+```
+
+## Category Tags
+
+```tsx
+<Chip variant="brand" size="small" rounded={true}>
+  Design
+</Chip>
+
+<Chip variant="purple" size="small" rounded={true}>
+  Development
+</Chip>
+
+<Chip variant="yellow" size="small" rounded={true}>
+  Marketing
+</Chip>
+```

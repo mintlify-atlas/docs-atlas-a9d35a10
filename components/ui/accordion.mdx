@@ -1,0 +1,171 @@
+---
+title: Accordion
+description: An expandable/collapsible content panel component for organizing information.
+---
+
+## Overview
+
+The Accordion component provides an expandable and collapsible content area, perfect for FAQs, nested navigation, or progressive disclosure of information.
+
+## Basic Usage
+
+```tsx
+import Accordion from '@grauity/ui/elements/Accordion';
+
+function MyComponent() {
+  return (
+    <Accordion title="Section Title">
+      <p>Content that can be expanded or collapsed</p>
+    </Accordion>
+  );
+}
+```
+
+## Props
+
+<ParamField path="title" type="React.ReactNode" required>
+  Title displayed in the accordion header.
+</ParamField>
+
+<ParamField path="expanded" type="boolean" default={false}>
+  Controls whether the accordion is expanded.
+</ParamField>
+
+<ParamField path="onToggle" type="function">
+  Callback function when the accordion is toggled.
+  
+  **Signature:** `(expanded: boolean) => void`
+</ParamField>
+
+<ParamField path="suffix" type="React.ReactNode">
+  Element to display before the toggle icon in the header.
+</ParamField>
+
+<ParamField path="headerBackgroundColor" type="string" default="var(--bg-subtle-secondary-default, #f6f7f9)">
+  Background color of the accordion header.
+</ParamField>
+
+<ParamField path="contentBackgroundColor" type="string" default="var(--bg-subtle-secondary-default, #f6f7f9)">
+  Background color of the accordion content area.
+</ParamField>
+
+<ParamField path="iconColor" type="string" default="var(--text-emphasis-primary-default, #16191d)">
+  Color of the toggle icon.
+</ParamField>
+
+<ParamField path="iconSize" type="grauityIconSizeName" default="16">
+  Size of the toggle icon.
+</ParamField>
+
+<ParamField path="showSeparator" type="boolean" default={true}>
+  Show/hide separator line between accordions.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Content to display when the accordion is expanded.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class names.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties" default={{}}>
+  Additional inline CSS properties.
+</ParamField>
+
+## Controlled Accordion
+
+```tsx
+import { useState } from 'react';
+
+function MyComponent() {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <Accordion
+      title="Controlled Accordion"
+      expanded={isExpanded}
+      onToggle={(expanded) => setIsExpanded(expanded)}
+    >
+      <p>This accordion's state is controlled by the parent component</p>
+    </Accordion>
+  );
+}
+```
+
+## With Suffix Element
+
+```tsx
+<Accordion
+  title="Accordion with Badge"
+  suffix={
+    <Chip variant="brand" size="small">
+      New
+    </Chip>
+  }
+>
+  <p>Content with a suffix badge</p>
+</Accordion>
+```
+
+## Custom Colors
+
+```tsx
+<Accordion
+  title="Custom Styled Accordion"
+  headerBackgroundColor="#e3f2fd"
+  contentBackgroundColor="#ffffff"
+  iconColor="#1976d2"
+>
+  <p>Accordion with custom colors</p>
+</Accordion>
+```
+
+## Without Separator
+
+```tsx
+<Accordion
+  title="No Separator"
+  showSeparator={false}
+>
+  <p>This accordion has no separator line</p>
+</Accordion>
+```
+
+## Multiple Accordions
+
+```tsx
+function FAQSection() {
+  return (
+    <div>
+      <Accordion title="What is Grauity?">
+        <p>Grauity is a React design system component library.</p>
+      </Accordion>
+      
+      <Accordion title="How do I install it?">
+        <p>You can install Grauity using npm or yarn.</p>
+      </Accordion>
+      
+      <Accordion title="Is it open source?">
+        <p>Yes, Grauity is open source.</p>
+      </Accordion>
+    </div>
+  );
+}
+```
+
+## With Complex Content
+
+```tsx
+<Accordion title="Detailed Section">
+  <div style={{ padding: '16px' }}>
+    <Typography variant="heading-sb-h6">Subsection</Typography>
+    <Typography variant="paragraph-md-p3">
+      This accordion contains complex nested content.
+    </Typography>
+    <Button variant="primary" size="small">
+      Take Action
+    </Button>
+  </div>
+</Accordion>
+```

@@ -1,0 +1,222 @@
+---
+title: TextArea
+description: A multi-line text input component for longer form content
+---
+
+## Overview
+
+TextArea is a form input component that allows users to enter multi-line text. It supports validation, help messages, and multiple size variants.
+
+## Basic Usage
+
+```jsx
+import { TextArea } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [value, setValue] = useState('');
+
+  return (
+    <TextArea
+      name="description"
+      label="Description"
+      placeholder="Enter a description..."
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      rows={4}
+    />
+  );
+}
+```
+
+## With Validation
+
+```jsx
+import { TextArea } from 'grauity';
+import { useState } from 'react';
+
+function ValidatedTextArea() {
+  const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
+
+  const handleBlur = () => {
+    if (comment.length < 10) {
+      setError('Comment must be at least 10 characters');
+    } else {
+      setError('');
+    }
+  };
+
+  return (
+    <TextArea
+      name="comment"
+      label="Comment"
+      placeholder="Share your thoughts..."
+      value={comment}
+      onChange={(e) => setComment(e.target.value)}
+      onBlur={handleBlur}
+      errorMessage={error}
+      helpMessage="Minimum 10 characters"
+      maxLength={500}
+      isRequired
+      rows={6}
+    />
+  );
+}
+```
+
+## Sizes
+
+TextArea comes in four sizes: `small`, `medium` (default), `large`, and `extra-large`.
+
+```jsx
+<TextArea name="small" size="small" placeholder="Small (32px min-height)" rows={3} />
+<TextArea name="medium" size="medium" placeholder="Medium (40px min-height)" rows={3} />
+<TextArea name="large" size="large" placeholder="Large (48px min-height)" rows={3} />
+<TextArea name="xlarge" size="extra-large" placeholder="Extra Large (56px min-height)" rows={3} />
+```
+
+## Character Count
+
+```jsx
+import { TextArea } from 'grauity';
+import { useState } from 'react';
+
+function CharacterLimitedTextArea() {
+  const [value, setValue] = useState('');
+
+  return (
+    <TextArea
+      name="bio"
+      label="Bio"
+      placeholder="Tell us about yourself"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      maxLength={200}
+      helpMessage="Brief description for your profile"
+      rows={4}
+    />
+  );
+}
+```
+
+<Note>
+  When `maxLength` is set, a character counter is automatically displayed alongside the help message.
+</Note>
+
+## Props
+
+<ParamField path="name" type="string" required>
+  The name of the textarea field. Used for form submission and identification.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label displayed above the textarea.
+</ParamField>
+
+<ParamField path="placeholder" type="string">
+  Placeholder text displayed when the field is empty.
+</ParamField>
+
+<ParamField path="value" type="string" default="''">
+  The current value of the textarea.
+</ParamField>
+
+<ParamField path="size" type="string" default="'medium'">
+  The size of the textarea. Options: `'small'` | `'medium'` | `'large'` | `'extra-large'`
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  The color theme for the field. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="rows" type="number" default={3}>
+  The number of visible text rows.
+</ParamField>
+
+<ParamField path="cols" type="number" default={4}>
+  The visible width of the textarea in average character widths.
+</ParamField>
+
+<ParamField path="isRequired" type="boolean" default={false}>
+  Whether the field is required. Displays a required indicator next to the label.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether the textarea is disabled.
+</ParamField>
+
+<ParamField path="isReadOnly" type="boolean" default={false}>
+  Whether the textarea is read-only.
+</ParamField>
+
+<ParamField path="errorMessage" type="string">
+  Error message to display when the field is invalid.
+</ParamField>
+
+<ParamField path="helpMessage" type="string">
+  Helper text displayed below the textarea.
+</ParamField>
+
+<ParamField path="maxLength" type="number">
+  Maximum number of characters allowed. Shows character count when set.
+</ParamField>
+
+<ParamField path="autoComplete" type="string" default="'on'">
+  HTML autocomplete attribute.
+</ParamField>
+
+<ParamField path="autoFocus" type="boolean" default={false}>
+  Whether the field should autofocus on mount.
+</ParamField>
+
+<ParamField path="onChange" type="function">
+  Callback fired when the textarea value changes.
+  
+  ```tsx
+  (event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="onBlur" type="function">
+  Callback fired when the textarea loses focus.
+  
+  ```tsx
+  (event: React.FocusEvent<HTMLTextAreaElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="onClick" type="function">
+  Callback fired when the textarea is clicked.
+  
+  ```tsx
+  (event: React.MouseEvent<HTMLTextAreaElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name for the container.
+</ParamField>
+
+## TypeScript
+
+```tsx
+import { TextAreaProps } from 'grauity';
+
+type VARIANTS = 'small' | 'medium' | 'large' | 'extra-large';
+type TextAreaColors = 'brand' | 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+```
+
+## Accessibility
+
+- Uses semantic `<textarea>` element
+- Properly associated `<label>` element
+- Required fields are indicated with `aria-required`
+- Error messages are announced to screen readers
+- Keyboard accessible (Tab, Shift+Tab for navigation)
+
+## Source
+
+View the source code on GitHub:
+- [TextArea.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/TextArea/TextArea.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/TextArea/types.ts:1)

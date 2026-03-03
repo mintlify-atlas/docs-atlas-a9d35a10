@@ -1,0 +1,252 @@
+---
+title: Carousel
+description: A horizontal scrollable carousel component with navigation controls.
+---
+
+## Overview
+
+The Carousel component displays a horizontally scrollable list of items with navigation buttons, perfect for image galleries, product listings, or content previews.
+
+## Basic Usage
+
+```tsx
+import Carousel from '@grauity/ui/elements/Carousel';
+
+function MyComponent() {
+  const items = [
+    <div>Item 1</div>,
+    <div>Item 2</div>,
+    <div>Item 3</div>,
+    <div>Item 4</div>,
+  ];
+
+  return (
+    <Carousel
+      items={items}
+      title="Featured Items"
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="items" type="React.ReactNode[]" default={[]}>
+  Array of React nodes to display as carousel items.
+</ParamField>
+
+<ParamField path="title" type="React.ReactNode" default="null">
+  Title to display above the carousel.
+</ParamField>
+
+<ParamField path="fullWidthItems" type="boolean" default={false}>
+  Make items take up the full width of the container.
+</ParamField>
+
+<ParamField path="scrollAmount" type="number" default={100}>
+  Number of pixels to scroll when navigation buttons are clicked.
+</ParamField>
+
+<ParamField path="hideIconsOnLessItems" type="boolean" default={false}>
+  Hide navigation icons when there are fewer items than the visible area.
+</ParamField>
+
+<ParamField path="iconPosition" type="string" default="right">
+  Position of the navigation icon buttons.
+  
+  **Available choices:** `left`, `right`
+</ParamField>
+
+<ParamField path="leftIcon" type="grauityIconName" default="chevron-left">
+  Icon for the left navigation button.
+</ParamField>
+
+<ParamField path="rightIcon" type="grauityIconName" default="chevron-right">
+  Icon for the right navigation button.
+</ParamField>
+
+<ParamField path="iconGap" type="number" default={12}>
+  Gap between navigation icon buttons in pixels.
+</ParamField>
+
+<ParamField path="iconButtonVariant" type="ButtonVariants" default="secondary">
+  Visual variant of the navigation buttons.
+</ParamField>
+
+<ParamField path="iconButtonColor" type="ButtonColors" default="neutral">
+  Color theme of the navigation buttons.
+</ParamField>
+
+<ParamField path="onLeftClick" type="function">
+  Callback when the left navigation button is clicked.
+</ParamField>
+
+<ParamField path="onRightClick" type="function">
+  Callback when the right navigation button is clicked.
+</ParamField>
+
+<ParamField path="onScrollEnd" type="function">
+  Callback when the carousel is scrolled to the end.
+</ParamField>
+
+<ParamField path="headerGap" type="number" default={12}>
+  Gap between header and items row in pixels.
+</ParamField>
+
+<ParamField path="gap" type="number" default={12}>
+  Gap between carousel items in pixels.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties" default="null">
+  Custom inline styles.
+</ParamField>
+
+<ParamField path="className" type="string" default="null">
+  Additional CSS class name.
+</ParamField>
+
+## With Title
+
+```tsx
+<Carousel
+  items={items}
+  title={<Typography variant="heading-sb-h4">Featured Products</Typography>}
+/>
+```
+
+## Custom Scroll Amount
+
+```tsx
+<Carousel
+  items={items}
+  scrollAmount={200}
+/>
+```
+
+## Full Width Items
+
+```tsx
+<Carousel
+  items={items}
+  fullWidthItems={true}
+/>
+```
+
+## Icon Position
+
+```tsx
+// Icons on the right (default)
+<Carousel
+  items={items}
+  iconPosition="right"
+/>
+
+// Icons on the left
+<Carousel
+  items={items}
+  iconPosition="left"
+/>
+```
+
+## Custom Navigation Icons
+
+```tsx
+<Carousel
+  items={items}
+  leftIcon="arrow-left"
+  rightIcon="arrow-right"
+/>
+```
+
+## Custom Button Styling
+
+```tsx
+<Carousel
+  items={items}
+  iconButtonVariant="primary"
+  iconButtonColor="brand"
+/>
+```
+
+## Custom Gaps
+
+```tsx
+<Carousel
+  items={items}
+  gap={24}
+  headerGap={16}
+  iconGap={8}
+/>
+```
+
+## With Callbacks
+
+```tsx
+<Carousel
+  items={items}
+  onLeftClick={() => console.log('Left clicked')}
+  onRightClick={() => console.log('Right clicked')}
+  onScrollEnd={() => console.log('Reached the end')}
+/>
+```
+
+## Product Carousel Example
+
+```tsx
+function ProductCarousel() {
+  const products = [
+    { id: 1, name: 'Product 1', image: '/img1.jpg', price: '$29.99' },
+    { id: 2, name: 'Product 2', image: '/img2.jpg', price: '$39.99' },
+    { id: 3, name: 'Product 3', image: '/img3.jpg', price: '$49.99' },
+    // ... more products
+  ];
+
+  const items = products.map(product => (
+    <div key={product.id} style={{ width: '200px' }}>
+      <img src={product.image} alt={product.name} />
+      <Typography variant="paragraph-sb-p3">{product.name}</Typography>
+      <Typography variant="paragraph-md-p3">{product.price}</Typography>
+    </div>
+  ));
+
+  return (
+    <Carousel
+      items={items}
+      title={<Typography variant="heading-sb-h3">Featured Products</Typography>}
+      gap={16}
+      scrollAmount={220}
+    />
+  );
+}
+```
+
+## Image Gallery
+
+```tsx
+function ImageGallery() {
+  const images = [
+    '/gallery1.jpg',
+    '/gallery2.jpg',
+    '/gallery3.jpg',
+    '/gallery4.jpg',
+  ];
+
+  const items = images.map((src, index) => (
+    <img
+      key={index}
+      src={src}
+      alt={`Gallery ${index + 1}`}
+      style={{ width: '300px', height: '200px', objectFit: 'cover' }}
+    />
+  ));
+
+  return (
+    <Carousel
+      items={items}
+      title="Photo Gallery"
+      scrollAmount={320}
+      gap={16}
+    />
+  );
+}
+```

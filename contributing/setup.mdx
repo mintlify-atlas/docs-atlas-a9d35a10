@@ -1,0 +1,272 @@
+---
+title: Development Setup
+description: Set up your local development environment for contributing to Grauity
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js**: Version 18.0.0 or higher
+- **npm**: Version 9 or higher
+- **Git**: For version control and submodule management
+
+## Initial Setup
+
+Follow these steps to set up Grauity for local development:
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the Grauity repository from GitHub:
+    
+    ```bash
+    git clone https://github.com/Newton-School/grauity.git
+    cd grauity
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    Install all required npm packages:
+    
+    ```bash
+    npm install
+    ```
+    
+    This will install all dependencies defined in `package.json`, including:
+    - React and TypeScript
+    - Storybook for component documentation
+    - ESLint and Prettier for code quality
+    - Jest and Testing Library for testing
+  </Step>
+
+  <Step title="Initialize iconland submodule">
+    Grauity uses iconland as a Git submodule for managing icons. Initialize and update it:
+    
+    ```bash
+    git submodule init
+    git submodule update --recursive
+    ```
+    
+    <Note>
+      The iconland submodule contains SVG icon seeds that are compiled into font icons.
+    </Note>
+  </Step>
+
+  <Step title="Build icons">
+    Generate the icon fonts from SVG sources (required on first run):
+    
+    ```bash
+    npm run build-icons
+    ```
+    
+    This command:
+    1. Optimizes SVG files from `iconland/seeds`
+    2. Generates font files in the `ui/fonts` directory
+  </Step>
+
+  <Step title="Start Storybook">
+    Launch the Storybook development server:
+    
+    ```bash
+    npm run storybook
+    ```
+    
+    Storybook will start on `http://localhost:6006` where you can view and interact with all components.
+  </Step>
+</Steps>
+
+<Check>
+  You should now see Storybook running in your browser with all Grauity components available for exploration!
+</Check>
+
+## Available NPM Scripts
+
+Grauity provides several npm scripts for development and building:
+
+<AccordionGroup>
+  <Accordion title="Development Scripts">
+    | Script | Description |
+    |--------|-------------|
+    | `npm run storybook` | Start Storybook dev server on port 6006 |
+    | `npm run build-storybook` | Build static Storybook documentation |
+    | `npm test` | Run Jest test suite |
+    | `npm run test:coverage` | Run tests with coverage report |
+  </Accordion>
+
+  <Accordion title="Build Scripts">
+    | Script | Description |
+    |--------|-------------|
+    | `npm run build` | Full build: icons + library |
+    | `npm run build-lib` | Build library only (extract types + bundle) |
+    | `npm run extract-typings` | Generate TypeScript declaration files |
+  </Accordion>
+
+  <Accordion title="Icon Scripts">
+    | Script | Description |
+    |--------|-------------|
+    | `npm run build-icons` | Optimize SVGs + generate icon fonts |
+    | `npm run build-icons:optimize` | Optimize SVG files with SVGO |
+    | `npm run build-icons:generate` | Generate font files from optimized SVGs |
+  </Accordion>
+
+  <Accordion title="Code Quality Scripts">
+    | Script | Description |
+    |--------|-------------|
+    | `npm run lint` | Run ESLint on the entire codebase |
+    | `npm run lint:fix` | Run ESLint and auto-fix issues |
+    | `npm run prettify` | Format code with Prettier |
+    | `npm run lint:staged` | Run linting on staged files (used in pre-commit) |
+  </Accordion>
+</AccordionGroup>
+
+## IDE Setup
+
+For the best development experience, we recommend using **Visual Studio Code** with the following extensions:
+
+<CardGroup cols={2}>
+  <Card title="ESLint" icon="code">
+    By Microsoft - Provides JavaScript/TypeScript linting
+  </Card>
+  <Card title="Prettier" icon="paintbrush">
+    By Prettier - Code formatter for consistent style
+  </Card>
+  <Card title="Prettier ESLint" icon="wand-magic-sparkles">
+    By Rebecca Vest - Integrates Prettier with ESLint
+  </Card>
+</CardGroup>
+
+### Enable Format on Save
+
+<Tabs>
+  <Tab title="macOS">
+    1. Open Settings: `Cmd + ,`
+    2. Search for "format on save"
+    3. Enable "Editor: Format On Save"
+  </Tab>
+  <Tab title="Windows/Linux">
+    1. Open Settings: `Ctrl + ,`
+    2. Search for "format on save"
+    3. Enable "Editor: Format On Save"
+  </Tab>
+  <Tab title="settings.json">
+    Add to your VS Code `settings.json`:
+    
+    ```json
+    {
+      "editor.formatOnSave": true
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Local Integration Testing
+
+To test Grauity components in your own application during development:
+
+<Steps>
+  <Step title="Build Grauity">
+    In the Grauity directory, build the library:
+    
+    ```bash
+    npm run build
+    ```
+  </Step>
+
+  <Step title="Install locally in your app">
+    In your application directory, install the local Grauity build:
+    
+    ```bash
+    npm install ../grauity
+    ```
+    
+    <Note>
+      Adjust the path `../grauity` based on your directory structure.
+    </Note>
+  </Step>
+
+  <Step title="Link React dependencies">
+    To avoid React version conflicts, link React from Grauity to your app:
+    
+    ```bash
+    npm link ../grauity/node_modules/react ../grauity/node_modules/react-dom --legacy-peer-deps
+    ```
+  </Step>
+
+  <Step title="Start your app">
+    Run your application's dev server:
+    
+    ```bash
+    npm run dev
+    ```
+  </Step>
+</Steps>
+
+### Updating After Changes
+
+When you make changes to Grauity:
+
+1. **Rebuild Grauity**:
+   ```bash
+   npm run build
+   ```
+
+2. **If changes don't appear**, reinstall in your app:
+   ```bash
+   # In your app directory
+   rm -rf node_modules/@newtonschool/grauity
+   npm install ../grauity
+   ```
+
+### Using Grauity Components
+
+Import and use components in your application:
+
+```jsx
+import { NSButton, BUTTON_VARIANTS_ENUM } from '@newtonschool/grauity';
+
+export const MyComponent = () => (
+  <NSButton
+    variant="primary"
+    onClick={() => {
+      console.log('Clicked!');
+    }}
+  >
+    Click me!
+  </NSButton>
+);
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Icons not showing up">
+    Run `npm run build-icons` to regenerate icon fonts. Make sure the iconland submodule is properly initialized.
+  </Accordion>
+
+  <Accordion title="Storybook won't start">
+    - Clear the Parcel cache: `rm -rf .parcel-cache`
+    - Reinstall dependencies: `rm -rf node_modules && npm install`
+    - Check that you're using Node.js >= 18.0.0
+  </Accordion>
+
+  <Accordion title="Type errors in IDE">
+    Run `npm run extract-typings` to regenerate TypeScript declaration files.
+  </Accordion>
+
+  <Accordion title="Changes not reflecting in local app">
+    - Rebuild Grauity: `npm run build`
+    - Clear your app's Grauity cache: `rm -rf node_modules/@newtonschool/grauity`
+    - Reinstall: `npm install ../grauity`
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Contribution Guidelines" icon="book" href="/contributing/guidelines">
+    Learn about coding standards and best practices
+  </Card>
+  <Card title="Adding Components" icon="plus" href="/contributing/adding-components">
+    Step-by-step guide to creating new components
+  </Card>
+</CardGroup>

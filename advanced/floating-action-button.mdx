@@ -1,0 +1,477 @@
+---
+title: FloatingActionButton
+description: A floating action button that remains fixed at the bottom of the viewport
+icon: circle-plus
+---
+
+## Overview
+
+`NSFloatingActionButton` is a specialized button component that renders as a portal to the document body, floating above all other content. It's positioned at the bottom of the viewport and can be placed on the left, middle, or right side.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Portal Rendering" icon="portal">
+    Renders outside the normal component hierarchy using React portals
+  </Card>
+  <Card title="Flexible Positioning" icon="arrows-left-right">
+    Position on left, middle, or right side of the viewport
+  </Card>
+  <Card title="Fixed Placement" icon="thumbtack">
+    Stays visible at the bottom while scrolling
+  </Card>
+  <Card title="Custom Content" icon="wand-magic-sparkles">
+    Accepts any React component as children
+  </Card>
+</CardGroup>
+
+## Import
+
+```tsx
+import { NSFloatingActionButton } from '@grauity/ui';
+```
+
+## Basic Usage
+
+<CodeGroup>
+
+```tsx Simple Button
+import { NSFloatingActionButton, NSIconButton } from '@grauity/ui';
+
+function App() {
+  return (
+    <NSFloatingActionButton
+      position="right"
+      onClick={(triggerRef) => console.log('FAB clicked')}
+    >
+      <NSIconButton icon="plus" />
+    </NSFloatingActionButton>
+  );
+}
+```
+
+```tsx With PopOver
+import { NSFloatingActionButton, NSIconButton, NSPopOver } from '@grauity/ui';
+import { useState, useRef } from 'react';
+
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  const trigger = useRef(null);
+
+  return (
+    <>
+      <NSFloatingActionButton
+        onClick={(triggerRef) => {
+          if (isOpen) {
+            trigger.current = null;
+          } else {
+            trigger.current = triggerRef.current;
+          }
+          setIsOpen(!isOpen);
+        }}
+      >
+        <NSIconButton icon="plus" />
+      </NSFloatingActionButton>
+
+      <NSPopOver
+        triggerRef={trigger}
+        isOpen={isOpen}
+        direction="top"
+        onClose={() => setIsOpen(false)}
+        minimumOffset={{ right: 10, left: 10 }}
+      >
+        <div style={{ padding: '16px', backgroundColor: 'white' }}>
+          <p>Quick actions</p>
+          <button>Action 1</button>
+          <button>Action 2</button>
+        </div>
+      </NSPopOver>
+    </>
+  );
+}
+```
+
+```tsx Left Position
+import { NSFloatingActionButton, NSIconButton } from '@grauity/ui';
+
+function App() {
+  return (
+    <NSFloatingActionButton
+      position="left"
+      sideOffset="20px"
+      bottomOffset="20px"
+    >
+      <NSIconButton icon="message" />
+    </NSFloatingActionButton>
+  );
+}
+```
+
+</CodeGroup>
+
+## Props
+
+<ParamField path="children" type="React.ReactNode">
+  The element to be rendered as the floating button. Typically an `NSIconButton` or custom button component.
+</ParamField>
+
+<ParamField path="position" type="'left' | 'mid' | 'right'" default="'right'">
+  The horizontal position of the floating button at the bottom of the viewport.
+  
+  - `'left'`: Positioned on the left side
+  - `'mid'`: Centered horizontally
+  - `'right'`: Positioned on the right side
+</ParamField>
+
+<ParamField path="onClick" type="(triggerRef: React.MutableRefObject<HTMLDivElement>) => void">
+  Function called when the floating button is clicked. Receives a ref to the floating button element, which is useful for positioning popovers or menus relative to the button.
+</ParamField>
+
+<ParamField path="sideOffset" type="string" default="'10px'">
+  The offset of the floating button from the side boundaries (left or right edge of the viewport).
+</ParamField>
+
+<ParamField path="bottomOffset" type="string" default="'10px'">
+  The offset of the floating button from the bottom boundary of the viewport.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class names to apply to the floating button container.
+</ParamField>
+
+## Examples
+
+### Three Position Options
+
+```tsx
+import { NSFloatingActionButton, NSIconButton } from '@grauity/ui';
+
+function PositionExamples() {
+  return (
+    <>
+      {/* Left position */}
+      <NSFloatingActionButton position="left">
+        <NSIconButton icon="arrow-left" />
+      </NSFloatingActionButton>
+
+      {/* Center position */}
+      <NSFloatingActionButton position="mid">
+        <NSIconButton icon="plus" />
+      </NSFloatingActionButton>
+
+      {/* Right position (default) */}
+      <NSFloatingActionButton position="right">
+        <NSIconButton icon="arrow-right" />
+      </NSFloatingActionButton>
+    </>
+  );
+}
+```
+
+### Custom Offsets
+
+```tsx
+import { NSFloatingActionButton, NSIconButton } from '@grauity/ui';
+
+function CustomOffsets() {
+  return (
+    <NSFloatingActionButton
+      position="right"
+      sideOffset="40px"
+      bottomOffset="80px"
+    >
+      <NSIconButton icon="plus" size="large" />
+    </NSFloatingActionButton>
+  );
+}
+```
+
+### With Menu
+
+```tsx
+import { 
+  NSFloatingActionButton, 
+  NSIconButton, 
+  NSPopOver,
+  NSButton 
+} from '@grauity/ui';
+import { useState, useRef } from 'react';
+import styled from 'styled-components';
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+`;
+
+function FABWithMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef(null);
+
+  const handleOpen = (ref) => {
+    triggerRef.current = ref.current;
+    setIsOpen(true);
+  };
+
+  const handleAction = (action: string) => {
+    console.log('Action:', action);
+    setIsOpen(false);
+  };
+
+  return (
+    <>
+      <NSFloatingActionButton onClick={handleOpen}>
+        <NSIconButton icon={isOpen ? 'x' : 'plus'} />
+      </NSFloatingActionButton>
+
+      <NSPopOver
+        triggerRef={triggerRef}
+        isOpen={isOpen}
+        direction="top"
+        onClose={() => setIsOpen(false)}
+        shouldCloseOnOutsideClick
+      >
+        <MenuContainer>
+          <NSButton 
+            variant="ghost" 
+            icon="file-plus"
+            onClick={() => handleAction('new')}
+          >
+            New Document
+          </NSButton>
+          <NSButton 
+            variant="ghost" 
+            icon="upload"
+            onClick={() => handleAction('upload')}
+          >
+            Upload File
+          </NSButton>
+          <NSButton 
+            variant="ghost" 
+            icon="folder"
+            onClick={() => handleAction('folder')}
+          >
+            New Folder
+          </NSButton>
+        </MenuContainer>
+      </NSPopOver>
+    </>
+  );
+}
+```
+
+### Custom Styled Button
+
+```tsx
+import { NSFloatingActionButton } from '@grauity/ui';
+import styled from 'styled-components';
+
+const CustomFAB = styled.button`
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+function StyledFAB() {
+  return (
+    <NSFloatingActionButton
+      position="right"
+      onClick={() => console.log('Custom FAB clicked')}
+    >
+      <CustomFAB>+</CustomFAB>
+    </NSFloatingActionButton>
+  );
+}
+```
+
+### Multiple FABs
+
+```tsx
+import { NSFloatingActionButton, NSIconButton } from '@grauity/ui';
+
+function MultipleFABs() {
+  return (
+    <>
+      {/* Main action on the right */}
+      <NSFloatingActionButton 
+        position="right"
+        onClick={() => console.log('Main action')}
+      >
+        <NSIconButton icon="plus" />
+      </NSFloatingActionButton>
+
+      {/* Secondary action on the left */}
+      <NSFloatingActionButton 
+        position="left"
+        onClick={() => console.log('Secondary action')}
+      >
+        <NSIconButton icon="message" />
+      </NSFloatingActionButton>
+    </>
+  );
+}
+```
+
+### Animated FAB
+
+```tsx
+import { NSFloatingActionButton, NSIconButton } from '@grauity/ui';
+import { useState } from 'react';
+import styled from 'styled-components';
+
+const RotatingIcon = styled.div<{ $isOpen: boolean }>`
+  transition: transform 0.3s ease;
+  transform: rotate(${props => props.$isOpen ? '45deg' : '0deg'});
+`;
+
+function AnimatedFAB() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <NSFloatingActionButton
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      <RotatingIcon $isOpen={isOpen}>
+        <NSIconButton icon="plus" />
+      </RotatingIcon>
+    </NSFloatingActionButton>
+  );
+}
+```
+
+## Behavior
+
+<Info>
+  The component uses `ReactDOM.createPortal` to render the button as a direct child of `document.body`. This ensures it appears above all other content and is not affected by parent component positioning or overflow settings.
+</Info>
+
+<Note>
+  The `onClick` callback receives a ref to the floating button element. This is particularly useful when you need to position a popover or menu relative to the button, as shown in the examples with `NSPopOver`.
+</Note>
+
+## Positioning Details
+
+- **Fixed positioning**: The button uses `position: fixed` in CSS
+- **Z-index**: Rendered at a high z-index to appear above other content
+- **Bottom alignment**: Always positioned relative to the bottom of the viewport
+- **Horizontal alignment**: Controlled by the `position` prop
+  - `left`: `left: {sideOffset}`
+  - `mid`: Centered using transform
+  - `right`: `right: {sideOffset}`
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Primary Actions">
+    Use for the most important action on a page, such as creating a new item, composing a message, or starting a new task.
+    
+    ```tsx
+    <NSFloatingActionButton onClick={handleCreateNew}>
+      <NSIconButton icon="plus" />
+    </NSFloatingActionButton>
+    ```
+  </Accordion>
+  
+  <Accordion title="Quick Access Menus">
+    Combine with a popover to show a menu of quick actions:
+    
+    ```tsx
+    <NSFloatingActionButton onClick={toggleMenu}>
+      <NSIconButton icon="ellipsis-vertical" />
+    </NSFloatingActionButton>
+    ```
+  </Accordion>
+  
+  <Accordion title="Chat or Support">
+    Provide quick access to chat or support features:
+    
+    ```tsx
+    <NSFloatingActionButton position="right">
+      <NSIconButton icon="message-circle" />
+    </NSFloatingActionButton>
+    ```
+  </Accordion>
+  
+  <Accordion title="Scroll to Top">
+    Create a scroll-to-top button for long pages:
+    
+    ```tsx
+    <NSFloatingActionButton 
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+    >
+      <NSIconButton icon="arrow-up" />
+    </NSFloatingActionButton>
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Check>
+  **Do:**
+  - Use for primary or frequently used actions
+  - Keep the button visible and accessible at all times
+  - Use clear, recognizable icons
+  - Provide appropriate spacing from screen edges
+  - Consider mobile viewport sizes when setting offsets
+</Check>
+
+<Warning>
+  **Don't:**
+  - Use multiple FABs for unrelated actions on the same screen
+  - Block important content with the FAB placement
+  - Use for destructive actions without confirmation
+  - Make the FAB too small (minimum 48x48px for touch targets)
+</Warning>
+
+## Accessibility
+
+- Ensure the child button element has appropriate ARIA labels
+- Use `NSIconButton` which includes proper accessibility attributes
+- Provide sufficient contrast for the button and icon
+- Ensure the button is keyboard accessible
+- Consider adding a tooltip for clarity
+
+```tsx
+<NSFloatingActionButton onClick={handleClick}>
+  <NSIconButton 
+    icon="plus" 
+    aria-label="Create new item"
+  />
+</NSFloatingActionButton>
+```
+
+## Mobile Considerations
+
+<Info>
+  On mobile devices, ensure the FAB doesn't interfere with native navigation elements or important content. Consider using larger offsets on smaller screens:
+  
+  ```tsx
+  <NSFloatingActionButton
+    sideOffset="16px"
+    bottomOffset="80px" // Account for mobile bottom navigation
+  >
+    <NSIconButton icon="plus" />
+  </NSFloatingActionButton>
+  ```
+</Info>

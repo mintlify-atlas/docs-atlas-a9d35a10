@@ -1,0 +1,379 @@
+---
+title: Installation
+description: Install and configure Grauity in your React application
+---
+
+# Installation
+
+Get started with Grauity by installing the package and configuring your project.
+
+## Prerequisites
+
+Before installing Grauity, ensure your project meets these requirements:
+
+<CodeGroup>
+```json package.json
+{
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9"
+  }
+}
+```
+</CodeGroup>
+
+<Note>
+  Grauity requires **Node.js 18.0.0** or higher and **npm 9** or higher.
+</Note>
+
+## Step 1: Install the package
+
+<Steps>
+  <Step title="Install Grauity and peer dependencies">
+    Install `@newtonschool/grauity` along with its required peer dependencies:
+
+    <CodeGroup>
+    ```bash npm
+    npm install @newtonschool/grauity react react-dom styled-components
+    ```
+
+    ```bash yarn
+    yarn add @newtonschool/grauity react react-dom styled-components
+    ```
+
+    ```bash pnpm
+    pnpm add @newtonschool/grauity react react-dom styled-components
+    ```
+    </CodeGroup>
+
+    <Note>
+      **Peer dependencies:**
+      - `react` >= 18.2.0
+      - `react-dom` >= 18.2.0
+      - `styled-components` >= 6.1.14
+    </Note>
+  </Step>
+
+  <Step title="Import icon styles">
+    To use Grauity's icon system, import the icon CSS in your root-level stylesheet or entry file.
+
+    In your `global-styles.scss` or main CSS/SCSS file:
+
+    ```scss global-styles.scss
+    @import '~@newtonschool/grauity/dist/css/index.scss';
+    ```
+
+    Or in your main JavaScript/TypeScript entry file:
+
+    ```tsx main.tsx
+    import '@newtonschool/grauity/dist/css/index.scss';
+    ```
+
+    <Warning>
+      Make sure your build tool supports CSS/SCSS imports. For Webpack, you'll need `style-loader`, `css-loader`, and `sass-loader` configured.
+    </Warning>
+  </Step>
+</Steps>
+
+## Step 2: Set up the theme provider
+
+<Steps>
+  <Step title="Wrap your app with GrauityThemeProvider">
+    Grauity uses `GrauityThemeProvider` to enable theming support. Wrap your root component with this provider:
+
+    ```tsx App.tsx
+    import React, { useState } from 'react';
+    import { GrauityThemeProvider } from '@newtonschool/grauity';
+
+    function App() {
+      const [currentTheme, setCurrentTheme] = useState('light');
+
+      return (
+        <GrauityThemeProvider rootThemeScopeTheme={currentTheme}>
+          {/* Your app components */}
+        </GrauityThemeProvider>
+      );
+    }
+
+    export default App;
+    ```
+
+    <Tip>
+      The `rootThemeScopeTheme` prop should be set to your current global theme (`"light"` or `"dark"`). This enables scoped theming with the `NSThemeScope` component.
+    </Tip>
+  </Step>
+
+  <Step title="Understanding theming (optional)">
+    Without the `GrauityThemeProvider`, only foundational (theme-agnostic) CSS variables will be available. The provider adds:
+
+    - **Global theme context** - Access to light/dark theme variables
+    - **Theme scoping** - Use `NSThemeScope` to apply different themes to sections
+    - **Dynamic theming** - Switch themes at runtime
+
+    The provider internally uses styled-components' `ThemeProvider` and injects both light and dark theme configurations:
+
+    ```tsx
+    import { 
+      GrauityThemeProvider,
+      NS_LIGHT_THEME_CONFIG,
+      NS_DARK_THEME_CONFIG 
+    } from '@newtonschool/grauity';
+
+    // Custom theme configuration (optional)
+    const customThemeConfig = {
+      light: NS_LIGHT_THEME_CONFIG,
+      dark: NS_DARK_THEME_CONFIG,
+    };
+
+    function App() {
+      return (
+        <GrauityThemeProvider 
+          themeConfig={customThemeConfig}
+          rootThemeScopeTheme="light"
+        >
+          {/* Your app */}
+        </GrauityThemeProvider>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+
+## Step 3: Import and use components
+
+You're ready to use Grauity components! Import them from the main package:
+
+```tsx Example.tsx
+import { NSButton, NSTextField, NSModal } from '@newtonschool/grauity';
+
+function Example() {
+  return (
+    <div>
+      <NSButton variant="primary" color="brand">
+        Click me
+      </NSButton>
+      
+      <NSTextField
+        name="email"
+        label="Email address"
+        placeholder="Enter your email"
+      />
+    </div>
+  );
+}
+```
+
+## TypeScript configuration
+
+Grauity is built with TypeScript and includes type definitions. No additional setup is required, but ensure your `tsconfig.json` includes:
+
+```json tsconfig.json
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
+```
+
+## Build tool configuration
+
+### Webpack
+
+If you're using Webpack, ensure you have loaders for SCSS:
+
+```bash
+npm install --save-dev style-loader css-loader sass-loader sass
+```
+
+```js webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+};
+```
+
+### Vite
+
+For Vite, install sass:
+
+```bash
+npm install --save-dev sass
+```
+
+Vite will automatically handle SCSS imports.
+
+### Next.js
+
+For Next.js, install sass:
+
+```bash
+npm install --save-dev sass
+```
+
+Then import the icon styles in `_app.tsx`:
+
+```tsx pages/_app.tsx
+import '@newtonschool/grauity/dist/css/index.scss';
+import type { AppProps } from 'next/app';
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
+}
+
+export default MyApp;
+```
+
+<Warning>
+  **Styled-components with Next.js:** You'll need to configure styled-components for SSR. See the [styled-components Next.js guide](https://styled-components.com/docs/advanced#nextjs).
+</Warning>
+
+## Theme scoping (advanced)
+
+Use `NSThemeScope` to apply different themes to specific sections of your app:
+
+```tsx
+import { NSThemeScope, NSButton } from '@newtonschool/grauity';
+
+function Example() {
+  return (
+    <div>
+      {/* Light theme section */}
+      <NSThemeScope applyTheme="light">
+        <NSButton variant="primary">Light button</NSButton>
+      </NSThemeScope>
+
+      {/* Dark theme section */}
+      <NSThemeScope applyTheme="dark">
+        <NSButton variant="primary">Dark button</NSButton>
+      </NSThemeScope>
+
+      {/* Inverted theme (if parent is light, this becomes dark) */}
+      <NSThemeScope invert>
+        <NSButton variant="primary">Inverted button</NSButton>
+      </NSThemeScope>
+    </div>
+  );
+}
+```
+
+<Tip>
+  Use the `as` prop on `NSThemeScope` to avoid adding an extra `div` wrapper:
+  
+  ```tsx
+  <NSThemeScope as="section" applyTheme="dark">
+    {/* Content */}
+  </NSThemeScope>
+  ```
+</Tip>
+
+## Legacy theme classes (optional)
+
+If you're not using `GrauityThemeProvider`, you can control theming with CSS classes:
+
+```tsx
+// Light theme
+<body className="grauity-theme-light">
+  {/* App content */}
+</body>
+
+// Dark theme
+<body className="grauity-theme-dark">
+  {/* App content */}
+</body>
+```
+
+<Note>
+  This approach is considered legacy. We recommend using `GrauityThemeProvider` and `NSThemeScope` for better theme management.
+</Note>
+
+## Verify installation
+
+Create a simple test component to verify everything is working:
+
+```tsx Test.tsx
+import React from 'react';
+import { NSButton, NSIcon } from '@newtonschool/grauity';
+
+function Test() {
+  return (
+    <div style={{ padding: '20px' }}>
+      <NSButton 
+        variant="primary" 
+        color="brand"
+        icon="sparkle"
+        onClick={() => alert('Grauity is working!')}
+      >
+        Test Grauity
+      </NSButton>
+      
+      <div style={{ marginTop: '20px' }}>
+        <NSIcon name="check-circle" size="32" color="var(--color-success-base)" />
+        <span>Installation successful!</span>
+      </div>
+    </div>
+  );
+}
+
+export default Test;
+```
+
+If you see a styled button with an icon, congratulations! Grauity is installed correctly.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart tutorial" icon="rocket" href="/quickstart">
+    Build your first component with Grauity
+  </Card>
+  
+  <Card title="Component documentation" icon="book" href="https://grauity.newtonschool.co">
+    Explore all available components
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Icons not showing">
+    Make sure you've imported the icon CSS:
+    ```scss
+    @import '~@newtonschool/grauity/dist/css/index.scss';
+    ```
+    
+    Also verify that your build tool (Webpack, Vite, etc.) is configured to handle SCSS imports.
+  </Accordion>
+
+  <Accordion title="Styled-components errors">
+    Ensure you have the correct version of styled-components installed:
+    ```bash
+    npm install styled-components@^6.1.14
+    ```
+    
+    For Next.js, make sure you've configured SSR support for styled-components.
+  </Accordion>
+
+  <Accordion title="TypeScript errors">
+    If you're getting TypeScript errors, ensure your `tsconfig.json` has:
+    - `"jsx": "react-jsx"` or `"jsx": "react"`
+    - `"esModuleInterop": true`
+    - `"skipLibCheck": true`
+  </Accordion>
+
+  <Accordion title="Theme not applying">
+    Make sure you've wrapped your app with `GrauityThemeProvider`:
+    ```tsx
+    <GrauityThemeProvider rootThemeScopeTheme="light">
+      <App />
+    </GrauityThemeProvider>
+    ```
+  </Accordion>
+</AccordionGroup>

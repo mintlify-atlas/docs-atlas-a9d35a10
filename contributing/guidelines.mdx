@@ -1,0 +1,471 @@
+---
+title: Contribution Guidelines
+description: Standards, conventions, and best practices for contributing to Grauity
+---
+
+## Code of Conduct
+
+Grauity follows the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/). By participating in this project, you agree to abide by its terms.
+
+### Our Pledge
+
+We pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity, experience level, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+
+### Our Standards
+
+<CardGroup cols={2}>
+  <Card title="Positive Behavior" icon="thumbs-up">
+    - Demonstrate empathy and kindness
+    - Respect differing opinions and experiences
+    - Give and accept constructive feedback gracefully
+    - Focus on what's best for the community
+  </Card>
+  <Card title="Unacceptable Behavior" icon="ban">
+    - Sexualized language or imagery
+    - Trolling, insulting, or derogatory comments
+    - Public or private harassment
+    - Publishing others' private information
+  </Card>
+</CardGroup>
+
+### Reporting Issues
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders at [tech@newtonschool.co](mailto:tech@newtonschool.co).
+
+## Development Workflow
+
+Before creating an issue or pull request, please spend several minutes reviewing these guidelines.
+
+<Steps>
+  <Step title="Fork and clone">
+    Fork the repository and clone it to your local machine.
+  </Step>
+
+  <Step title="Create a feature branch">
+    Create a new branch for your feature or bug fix:
+    ```bash
+    git checkout -b feature/my-new-component
+    ```
+  </Step>
+
+  <Step title="Make your changes">
+    Develop your feature following the coding standards outlined below.
+  </Step>
+
+  <Step title="Test thoroughly">
+    Write and run tests for your changes:
+    ```bash
+    npm test
+    npm run storybook
+    ```
+  </Step>
+
+  <Step title="Submit a pull request">
+    Push your branch and create a pull request with a clear description of your changes.
+  </Step>
+</Steps>
+
+## Component Naming Convention
+
+<Warning>
+  All Grauity components **must** be prefixed with `NS` (Newton School).
+</Warning>
+
+The `NS` prefix is a core convention that identifies components as part of the Grauity design system:
+
+```typescript
+// ✅ Correct
+NSButton
+NSTable
+NSInput
+NSDropdown
+
+// ❌ Incorrect
+Button
+Table
+Input
+Dropdown
+```
+
+### Why NS Prefix?
+
+- **Namespace collision prevention**: Avoids conflicts with other libraries
+- **Clear identification**: Immediately identifies Grauity components
+- **Brand consistency**: Associates components with Newton School
+
+## File and Folder Naming Conventions
+
+<Note>
+  Consistent naming makes the codebase more navigable and maintainable.
+</Note>
+
+| Category | Format | Examples |
+|----------|--------|----------|
+| **First Level Folders** | kebab-case | `elements`, `fonts`, `helpers`, `utils` |
+| **Component Folders** | PascalCase | `Button`, `Icon`, `Dropdown` |
+| **Component Files** | PascalCase.tsx | `Button.tsx`, `Icon.tsx` |
+| **Style Files** | PascalCase.styles.ts | `Button.styles.ts` |
+| **Test Files** | PascalCase.test.tsx | `Button.test.tsx` |
+| **Type Files** | camelCase.ts | `types.ts`, `constants.ts` |
+| **Story Folders** | PascalCase | `Button`, `Icon` |
+| **Story Files** | PascalCase.stories.tsx | `Button.stories.tsx`, `index.stories.tsx` |
+| **Story Examples** | example.source.tsx | `example.source.tsx` |
+| **Utility Files** | camelCase.ts | `classNameBuilders.ts`, `utils.ts` |
+
+### Example Component Structure
+
+```
+ui/elements/Button/
+├── Button.tsx              # Main component
+├── Button.styles.ts        # Styled components
+├── Button.test.tsx         # Unit tests
+├── ButtonGroup.tsx         # Related component
+├── IconButton.tsx          # Component variant
+├── types.ts                # TypeScript types
+├── constants.ts            # Constants and enums
+├── utils.ts                # Helper functions
+└── index.ts                # Public exports
+
+stories/elements/Button/
+├── index.stories.tsx       # Main story
+└── Gallery.stories.tsx     # Additional examples
+```
+
+## Code Quality Standards
+
+### ESLint Configuration
+
+Grauity uses ESLint with Airbnb's configuration for code quality:
+
+<CodeGroup>
+```json ESLint Rules
+{
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "rules": {
+    "indent": ["error", 4],
+    "quotes": ["warn", "single"],
+    "semi": ["error", "always"],
+    "no-console": "error",
+    "react/jsx-indent": ["error", 4],
+    "react/jsx-indent-props": ["error", 4]
+  }
+}
+```
+</CodeGroup>
+
+**Key rules to remember:**
+
+- **Indentation**: 4 spaces (not 2)
+- **Quotes**: Single quotes for strings
+- **Semicolons**: Always required
+- **Console statements**: Not allowed (use proper logging)
+- **Import sorting**: Automatically sorted with `simple-import-sort`
+
+### Prettier Configuration
+
+Prettier is configured for consistent code formatting:
+
+```json
+{
+  "singleQuote": true
+}
+```
+
+<Tip>
+  Enable "Format on Save" in your IDE to automatically format code as you work.
+</Tip>
+
+### Running Linters
+
+```bash
+# Check for linting errors
+npm run lint
+
+# Auto-fix linting errors
+npm run lint:fix
+
+# Format code with Prettier
+npm run prettify
+```
+
+### Pre-commit Hooks
+
+Grauity uses `lint-staged` to automatically lint and format code before commits:
+
+- **JavaScript/TypeScript files**: Prettified and ESLint auto-fixed
+- **JSON files**: Prettified
+
+This ensures all committed code meets quality standards.
+
+## TypeScript Requirements
+
+<Warning>
+  All components must be written in TypeScript with proper type definitions.
+</Warning>
+
+### Type Definitions
+
+Every component must:
+
+1. **Export type definitions** in a `types.ts` file
+2. **Define prop interfaces** with clear documentation
+3. **Export enums** for variant options
+
+**Example:**
+
+```typescript types.ts
+import { ReactNode } from 'react';
+
+export interface ButtonProps {
+  /** Button visual style variant */
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  
+  /** Button size */
+  size?: 'small' | 'medium' | 'large';
+  
+  /** Button content */
+  children: ReactNode;
+  
+  /** Click handler */
+  onClick?: () => void;
+  
+  /** Disabled state */
+  disabled?: boolean;
+  
+  /** Loading state with spinner */
+  loading?: boolean;
+}
+
+export enum BUTTON_VARIANTS_ENUM {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+}
+```
+
+### Component Implementation
+
+```typescript Button.tsx
+import React from 'react';
+import { ButtonProps } from './types';
+
+const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  size = 'medium',
+  children,
+  disabled = false,
+  loading = false,
+  onClick,
+  ...props
+}) => {
+  return (
+    <button
+      disabled={disabled || loading}
+      onClick={onClick}
+      {...props}
+    >
+      {loading ? 'Loading...' : children}
+    </button>
+  );
+};
+
+export default Button;
+```
+
+## Testing Requirements
+
+<Note>
+  All components must have comprehensive unit tests using Jest and React Testing Library.
+</Note>
+
+### Test File Structure
+
+```typescript Button.test.tsx
+import '@testing-library/jest-dom';
+import { render, screen, fireEvent } from '@testing-library/react';
+import React from 'react';
+import Button from './Button';
+
+describe('Button', () => {
+  it('renders with default props', () => {
+    render(<Button>Click Me</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveTextContent('Click Me');
+  });
+
+  it('calls onClick handler when clicked', () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click Me</Button>);
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('is disabled when disabled prop is true', () => {
+    render(<Button disabled>Click Me</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+  });
+});
+```
+
+### What to Test
+
+<AccordionGroup>
+  <Accordion title="Component Rendering">
+    - Renders with default props
+    - Renders with all prop combinations
+    - Renders children correctly
+  </Accordion>
+
+  <Accordion title="User Interactions">
+    - Click handlers are called
+    - Keyboard navigation works
+    - Focus management is correct
+  </Accordion>
+
+  <Accordion title="State Management">
+    - Disabled state prevents interaction
+    - Loading state shows correct UI
+    - Error states display properly
+  </Accordion>
+
+  <Accordion title="Accessibility">
+    - ARIA attributes are correct
+    - Keyboard navigation works
+    - Screen reader support is adequate
+  </Accordion>
+</AccordionGroup>
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode (during development)
+npm test -- --watch
+```
+
+## Pull Request Process
+
+<Steps>
+  <Step title="Ensure quality standards">
+    Before submitting:
+    - All tests pass: `npm test`
+    - No linting errors: `npm run lint`
+    - Storybook builds successfully: `npm run build-storybook`
+  </Step>
+
+  <Step title="Write a clear description">
+    Your PR should include:
+    - **What** changed
+    - **Why** it changed
+    - **How** to test it
+    - Screenshots/GIFs for UI changes
+  </Step>
+
+  <Step title="Link related issues">
+    Reference any related GitHub issues:
+    ```
+    Closes #123
+    Related to #456
+    ```
+  </Step>
+
+  <Step title="Request review">
+    Request review from maintainers and address feedback promptly.
+  </Step>
+
+  <Step title="CI checks must pass">
+    Ensure all automated checks pass:
+    - ✅ Tests
+    - ✅ Build
+    - ✅ Linting
+  </Step>
+</Steps>
+
+### PR Title Format
+
+Use clear, descriptive titles:
+
+```
+✅ feat: Add NSTooltip component
+✅ fix: Correct NSButton disabled state styling
+✅ docs: Update NSTable usage examples
+✅ refactor: Simplify NSDropdown menu logic
+
+❌ Update button
+❌ Fix bug
+❌ Changes
+```
+
+## Icon Contributions
+
+When adding or modifying icons:
+
+### Icon File Naming
+
+Icon filenames follow this format:
+```
+tag1|tag2|tagN|icon-name.svg
+```
+
+| Component | Format | Examples |
+|-----------|--------|----------|
+| **Tags** | camelCase | `usersAndPeople`, `buildings`, `arrows`, `audioAndVideo` |
+| **Icon name** | kebab-case | `user-profile`, `user-add`, `arrow-right` |
+
+**Examples:**
+```
+usersAndPeople|user-profile.svg
+buildings|arrows|building-arrow-right.svg
+audioAndVideo|volume-high.svg
+```
+
+### Adding New Icons
+
+<Steps>
+  <Step title="Add SVG files">
+    Place your `.svg` files in `iconland/seeds/` directory
+  </Step>
+
+  <Step title="Build icons">
+    Generate the font files:
+    ```bash
+    npm run build-icons
+    ```
+  </Step>
+
+  <Step title="Test in Storybook">
+    Verify your icons appear correctly in the Icon component story
+  </Step>
+</Steps>
+
+## Getting Help
+
+<CardGroup cols={2}>
+  <Card title="GitHub Issues" icon="github" href="https://github.com/Newton-School/grauity/issues">
+    Report bugs or request features
+  </Card>
+  <Card title="Email Support" icon="envelope" href="mailto:tech@newtonschool.co">
+    Contact the maintainers directly
+  </Card>
+  <Card title="Documentation" icon="book" href="https://grauity.newtonschool.co">
+    Browse component documentation
+  </Card>
+  <Card title="Contributing Guide" icon="code" href="https://github.com/Newton-School/grauity/blob/main/CONTRIBUTING.md">
+    Read the full contributing guide
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Card title="Adding Components" icon="plus" href="/contributing/adding-components">
+  Ready to contribute? Learn how to add a new component to Grauity
+</Card>

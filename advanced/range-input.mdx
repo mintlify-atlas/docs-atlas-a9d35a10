@@ -1,0 +1,557 @@
+---
+title: RangeInput
+description: A dual-handle slider for selecting a range of values
+icon: sliders
+---
+
+## Overview
+
+`NSRangeInput` is a specialized input component that allows users to select a range between two values using dual slider handles. It provides a visual and interactive way to define minimum and maximum values within a specified range.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Dual Handles" icon="grip-lines">
+    Two independent slider handles for min and max values
+  </Card>
+  <Card title="Visual Feedback" icon="eye">
+    Real-time display of current min and max values
+  </Card>
+  <Card title="Flexible Range" icon="arrows-left-right">
+    Configure any numeric range with custom steps
+  </Card>
+  <Card title="Auto-Correction" icon="arrows-left-right-to-line">
+    Automatically ensures min ≤ max
+  </Card>
+</CardGroup>
+
+## Import
+
+```tsx
+import { NSRangeInput } from '@grauity/ui';
+```
+
+## Basic Usage
+
+<CodeGroup>
+
+```tsx Controlled Component
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+
+function PriceFilter() {
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 100 });
+
+  return (
+    <div>
+      <NSRangeInput
+        minValue={0}
+        maxValue={100}
+        value={priceRange}
+        onChange={(value) => setPriceRange(value)}
+      />
+      <p>
+        Selected range: ${priceRange.min} - ${priceRange.max}
+      </p>
+    </div>
+  );
+}
+```
+
+```tsx Custom Range
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+
+function AgeFilter() {
+  const [ageRange, setAgeRange] = useState({ min: 18, max: 65 });
+
+  return (
+    <NSRangeInput
+      minValue={0}
+      maxValue={100}
+      step={1}
+      value={ageRange}
+      onChange={setAgeRange}
+      width="400px"
+    />
+  );
+}
+```
+
+```tsx With Step
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+
+function TemperatureRange() {
+  const [temp, setTemp] = useState({ min: 20, max: 25 });
+
+  return (
+    <NSRangeInput
+      minValue={0}
+      maxValue={50}
+      step={0.5}
+      value={temp}
+      onChange={setTemp}
+    />
+  );
+}
+```
+
+</CodeGroup>
+
+## Props
+
+<ParamField path="minValue" type="number" default="0">
+  The minimum value of the range input. This is the lowest value that can be selected.
+</ParamField>
+
+<ParamField path="maxValue" type="number" default="100">
+  The maximum value of the range input. This is the highest value that can be selected.
+</ParamField>
+
+<ParamField path="step" type="number" default="1">
+  The step/increment value for the slider. Determines the granularity of value selection.
+</ParamField>
+
+<ParamField path="value" type="RangeInputValue" default="{ min: 0, max: 100 }">
+  The current value of the range input. An object with `min` and `max` properties.
+  
+  ```typescript
+  type RangeInputValue = {
+    min: number;
+    max: number;
+  };
+  ```
+</ParamField>
+
+<ParamField path="onChange" type="(value: RangeInputValue) => void">
+  Callback function invoked when the range input value changes. Receives the new value object with `min` and `max` properties.
+</ParamField>
+
+<ParamField path="width" type="string" default="'100%'">
+  The width of the range input container. Accepts any valid CSS width value.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name for the range input container.
+</ParamField>
+
+## Examples
+
+### Price Range Filter
+
+```tsx
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+import styled from 'styled-components';
+
+const FilterContainer = styled.div`
+  padding: 20px;
+  max-width: 400px;
+`;
+
+const Label = styled.label`
+  display: block;
+  margin-bottom: 16px;
+  font-weight: 600;
+`;
+
+const RangeDisplay = styled.div`
+  margin-top: 12px;
+  font-size: 14px;
+  color: #666;
+`;
+
+function PriceRangeFilter() {
+  const [priceRange, setPriceRange] = useState({ min: 50, max: 500 });
+
+  return (
+    <FilterContainer>
+      <Label>Price Range</Label>
+      <NSRangeInput
+        minValue={0}
+        maxValue={1000}
+        step={10}
+        value={priceRange}
+        onChange={setPriceRange}
+      />
+      <RangeDisplay>
+        ${priceRange.min.toFixed(2)} - ${priceRange.max.toFixed(2)}
+      </RangeDisplay>
+    </FilterContainer>
+  );
+}
+```
+
+### Date Range (Year Selection)
+
+```tsx
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+
+function YearRangeSelector() {
+  const currentYear = new Date().getFullYear();
+  const [yearRange, setYearRange] = useState({ 
+    min: currentYear - 10, 
+    max: currentYear 
+  });
+
+  return (
+    <div>
+      <h3>Select Year Range</h3>
+      <NSRangeInput
+        minValue={1900}
+        maxValue={currentYear}
+        step={1}
+        value={yearRange}
+        onChange={setYearRange}
+        width="500px"
+      />
+      <p>
+        From {yearRange.min} to {yearRange.max} 
+        ({yearRange.max - yearRange.min + 1} years)
+      </p>
+    </div>
+  );
+}
+```
+
+### Percentage Range
+
+```tsx
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+
+function PercentageRange() {
+  const [range, setRange] = useState({ min: 25, max: 75 });
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '400px' }}>
+      <h4>Discount Range</h4>
+      <NSRangeInput
+        minValue={0}
+        maxValue={100}
+        step={5}
+        value={range}
+        onChange={setRange}
+      />
+      <div style={{ marginTop: '12px' }}>
+        <strong>{range.min}% - {range.max}%</strong>
+      </div>
+    </div>
+  );
+}
+```
+
+### With Reset Button
+
+```tsx
+import { NSRangeInput, NSButton } from '@grauity/ui';
+import { useState } from 'react';
+
+function RangeWithReset() {
+  const defaultRange = { min: 0, max: 100 };
+  const [range, setRange] = useState(defaultRange);
+
+  return (
+    <div style={{ padding: '20px', maxWidth: '500px' }}>
+      <div style={{ marginBottom: '16px' }}>
+        <NSRangeInput
+          minValue={0}
+          maxValue={100}
+          value={range}
+          onChange={setRange}
+        />
+      </div>
+      <NSButton 
+        variant="outline" 
+        onClick={() => setRange(defaultRange)}
+      >
+        Reset to Default
+      </NSButton>
+    </div>
+  );
+}
+```
+
+### Multiple Range Inputs
+
+```tsx
+import { NSRangeInput } from '@grauity/ui';
+import { useState } from 'react';
+import styled from 'styled-components';
+
+const FilterGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+  max-width: 500px;
+`;
+
+const FilterItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+function MultipleFilters() {
+  const [price, setPrice] = useState({ min: 0, max: 1000 });
+  const [rating, setRating] = useState({ min: 0, max: 5 });
+  const [distance, setDistance] = useState({ min: 0, max: 50 });
+
+  return (
+    <FilterGroup>
+      <FilterItem>
+        <label><strong>Price ($)</strong></label>
+        <NSRangeInput
+          minValue={0}
+          maxValue={1000}
+          step={10}
+          value={price}
+          onChange={setPrice}
+        />
+        <span>${price.min} - ${price.max}</span>
+      </FilterItem>
+
+      <FilterItem>
+        <label><strong>Rating</strong></label>
+        <NSRangeInput
+          minValue={0}
+          maxValue={5}
+          step={0.5}
+          value={rating}
+          onChange={setRating}
+        />
+        <span>{rating.min} - {rating.max} stars</span>
+      </FilterItem>
+
+      <FilterItem>
+        <label><strong>Distance (km)</strong></label>
+        <NSRangeInput
+          minValue={0}
+          maxValue={50}
+          step={1}
+          value={distance}
+          onChange={setDistance}
+        />
+        <span>{distance.min} - {distance.max} km</span>
+      </FilterItem>
+    </FilterGroup>
+  );
+}
+```
+
+### With Form Integration
+
+```tsx
+import { NSRangeInput, NSButton } from '@grauity/ui';
+import { useState } from 'react';
+
+function SearchForm() {
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Search with price range:', priceRange);
+    setSubmitted(true);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{ padding: '20px', maxWidth: '500px' }}>
+      <h3>Search Products</h3>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <label>Price Range</label>
+        <NSRangeInput
+          minValue={0}
+          maxValue={2000}
+          step={50}
+          value={priceRange}
+          onChange={setPriceRange}
+        />
+      </div>
+
+      <NSButton type="submit">
+        Search
+      </NSButton>
+
+      {submitted && (
+        <div style={{ marginTop: '20px' }}>
+          <strong>Searching for products between ${priceRange.min} and ${priceRange.max}</strong>
+        </div>
+      )}
+    </form>
+  );
+}
+```
+
+## Behavior
+
+<Info>
+  **Auto-Correction**: The component automatically ensures that the minimum value never exceeds the maximum value. If you drag the min handle past the max handle (or vice versa), the values will swap automatically.
+</Info>
+
+<Note>
+  **Real-time Updates**: The `onChange` callback is triggered on every slider movement. For performance-sensitive applications, consider debouncing the callback or using it with `useEffect` dependencies.
+</Note>
+
+## Value Structure
+
+The `value` prop and `onChange` callback use the `RangeInputValue` type:
+
+```typescript
+type RangeInputValue = {
+  min: number;
+  max: number;
+};
+```
+
+**Example:**
+```tsx
+const [range, setRange] = useState<RangeInputValue>({
+  min: 25,
+  max: 75
+});
+```
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="E-commerce Filters">
+    Perfect for filtering products by price range, size, weight, or other numeric attributes.
+    
+    ```tsx
+    <NSRangeInput
+      minValue={0}
+      maxValue={10000}
+      value={priceFilter}
+      onChange={setPriceFilter}
+    />
+    ```
+  </Accordion>
+  
+  <Accordion title="Date Range Selection">
+    Use for selecting year ranges, age ranges, or time periods:
+    
+    ```tsx
+    <NSRangeInput
+      minValue={1900}
+      maxValue={2024}
+      value={yearRange}
+      onChange={setYearRange}
+    />
+    ```
+  </Accordion>
+  
+  <Accordion title="Analytics and Reports">
+    Filter data by numeric ranges such as revenue, metrics, or KPIs:
+    
+    ```tsx
+    <NSRangeInput
+      minValue={0}
+      maxValue={1000000}
+      step={1000}
+      value={revenueRange}
+      onChange={setRevenueRange}
+    />
+    ```
+  </Accordion>
+  
+  <Accordion title="Settings and Configuration">
+    Allow users to define acceptable ranges for application settings:
+    
+    ```tsx
+    <NSRangeInput
+      minValue={0}
+      maxValue={100}
+      step={5}
+      value={volumeRange}
+      onChange={setVolumeRange}
+    />
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Check>
+  **Do:**
+  - Provide clear labels indicating what the range represents
+  - Display the current min/max values for user feedback
+  - Use appropriate step values for the data type
+  - Set reasonable default values
+  - Consider the use case when choosing min/max boundaries
+</Check>
+
+<Warning>
+  **Don't:**
+  - Use extremely large ranges with small steps (performance issue)
+  - Hide the current values from the user
+  - Use for non-numeric or discrete data
+  - Set step values that don't divide evenly into the range
+</Warning>
+
+## Styling
+
+The component accepts standard styling props:
+
+```tsx
+<NSRangeInput
+  width="600px"
+  className="custom-range-input"
+  // ... other props
+/>
+```
+
+You can also wrap it in a styled component for more control:
+
+```tsx
+import styled from 'styled-components';
+import { NSRangeInput } from '@grauity/ui';
+
+const StyledRangeInput = styled(NSRangeInput)`
+  // Custom styles here
+`;
+```
+
+## Accessibility
+
+The component includes accessibility features:
+
+- `role="slider"` for each handle
+- `aria-label` describing the current value of each handle
+- `role="form"` for the container
+- Keyboard navigation support
+- Proper min/max constraints
+
+## Performance Considerations
+
+<Info>
+  For better performance with frequent updates:
+  
+  ```tsx
+  import { useState, useCallback } from 'react';
+  import debounce from 'lodash/debounce';
+  
+  function OptimizedRangeInput() {
+    const [range, setRange] = useState({ min: 0, max: 100 });
+    
+    const debouncedOnChange = useCallback(
+      debounce((value) => {
+        // API call or expensive operation
+        console.log('Submitting:', value);
+      }, 500),
+      []
+    );
+    
+    const handleChange = (value) => {
+      setRange(value);
+      debouncedOnChange(value);
+    };
+    
+    return <NSRangeInput value={range} onChange={handleChange} />;
+  }
+  ```
+</Info>

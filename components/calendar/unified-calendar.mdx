@@ -1,0 +1,331 @@
+---
+title: 'UnifiedCalendar'
+description: 'A flexible calendar component that seamlessly switches between monthly and weekly views with unified controls'
+icon: 'calendar'
+---
+
+## Overview
+
+The `UnifiedCalendar` component provides a complete calendar solution that combines both monthly and weekly views in a single interface. It includes built-in view switching controls, navigation, and event rendering capabilities, making it ideal for applications that need to display events in multiple calendar formats.
+
+## Import
+
+```tsx
+import { UnifiedCalendar } from '@grauity/ui';
+import type { UnifiedCalendarProps, CalendarEvent } from '@grauity/ui';
+```
+
+## Basic Usage
+
+```tsx
+import { UnifiedCalendar } from '@grauity/ui';
+import { useState } from 'react';
+
+function MyCalendar() {
+  const [date, setDate] = useState(new Date());
+  const [view, setView] = useState('monthly');
+
+  const events = [
+    {
+      id: '1',
+      title: 'Team Meeting',
+      start: new Date(2024, 2, 15, 10, 0),
+      end: new Date(2024, 2, 15, 11, 0),
+    },
+    {
+      id: '2',
+      title: 'Project Review',
+      start: new Date(2024, 2, 20, 14, 0),
+      end: new Date(2024, 2, 20, 15, 30),
+    },
+  ];
+
+  return (
+    <UnifiedCalendar
+      date={date}
+      onDateChange={setDate}
+      view={view}
+      onViewChange={setView}
+      events={events}
+      eventRenderer={(event, view) => (
+        <div>
+          {event.title}
+        </div>
+      )}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="events" type="CalendarEvent<T>[]" required>
+  Array of events to display in the calendar. Each event must have `start` and `end` dates.
+</ParamField>
+
+<ParamField path="eventRenderer" type="(item: CalendarEvent<T>, view: CalendarView) => React.ReactNode" required>
+  Function to render each event. Receives the event data and current view type ('monthly' or 'weekly') as parameters.
+</ParamField>
+
+<ParamField path="date" type="Date" required>
+  The date for which the calendar should render events.
+</ParamField>
+
+<ParamField path="view" type="'monthly' | 'weekly'" default="'weekly'">
+  Calendar view to display. Controls whether the calendar shows the monthly or weekly layout.
+</ParamField>
+
+<ParamField path="onViewChange" type="(viewType: CalendarView) => void">
+  Callback fired when the user switches between monthly and weekly views.
+</ParamField>
+
+<ParamField path="onDateChange" type="(date: Date) => void">
+  Callback fired when the date changes through navigation controls.
+</ParamField>
+
+<ParamField path="shouldShowControls" type="boolean" default="true">
+  Whether to show view switching tabs and navigation controls in the header.
+</ParamField>
+
+<ParamField path="header" type="React.ReactNode" default="null">
+  Custom header content to display above the calendar controls.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default="false">
+  Whether the calendar is in a loading state. Shows placeholder UI when true.
+</ParamField>
+
+<ParamField path="className" type="string" default="''">
+  Additional class name for the calendar wrapper element.
+</ParamField>
+
+### Weekly Calendar Props
+
+<ParamField path="weeklyCalendarProps" type="object">
+  Configuration options specific to the weekly calendar view.
+  
+  <Expandable title="properties">
+    <ParamField path="defaultScrollHour" type="number" default="8.5">
+      The time in hours (24-hour format) to show at the top initially. Default is 8.5 (8:30 AM).
+    </ParamField>
+    
+    <ParamField path="shouldScrollToFirstEvent" type="boolean" default="true">
+      Whether to automatically scroll to the first event when the calendar loads.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+### Monthly Calendar Props
+
+<ParamField path="monthlyCalendarProps" type="object">
+  Configuration options specific to the monthly calendar view.
+  
+  <Expandable title="properties">
+    <ParamField path="renderDayItem" type="(item: CalendarEvent<T>, view: CalendarView) => React.ReactNode">
+      Optional alternative render function for day items in the monthly view.
+    </ParamField>
+    
+    <ParamField path="onPopOverClose" type="() => void">
+      Callback to run when the overflow events popover closes.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Event Data Structure
+
+The `CalendarEvent` interface defines the structure for calendar events:
+
+```tsx
+interface CalendarEvent<T = {}> {
+  id?: string | number;
+  title?: string;
+  start: Date;        // Required: Event start time
+  end: Date;          // Required: Event end time
+  allDay?: boolean;
+  render?: (event: CalendarEvent<T>) => React.ReactNode;
+  focused?: boolean;  // Highlights the event
+}
+```
+
+## Complete Example with Custom Event Rendering
+
+```tsx
+import { UnifiedCalendar } from '@grauity/ui';
+import MonthlyCalendarEventItem from '@grauity/ui/MonthlyCalendarEvent';
+import { useState } from 'react';
+
+function CalendarApp() {
+  const [date, setDate] = useState(new Date());
+  const [view, setView] = useState('monthly');
+
+  const events = [
+    {
+      id: '1',
+      title: 'Morning Meeting',
+      start: new Date(2024, 2, 7, 9, 0),
+      end: new Date(2024, 2, 7, 10, 30),
+    },
+    {
+      id: '2',
+      title: 'Team Lunch',
+      start: new Date(2024, 2, 7, 12, 0),
+      end: new Date(2024, 2, 7, 13, 0),
+    },
+    {
+      id: '3',
+      title: 'Project Review',
+      start: new Date(2024, 2, 10, 11, 0),
+      end: new Date(2024, 2, 10, 12, 30),
+    },
+  ];
+
+  return (
+    <div style={{ height: '100vh' }}>
+      <UnifiedCalendar
+        date={date}
+        onDateChange={setDate}
+        view={view}
+        onViewChange={setView}
+        events={events}
+        eventRenderer={(event, viewType) => (
+          <MonthlyCalendarEventItem
+            key={event.id}
+            eventTime={event.start}
+            eventTitle={event.title}
+            eventTitleColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+            eventTimeColor="var(--text-emphasis-invert-primary-default, #ffffff)"
+            backgroundColor="var(--bg-emphasis-brand-default, #0673f9)"
+            height="50px"
+          />
+        )}
+        shouldShowControls
+        weeklyCalendarProps={{
+          defaultScrollHour: 8,
+          shouldScrollToFirstEvent: true,
+        }}
+        monthlyCalendarProps={{
+          onPopOverClose: () => console.log('Popover closed'),
+        }}
+      />
+    </div>
+  );
+}
+```
+
+## View Switching
+
+The UnifiedCalendar automatically handles view transitions:
+
+<Steps>
+  <Step title="User clicks view tab">
+    The header displays "Monthly" and "Weekly" tabs when `shouldShowControls` is true.
+  </Step>
+  
+  <Step title="View state updates">
+    The `onViewChange` callback fires with the new view type.
+  </Step>
+  
+  <Step title="Calendar re-renders">
+    The appropriate calendar component (Monthly or Weekly) renders with the same events and date.
+  </Step>
+</Steps>
+
+## Custom Header
+
+You can add custom content above the calendar controls:
+
+```tsx
+<UnifiedCalendar
+  header={
+    <div style={{ padding: '16px' }}>
+      <h2>Team Schedule</h2>
+      <p>View and manage team events</p>
+    </div>
+  }
+  // ... other props
+/>
+```
+
+## Loading State
+
+<CodeGroup>
+```tsx Loading Example
+<UnifiedCalendar
+  loading={true}
+  events={[]}
+  // ... other props
+/>
+```
+</CodeGroup>
+
+When `loading` is true, the calendar displays placeholder elements instead of actual events.
+
+## Accessibility
+
+- The calendar wrapper has appropriate ARIA labels describing the current view
+- Navigation buttons include descriptive `aria-label` attributes
+- Keyboard navigation is fully supported
+- All interactive elements are keyboard accessible
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Event Data Management">
+    Keep event data in a state management solution when dealing with large datasets. The calendar efficiently handles hundreds of events, but consider pagination for very large collections.
+  </Accordion>
+  
+  <Accordion title="View Persistence">
+    Store the user's preferred view in localStorage or your backend to maintain consistency across sessions.
+  </Accordion>
+  
+  <Accordion title="Date Synchronization">
+    Always keep the `date` prop synchronized with your application state to ensure the calendar displays the correct time period.
+  </Accordion>
+  
+  <Accordion title="Event Renderer Performance">
+    Memoize your event renderer function if it performs expensive computations to avoid unnecessary re-renders.
+  </Accordion>
+</AccordionGroup>
+
+## TypeScript
+
+The component is fully typed with generic support for custom event data:
+
+```tsx
+interface CustomEventData {
+  priority: 'high' | 'medium' | 'low';
+  attendees: string[];
+}
+
+const events: CalendarEvent<CustomEventData>[] = [
+  {
+    id: '1',
+    title: 'Meeting',
+    start: new Date(),
+    end: new Date(),
+    priority: 'high',
+    attendees: ['john@example.com', 'jane@example.com'],
+  },
+];
+
+<UnifiedCalendar<CustomEventData>
+  events={events}
+  eventRenderer={(event) => (
+    <div>
+      {event.title} - Priority: {event.priority}
+    </div>
+  )}
+  // ... other props
+/>
+```
+
+## Related Components
+
+<CardGroup cols={2}>
+  <Card title="WeeklyCalendar" icon="calendar-week" href="/components/calendar/weekly-calendar">
+    Week-based calendar view with time slots
+  </Card>
+  <Card title="MonthlyCalendar" icon="calendar-days" href="/components/calendar/monthly-calendar">
+    Month-based calendar grid view
+  </Card>
+</CardGroup>

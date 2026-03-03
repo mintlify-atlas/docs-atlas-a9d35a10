@@ -1,0 +1,521 @@
+---
+title: Stacking
+description: Z-index tokens for layering and stacking order in Grauity
+---
+
+Stacking tokens provide a systematic approach to z-index values, ensuring proper layering of overlays, modals, dropdowns, and other elevated elements.
+
+## Z-Index Scale
+
+Grauity uses a predefined z-index scale to maintain consistent stacking order across all components.
+
+<Note>
+Always use these tokens instead of arbitrary z-index values to prevent layering conflicts and maintain predictable stacking behavior.
+</Note>
+
+## Available Tokens
+
+| Token | Value | Layer | Usage |
+|-------|-------|-------|-------|
+| `--z-index-floating-action-button` | `500` | Elevated | Floating action buttons |
+| `--z-index-drawer-overlay` | `950` | Overlay | Drawer backdrop |
+| `--z-index-drawer` | `1000` | Modal | Drawer/Sidebar |
+| `--z-index-modal-overlay` | `1050` | Overlay | Modal backdrop |
+| `--z-index-modal` | `1100` | Modal | Modal dialog |
+| `--z-index-popover-overlay` | `1150` | Overlay | Popover backdrop |
+| `--z-index-popover` | `1200` | Popover | Popover content |
+| `--z-index-bottomsheet-overlay` | `1250` | Overlay | Bottom sheet backdrop |
+| `--z-index-bottomsheet` | `1300` | Sheet | Bottom sheet |
+| `--z-index-dropdown` | `1400` | Dropdown | Dropdown menus |
+| `--z-index-overlay-hoc` | `2000` | System | Higher-order overlay components |
+| `--z-index-tooltip` | `3000` | Tooltip | Tooltips (highest) |
+
+## Stacking Hierarchy
+
+The stacking order from lowest to highest:
+
+```
+1. Base content (z-index: auto or 0)
+2. Floating Action Button (500)
+3. Drawer Overlay (950)
+4. Drawer (1000)
+5. Modal Overlay (1050)
+6. Modal (1100)
+7. Popover Overlay (1150)
+8. Popover (1200)
+9. Bottom Sheet Overlay (1250)
+10. Bottom Sheet (1300)
+11. Dropdown (1400)
+12. Overlay HOC (2000)
+13. Tooltip (3000)
+```
+
+## Layer Categories
+
+### Base Layer (0-499)
+
+Regular page content, no z-index tokens needed:
+
+```css
+.content {
+  /* Default stacking context */
+  position: relative;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* Local stacking, stays below 500 */
+}
+```
+
+### Elevated Layer (500)
+
+Persistent UI elements that float above content:
+
+```css
+.floating-action-button {
+  position: fixed;
+  bottom: var(--spacing-24px);
+  right: var(--spacing-24px);
+  z-index: var(--z-index-floating-action-button);
+}
+```
+
+### Drawer Layer (950-1000)
+
+Side panels and navigation drawers:
+
+```css
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--alpha-overlay);
+  z-index: var(--z-index-drawer-overlay);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background: var(--bg-subtle-primary-default);
+  z-index: var(--z-index-drawer);
+}
+```
+
+### Modal Layer (1050-1100)
+
+Modal dialogs and alerts:
+
+```css
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--alpha-overlay);
+  backdrop-filter: var(--backdrop-blur);
+  z-index: var(--z-index-modal-overlay);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-index-modal);
+  background: var(--bg-subtle-primary-default);
+  border-radius: var(--corner-radius-16px);
+}
+```
+
+### Popover Layer (1150-1200)
+
+Popovers and context menus:
+
+```css
+.popover-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-index-popover-overlay);
+}
+
+.popover {
+  position: absolute;
+  z-index: var(--z-index-popover);
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+  border-radius: var(--corner-radius-8px);
+}
+```
+
+### Bottom Sheet Layer (1250-1300)
+
+Mobile bottom sheets:
+
+```css
+.bottomsheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--alpha-overlay);
+  z-index: var(--z-index-bottomsheet-overlay);
+}
+
+.bottomsheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-bottomsheet);
+  background: var(--bg-subtle-primary-default);
+  border-radius: var(--corner-radius-16px) var(--corner-radius-16px) 0 0;
+}
+```
+
+### Dropdown Layer (1400)
+
+Dropdown menus and select options:
+
+```css
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: var(--z-index-dropdown);
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+  border-radius: var(--corner-radius-8px);
+}
+```
+
+### Overlay HOC Layer (2000)
+
+Higher-order overlay components:
+
+```css
+.overlay-hoc {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-index-overlay-hoc);
+}
+```
+
+### Tooltip Layer (3000)
+
+Tooltips - highest layer:
+
+```css
+.tooltip {
+  position: absolute;
+  z-index: var(--z-index-tooltip);
+  background: var(--bg-subtle-invert-primary-default);
+  color: var(--text-emphasis-invert-primary-default);
+  padding: var(--spacing-8px) var(--spacing-12px);
+  border-radius: var(--corner-radius-4px);
+}
+```
+
+## React Component Examples
+
+### Modal Component
+
+```jsx
+import styled from 'styled-components';
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: var(--alpha-overlay);
+  backdrop-filter: var(--backdrop-blur);
+  z-index: var(--z-index-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContainer = styled.div`
+  position: relative;
+  z-index: var(--z-index-modal);
+  background: var(--bg-subtle-primary-default);
+  border-radius: var(--corner-radius-16px);
+  padding: var(--spacing-24px);
+  max-width: 500px;
+  width: 90%;
+`;
+
+function Modal({ isOpen, onClose, children }) {
+  if (!isOpen) return null;
+  
+  return (
+    <ModalOverlay onClick={onClose}>
+      <ModalContainer onClick={(e) => e.stopPropagation()}>
+        {children}
+      </ModalContainer>
+    </ModalOverlay>
+  );
+}
+```
+
+### Dropdown Component
+
+```jsx
+import styled from 'styled-components';
+import { useState, useRef, useEffect } from 'react';
+
+const DropdownButton = styled.button`
+  padding: var(--spacing-10px) var(--spacing-16px);
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+  border-radius: var(--corner-radius-8px);
+  cursor: pointer;
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + var(--spacing-4px));
+  left: 0;
+  min-width: 200px;
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+  border-radius: var(--corner-radius-8px);
+  z-index: var(--z-index-dropdown);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+`;
+
+const DropdownItem = styled.button`
+  width: 100%;
+  padding: var(--spacing-10px) var(--spacing-16px);
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  
+  &:hover {
+    background: var(--bg-subtle-primary-hover);
+  }
+`;
+
+function Dropdown({ label, items }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  
+  return (
+    <div ref={dropdownRef} style={{ position: 'relative' }}>
+      <DropdownButton onClick={() => setIsOpen(!isOpen)}>
+        {label}
+      </DropdownButton>
+      {isOpen && (
+        <DropdownMenu>
+          {items.map((item, index) => (
+            <DropdownItem key={index} onClick={() => {
+              item.onClick();
+              setIsOpen(false);
+            }}>
+              {item.label}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      )}
+    </div>
+  );
+}
+```
+
+### Tooltip Component
+
+```jsx
+import styled from 'styled-components';
+import { useState } from 'react';
+
+const TooltipWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const TooltipContent = styled.div`
+  position: absolute;
+  bottom: calc(100% + var(--spacing-8px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-index-tooltip);
+  background: var(--bg-subtle-invert-primary-default);
+  color: var(--text-emphasis-invert-primary-default);
+  padding: var(--spacing-8px) var(--spacing-12px);
+  border-radius: var(--corner-radius-4px);
+  font-size: var(--font-size-12px);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: ${props => props.visible ? 1 : 0};
+  transition: opacity 0.2s;
+`;
+
+function Tooltip({ content, children }) {
+  const [visible, setVisible] = useState(false);
+  
+  return (
+    <TooltipWrapper
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      {children}
+      <TooltipContent visible={visible}>
+        {content}
+      </TooltipContent>
+    </TooltipWrapper>
+  );
+}
+```
+
+### Floating Action Button
+
+```jsx
+import styled from 'styled-components';
+
+const FAB = styled.button`
+  position: fixed;
+  bottom: var(--spacing-24px);
+  right: var(--spacing-24px);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--corner-radius-50percent);
+  background: var(--bg-emphasis-brand-default);
+  color: var(--text-emphasis-white-default);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: var(--z-index-floating-action-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background: var(--bg-emphasis-brand-hover);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+function FloatingActionButton({ icon, onClick }) {
+  return (
+    <FAB onClick={onClick}>
+      {icon}
+    </FAB>
+  );
+}
+```
+
+## Best Practices
+
+### Always Use Tokens
+
+Use z-index tokens instead of arbitrary values:
+
+```css
+/* ❌ Don't */
+.modal {
+  z-index: 9999;
+}
+
+/* ✅ Do */
+.modal {
+  z-index: var(--z-index-modal);
+}
+```
+
+### Overlay Pairing
+
+Always pair overlays with their corresponding content:
+
+```css
+/* Overlay is always 50 units below its content */
+.modal-overlay {
+  z-index: var(--z-index-modal-overlay); /* 1050 */
+}
+
+.modal {
+  z-index: var(--z-index-modal); /* 1100 */
+}
+```
+
+### Stacking Context
+
+Be aware of stacking contexts:
+
+```css
+/* ❌ This won't work as expected */
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+.container .tooltip {
+  /* This will be constrained by parent's stacking context */
+  z-index: var(--z-index-tooltip);
+}
+
+/* ✅ Use portals or position at root level */
+/* Render tooltip outside the container */
+```
+
+### Local Stacking
+
+For local component stacking (not overlays), use low values:
+
+```css
+.card {
+  position: relative;
+}
+
+.card-header {
+  position: relative;
+  z-index: 1; /* Local stacking only */
+}
+
+.card-image {
+  position: relative;
+  z-index: 0;
+}
+```
+
+## Common Patterns
+
+### Nested Modals
+
+When you need a modal on top of another modal:
+
+```jsx
+// Use the same z-index - the DOM order will determine stacking
+const SecondModal = styled.div`
+  z-index: var(--z-index-modal);
+  /* Second modal renders after first in DOM, so it appears on top */
+`;
+```
+
+### Dropdown in Modal
+
+Dropdown inside modal works correctly because dropdown has higher z-index:
+
+```css
+.modal {
+  z-index: var(--z-index-modal); /* 1100 */
+}
+
+.dropdown-in-modal {
+  z-index: var(--z-index-dropdown); /* 1400 - appears above modal */
+}
+```
+
+## Source Files
+
+- **Z-Index Tokens**: `ui/themes/GlobalStyle.ts` (lines 193-204)
+- **Stories**: `stories/atoms/Stacking/index.stories.tsx`

@@ -1,0 +1,360 @@
+---
+title: Spacing
+description: Spacing tokens for consistent layout and composition in Grauity
+---
+
+Spacing tokens provide a consistent scale for margins, padding, gaps, and positioning throughout your application.
+
+## Spacing Scale
+
+Grauity uses a comprehensive spacing scale from 0px to 160px, with more granular options at smaller sizes and larger jumps for bigger spaces.
+
+<Note>
+All spacing values are defined in pixels for precise control. The scale is designed to work harmoniously with the 8px grid system commonly used in UI design.
+</Note>
+
+## Available Tokens
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `--spacing-0px` | `0px` | No spacing, reset |
+| `--spacing-1px` | `1px` | Hairline borders, fine adjustments |
+| `--spacing-2px` | `2px` | Minimal spacing, tight layouts |
+| `--spacing-3px` | `3px` | Border widths |
+| `--spacing-4px` | `4px` | Extra small spacing |
+| `--spacing-5px` | `5px` | Small adjustments |
+| `--spacing-6px` | `6px` | Small spacing |
+| `--spacing-7px` | `7px` | Fine-tuned spacing |
+| `--spacing-8px` | `8px` | Base unit, small spacing |
+| `--spacing-9px` | `9px` | Small spacing variants |
+| `--spacing-10px` | `10px` | Small spacing |
+| `--spacing-12px` | `12px` | Medium-small spacing |
+| `--spacing-14px` | `14px` | Medium spacing |
+| `--spacing-16px` | `16px` | Standard spacing (2× base) |
+| `--spacing-18px` | `18px` | Medium spacing |
+| `--spacing-20px` | `20px` | Medium spacing |
+| `--spacing-24px` | `24px` | Large spacing (3× base) |
+| `--spacing-28px` | `28px` | Large spacing |
+| `--spacing-32px` | `32px` | Extra large spacing (4× base) |
+| `--spacing-36px` | `36px` | Extra large spacing |
+| `--spacing-40px` | `40px` | Extra large spacing (5× base) |
+| `--spacing-48px` | `48px` | XXL spacing (6× base) |
+| `--spacing-56px` | `56px` | XXL spacing (7× base) |
+| `--spacing-64px` | `64px` | XXXL spacing (8× base) |
+| `--spacing-72px` | `72px` | Section spacing |
+| `--spacing-80px` | `80px` | Section spacing (10× base) |
+| `--spacing-128px` | `128px` | Large section spacing |
+| `--spacing-160px` | `160px` | Extra large section spacing |
+
+## Spacing Categories
+
+### Micro Spacing (0-7px)
+
+Use for fine adjustments, borders, and tight layouts:
+
+```css
+.tight-element {
+  padding: var(--spacing-4px);
+  gap: var(--spacing-2px);
+  border-width: var(--spacing-1px);
+}
+```
+
+### Small Spacing (8-12px)
+
+Use for compact components and dense layouts:
+
+```css
+.compact-button {
+  padding: var(--spacing-8px) var(--spacing-12px);
+  gap: var(--spacing-8px);
+}
+```
+
+### Medium Spacing (14-24px)
+
+Use for standard component padding and element separation:
+
+```css
+.card {
+  padding: var(--spacing-16px);
+  gap: var(--spacing-12px);
+  margin-bottom: var(--spacing-24px);
+}
+
+.form-field {
+  margin-bottom: var(--spacing-16px);
+}
+```
+
+### Large Spacing (28-48px)
+
+Use for section padding and component separation:
+
+```css
+.section {
+  padding: var(--spacing-32px) var(--spacing-24px);
+  margin-bottom: var(--spacing-40px);
+}
+
+.container {
+  padding: var(--spacing-48px);
+}
+```
+
+### Extra Large Spacing (56-160px)
+
+Use for page-level spacing and major section separation:
+
+```css
+.page-section {
+  padding: var(--spacing-64px) 0;
+  margin-bottom: var(--spacing-80px);
+}
+
+.hero-section {
+  padding: var(--spacing-128px) 0;
+}
+```
+
+## Common Patterns
+
+### Component Padding
+
+```css
+/* Small component */
+.small-component {
+  padding: var(--spacing-8px) var(--spacing-12px);
+}
+
+/* Medium component */
+.medium-component {
+  padding: var(--spacing-12px) var(--spacing-16px);
+}
+
+/* Large component */
+.large-component {
+  padding: var(--spacing-16px) var(--spacing-24px);
+}
+```
+
+### Stack Spacing
+
+Use for vertical spacing between stacked elements:
+
+```css
+/* Tight stack */
+.tight-stack > * + * {
+  margin-top: var(--spacing-8px);
+}
+
+/* Default stack */
+.stack > * + * {
+  margin-top: var(--spacing-16px);
+}
+
+/* Loose stack */
+.loose-stack > * + * {
+  margin-top: var(--spacing-24px);
+}
+```
+
+### Grid Gaps
+
+```css
+/* Tight grid */
+.tight-grid {
+  display: grid;
+  gap: var(--spacing-8px);
+}
+
+/* Standard grid */
+.grid {
+  display: grid;
+  gap: var(--spacing-16px);
+}
+
+/* Spacious grid */
+.spacious-grid {
+  display: grid;
+  gap: var(--spacing-24px);
+}
+```
+
+### Flex Gaps
+
+```css
+/* Icon + text */
+.icon-text {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8px);
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  gap: var(--spacing-12px);
+}
+
+/* Form actions */
+.form-actions {
+  display: flex;
+  gap: var(--spacing-16px);
+}
+```
+
+## Responsive Spacing
+
+Adjust spacing based on viewport size:
+
+```css
+.responsive-section {
+  padding: var(--spacing-24px) var(--spacing-16px);
+}
+
+@media (min-width: 768px) {
+  .responsive-section {
+    padding: var(--spacing-48px) var(--spacing-32px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-section {
+    padding: var(--spacing-64px) var(--spacing-48px);
+  }
+}
+```
+
+## React Component Examples
+
+### Using Spacing Tokens
+
+```jsx
+import styled from 'styled-components';
+
+const Card = styled.div`
+  padding: var(--spacing-16px);
+  border-radius: var(--corner-radius-8px);
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+`;
+
+const Stack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16px);
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: var(--spacing-12px);
+  margin-top: var(--spacing-24px);
+`;
+```
+
+### Dynamic Spacing
+
+```jsx
+import styled from 'styled-components';
+
+const Box = styled.div`
+  padding: var(--spacing-${props => props.size === 'small' ? '8px' : props.size === 'large' ? '24px' : '16px'});
+`;
+
+// Usage
+<Box size="small">Compact box</Box>
+<Box>Default box</Box>
+<Box size="large">Spacious box</Box>
+```
+
+### Spacing Component
+
+```jsx
+import styled from 'styled-components';
+
+const Spacer = styled.div`
+  height: var(--spacing-${props => props.size || '16px'});
+`;
+
+// Usage
+<div>
+  <Section>Content A</Section>
+  <Spacer size="32px" />
+  <Section>Content B</Section>
+</div>
+```
+
+## Best Practices
+
+### Consistency
+
+Always use spacing tokens instead of arbitrary values:
+
+```css
+/* ❌ Don't */
+.element {
+  padding: 15px;
+  margin: 23px;
+}
+
+/* ✅ Do */
+.element {
+  padding: var(--spacing-16px);
+  margin: var(--spacing-24px);
+}
+```
+
+### Alignment with Grid
+
+Prefer spacing values that align with the 8px grid (8, 16, 24, 32, 40, 48, 56, 64, 72, 80):
+
+```css
+/* Better for grid alignment */
+.section {
+  padding: var(--spacing-32px) 0;
+  margin-bottom: var(--spacing-48px);
+}
+```
+
+### Proportional Spacing
+
+Maintain proportional relationships:
+
+```css
+.card {
+  /* Vertical padding is larger than horizontal */
+  padding: var(--spacing-24px) var(--spacing-16px);
+}
+
+.button {
+  /* Horizontal padding is larger than vertical */
+  padding: var(--spacing-10px) var(--spacing-16px);
+}
+```
+
+### Semantic Usage
+
+Use larger spacing to indicate hierarchy:
+
+```css
+/* Within component - smaller gaps */
+.form-field {
+  margin-bottom: var(--spacing-12px);
+}
+
+/* Between components - medium gaps */
+.component {
+  margin-bottom: var(--spacing-24px);
+}
+
+/* Between sections - larger gaps */
+.section {
+  margin-bottom: var(--spacing-64px);
+}
+```
+
+## Source Files
+
+- **Spacing Tokens**: `ui/themes/GlobalStyle.ts` (lines 99-126)
+- **Stories**: `stories/atoms/Spacing/index.stories.tsx`

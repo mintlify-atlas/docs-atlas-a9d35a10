@@ -1,0 +1,207 @@
+---
+title: Icon
+description: A flexible icon component with support for sizes, colors, transformations, and loading states.
+---
+
+## Overview
+
+The Icon component renders icons from the Grauity icon library with customizable properties like size, color, rotation, and styling options.
+
+## Basic Usage
+
+```tsx
+import { Icon } from '@grauity/ui/elements/Icon';
+
+function MyComponent() {
+  return (
+    <Icon 
+      name="sparkle" 
+      size="32" 
+      color="var(--text-emphasis-primary-default)" 
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="name" type="grauityIconName" required>
+  Name of the icon to display from the Grauity icon library.
+</ParamField>
+
+<ParamField path="size" type="grauityIconSizeName">
+  Size of the icon in pixels.
+  
+  **Available sizes:** `12`, `16`, `20`, `24`, `32`, `40`, etc.
+</ParamField>
+
+<ParamField path="color" type="string">
+  Color of the icon. Accepts CSS color values or design tokens.
+</ParamField>
+
+<ParamField path="disabled" type="boolean" default={false}>
+  Show that the icon is in an inactive state.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default={false}>
+  Use the icon as a loading spinner.
+</ParamField>
+
+<ParamField path="flipped" type="string">
+  Flip the icon horizontally or vertically.
+  
+  **Available choices:** `horizontally`, `vertically`
+</ParamField>
+
+<ParamField path="rotated" type="string">
+  Rotate the icon.
+  
+  **Available choices:** `clockwise`, `counterclockwise`
+</ParamField>
+
+<ParamField path="bordered" type="boolean" default={false}>
+  Format the icon to appear with a border.
+</ParamField>
+
+<ParamField path="circular" type="boolean" default={false}>
+  Format the icon to appear in a circular container.
+</ParamField>
+
+<ParamField path="inverted" type="boolean" default={false}>
+  Invert the icon colors (works with bordered or circular icons).
+</ParamField>
+
+<ParamField path="fitted" type="boolean" default={false}>
+  Remove space to the left or right of the icon.
+</ParamField>
+
+<ParamField path="link" type="boolean" default={false}>
+  Format the icon as a clickable link.
+</ParamField>
+
+<ParamField path="as" type="React.ElementType">
+  Element type to render as (e.g., `button`, `a`, `span`).
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to be added to the component.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties">
+  Additional inline styles to be applied to the element.
+</ParamField>
+
+<ParamField path="ariaHidden" type="string">
+  Aria-hidden attribute for accessibility.
+</ParamField>
+
+<ParamField path="ariaLabel" type="string">
+  Aria-label attribute for accessibility.
+</ParamField>
+
+## Icon Sizes
+
+```tsx
+<Icon name="sparkle" size="12" />
+<Icon name="sparkle" size="16" />
+<Icon name="sparkle" size="20" />
+<Icon name="sparkle" size="24" />
+<Icon name="sparkle" size="32" />
+<Icon name="sparkle" size="40" />
+```
+
+## Loading State
+
+Use an icon as a loading spinner:
+
+```tsx
+<Icon name="loading" loading={true} size="24" />
+```
+
+## Disabled State
+
+```tsx
+<Icon name="sparkle" disabled={true} size="24" />
+```
+
+## Transformations
+
+### Flipped Icons
+
+```tsx
+<Icon name="arrow-right" flipped="horizontally" />
+<Icon name="arrow-right" flipped="vertically" />
+```
+
+### Rotated Icons
+
+```tsx
+<Icon name="arrow-right" rotated="clockwise" />
+<Icon name="arrow-right" rotated="counterclockwise" />
+```
+
+## Styled Icons
+
+### Bordered Icon
+
+```tsx
+<Icon 
+  name="sparkle" 
+  bordered={true} 
+  size="32" 
+/>
+```
+
+### Circular Icon
+
+```tsx
+<Icon 
+  name="sparkle" 
+  circular={true} 
+  size="32" 
+/>
+```
+
+### Inverted Colors
+
+Works with bordered or circular icons:
+
+```tsx
+<Icon 
+  name="sparkle" 
+  bordered={true} 
+  inverted={true} 
+  size="32" 
+/>
+
+<Icon 
+  name="sparkle" 
+  circular={true} 
+  inverted={true} 
+  size="32" 
+/>
+```
+
+## Custom Colors
+
+```tsx
+<Icon 
+  name="sparkle" 
+  color="#FF5733" 
+  size="32" 
+/>
+
+<Icon 
+  name="sparkle" 
+  color="var(--text-emphasis-brand-default)" 
+  size="32" 
+/>
+```
+
+## Inherit Color
+
+Useful when used inside buttons or other colored containers:
+
+```tsx
+<Icon name="sparkle" color="inherit" size="20" />
+```

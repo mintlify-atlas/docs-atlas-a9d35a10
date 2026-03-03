@@ -1,0 +1,270 @@
+---
+title: Modal
+description: A flexible modal dialog component for displaying content in an overlay with customizable animations and layouts.
+---
+
+## Overview
+
+The Modal component displays content in a dialog overlay, perfect for forms, confirmations, and detailed content that requires user focus.
+
+## Basic Usage
+
+```tsx
+import Modal from '@grauity/ui/elements/Modal';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
+      
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        hideOnClickAway={true}
+        title="Modal Title"
+        description="This is a modal description"
+      >
+        <p>Modal content goes here</p>
+      </Modal>
+    </>
+  );
+}
+```
+
+## Props
+
+<ParamField path="isOpen" type="boolean" required>
+  Controls whether the modal is visible.
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback function when the modal should be closed.
+</ParamField>
+
+<ParamField path="banner" type="React.ReactNode">
+  Banner content displayed at the top of the modal.
+</ParamField>
+
+<ParamField path="title" type="React.ReactNode">
+  Title content for the modal.
+</ParamField>
+
+<ParamField path="description" type="string">
+  Description text for the modal.
+</ParamField>
+
+<ParamField path="body" type="React.ReactNode">
+  **[DEPRECATED]** Use `children` instead. Body content for the modal.
+</ParamField>
+
+<ParamField path="children" type="React.ReactNode">
+  Main content for the modal. If `body` prop is provided, children will be rendered after it.
+</ParamField>
+
+<ParamField path="action" type="React.ReactNode">
+  Action content (typically buttons) displayed at the bottom.
+</ParamField>
+
+<ParamField path="hideOnClickAway" type="boolean" required>
+  Whether clicking outside the modal closes it.
+</ParamField>
+
+<ParamField path="blurBackground" type="boolean" default={false}>
+  Apply a blur effect to the background.
+</ParamField>
+
+<ParamField path="showCloseButton" type="boolean" default={false}>
+  Display a close button in the modal header.
+</ParamField>
+
+<ParamField path="width" type="string" default="500px">
+  Width of the modal.
+</ParamField>
+
+<ParamField path="height" type="string" default="auto">
+  Height of the modal.
+</ParamField>
+
+<ParamField path="minWidth" type="string">
+  Minimum width constraint.
+</ParamField>
+
+<ParamField path="minHeight" type="string">
+  Minimum height constraint.
+</ParamField>
+
+<ParamField path="maxWidth" type="string" default="95vw">
+  Maximum width constraint.
+</ParamField>
+
+<ParamField path="maxHeight" type="string" default="95vh">
+  Maximum height constraint.
+</ParamField>
+
+<ParamField path="modalPadding" type="string" default="20px">
+  Padding inside the modal.
+</ParamField>
+
+<ParamField path="modalBodyMargin" type="string">
+  Margin for the modal body section.
+</ParamField>
+
+<ParamField path="mobileBottomFullWidth" type="boolean" default={false}>
+  Make the modal full width at the bottom on mobile devices.
+</ParamField>
+
+<ParamField path="animatePresence" type="ModalAnimationType" default="fade">
+  Animation type for opening/closing.
+  
+  **Available choices:** `false`, `slide`, `slide-reverse`, `fade`, `emanate`
+</ParamField>
+
+<ParamField path="clickEvent" type="any">
+  Click event object for use with `emanate` animation.
+</ParamField>
+
+<ParamField path="shouldFocusOnFirstElement" type="boolean" default={true}>
+  Automatically focus the first focusable element.
+</ParamField>
+
+<ParamField path="shouldDisableScroll" type="boolean" default={true}>
+  Disable background scrolling when modal is open.
+</ParamField>
+
+<ParamField path="overflow" type="string" default="auto">
+  Overflow behavior for the modal content.
+</ParamField>
+
+<ParamField path="border" type="string">
+  Custom border style. Default is `1px solid var(--border-subtle-primary-default, #e1e5ea)`.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name.
+</ParamField>
+
+## With Actions
+
+```tsx
+<Modal
+  isOpen={isOpen}
+  onClose={onClose}
+  hideOnClickAway={true}
+  title="Confirm Action"
+  description="Are you sure you want to proceed?"
+  action={
+    <>
+      <Button variant="primary" onClick={handleConfirm}>
+        Confirm
+      </Button>
+      <Button variant="tertiary" onClick={onClose}>
+        Cancel
+      </Button>
+    </>
+  }
+/>
+```
+
+## With Banner
+
+```tsx
+<Modal
+  isOpen={isOpen}
+  onClose={onClose}
+  hideOnClickAway={true}
+  banner={
+    <div style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
+      Banner Content
+    </div>
+  }
+  title="Modal with Banner"
+>
+  <p>Modal content</p>
+</Modal>
+```
+
+## Custom Size
+
+```tsx
+<Modal
+  isOpen={isOpen}
+  onClose={onClose}
+  hideOnClickAway={true}
+  width="800px"
+  height="600px"
+  title="Large Modal"
+>
+  <p>Content for a larger modal</p>
+</Modal>
+```
+
+## Animation Types
+
+```tsx
+// Fade (default)
+<Modal animatePresence="fade" />
+
+// Slide from bottom
+<Modal animatePresence="slide" />
+
+// Slide from top
+<Modal animatePresence="slide-reverse" />
+
+// Emanate from click point
+<Modal 
+  animatePresence="emanate" 
+  clickEvent={clickEvent}
+/>
+
+// No animation
+<Modal animatePresence={false} />
+```
+
+## Confirmation Dialog
+
+For simple confirmation dialogs, use the `ConfirmationDialog` component:
+
+```tsx
+import { ConfirmationDialog } from '@grauity/ui/elements/Modal';
+
+<ConfirmationDialog
+  isOpen={isOpen}
+  title="Delete Item"
+  description="Are you sure you want to delete this item?"
+  confirmText="Delete"
+  cancelText="Cancel"
+  onConfirm={handleDelete}
+  onCancel={() => setIsOpen(false)}
+  confirmButtonVariant="primary"
+  confirmButtonColor="error"
+/>
+```
+
+## Multi-Step Modal
+
+```tsx
+import { MultiStepModal } from '@grauity/ui/elements/Modal';
+
+<MultiStepModal
+  isOpen={isOpen}
+  onClose={onClose}
+  modalSteps={[
+    {
+      title: 'Step 1',
+      description: 'First step description',
+      body: <div>Step 1 content</div>,
+    },
+    {
+      title: 'Step 2',
+      description: 'Second step description',
+      body: <div>Step 2 content</div>,
+    },
+  ]}
+  showModalStepsPagination={true}
+  hideOnClickAway={false}
+  onFinalStep={() => console.log('Completed')}
+/>
+```

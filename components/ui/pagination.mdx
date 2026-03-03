@@ -1,0 +1,221 @@
+---
+title: Pagination
+description: A pagination component for navigating through multiple pages of content.
+---
+
+## Overview
+
+The Pagination component provides navigation controls for multi-page content with customizable styling and behavior.
+
+## Basic Usage
+
+```tsx
+import Pagination from '@grauity/ui/elements/Pagination';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  return (
+    <Pagination
+      totalPageCount={10}
+      defaultCurrentPage={currentPage}
+      onPageChange={(page) => setCurrentPage(page)}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="totalPageCount" type="number" required>
+  Total number of pages.
+</ParamField>
+
+<ParamField path="onPageChange" type="function" required>
+  Callback function when the page changes.
+  
+  **Signature:** `(pageNumber: number) => void`
+</ParamField>
+
+<ParamField path="defaultCurrentPage" type="number" default={1}>
+  The default current page number.
+</ParamField>
+
+<ParamField path="size" type="ButtonSizes" default="small">
+  Size of the pagination buttons.
+  
+  **Available choices:** `extra-small`, `small`, `medium`, `large`, `extra-large`
+</ParamField>
+
+<ParamField path="justifyContent" type="string" default="space-between">
+  Alignment of pagination items (analogous to CSS `justifyContent`).
+  
+  **Available choices:** `space-between`, `space-around`, `space-evenly`, `flex-start`, `flex-end`
+</ParamField>
+
+<ParamField path="buttonVariant" type="ButtonVariants" default="secondary">
+  Visual variant for inactive page buttons.
+</ParamField>
+
+<ParamField path="buttonColor" type="ButtonColors" default="neutral">
+  Color theme for inactive page buttons.
+</ParamField>
+
+<ParamField path="activeButtonVariant" type="ButtonVariants" default="primary">
+  Visual variant for the active page button.
+</ParamField>
+
+<ParamField path="activeButtonColor" type="ButtonColors" default="neutral">
+  Color theme for the active page button.
+</ParamField>
+
+<ParamField path="controlButtonVariant" type="ButtonVariants" default="secondary">
+  Visual variant for control buttons (Previous/Next).
+</ParamField>
+
+<ParamField path="controlButtonColor" type="ButtonColors" default="neutral">
+  Color theme for control buttons.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name.
+</ParamField>
+
+## Custom Alignment
+
+```tsx
+<Pagination
+  totalPageCount={10}
+  onPageChange={handlePageChange}
+  justifyContent="center"
+/>
+
+<Pagination
+  totalPageCount={10}
+  onPageChange={handlePageChange}
+  justifyContent="flex-end"
+/>
+```
+
+## Custom Size
+
+```tsx
+<Pagination
+  totalPageCount={10}
+  onPageChange={handlePageChange}
+  size="medium"
+/>
+
+<Pagination
+  totalPageCount={10}
+  onPageChange={handlePageChange}
+  size="large"
+/>
+```
+
+## Custom Button Styling
+
+```tsx
+<Pagination
+  totalPageCount={10}
+  onPageChange={handlePageChange}
+  buttonVariant="tertiary"
+  buttonColor="neutral"
+  activeButtonVariant="primary"
+  activeButtonColor="brand"
+  controlButtonVariant="secondary"
+  controlButtonColor="brand"
+/>
+```
+
+## Complete Example
+
+```tsx
+function PaginatedList() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const totalItems = 95;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Fetch data for the new page
+    fetchData(page, itemsPerPage);
+  };
+
+  return (
+    <div>
+      <div>
+        {/* Render your paginated content here */}
+        <Typography variant="paragraph-md-p2">
+          Showing page {currentPage} of {totalPages}
+        </Typography>
+      </div>
+      
+      <Pagination
+        totalPageCount={totalPages}
+        defaultCurrentPage={currentPage}
+        onPageChange={handlePageChange}
+        size="medium"
+        justifyContent="center"
+      />
+    </div>
+  );
+}
+```
+
+## With Data Fetching
+
+```tsx
+function DataTable() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const totalPages = 20;
+
+  const fetchPageData = async (page: number) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/data?page=${page}`);
+      const result = await response.json();
+      setData(result.data);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <Table 
+        columns={columns} 
+        rows={data} 
+        loading={loading}
+      />
+      
+      <Pagination
+        totalPageCount={totalPages}
+        defaultCurrentPage={currentPage}
+        onPageChange={fetchPageData}
+      />
+    </div>
+  );
+}
+```
+
+## Branded Pagination
+
+```tsx
+<Pagination
+  totalPageCount={10}
+  onPageChange={handlePageChange}
+  activeButtonVariant="primary"
+  activeButtonColor="brand"
+  buttonVariant="tertiary"
+  controlButtonVariant="secondary"
+  controlButtonColor="brand"
+/>
+```

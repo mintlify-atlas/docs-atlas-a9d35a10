@@ -1,0 +1,389 @@
+---
+title: Dropdown
+description: A dropdown menu component for selecting one or multiple options from a list
+---
+
+## Overview
+
+Dropdown is a form component that displays a menu of options when triggered. It supports single and multiple selection modes, search functionality, custom headers, and action buttons.
+
+## Basic Usage
+
+```jsx
+import { Dropdown } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [value, setValue] = useState(null);
+
+  return (
+    <Dropdown
+      name="country"
+      label="Select Country"
+      placeholder="Choose a country"
+      items={[
+        { type: 'option', label: 'United States', value: 'us' },
+        { type: 'option', label: 'Canada', value: 'ca' },
+        { type: 'option', label: 'United Kingdom', value: 'uk' },
+        { type: 'option', label: 'Australia', value: 'au' },
+      ]}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
+```
+
+## Single Selection
+
+```jsx
+import { Dropdown } from 'grauity';
+import { useState } from 'react';
+
+function SingleSelect() {
+  const [profession, setProfession] = useState(null);
+
+  return (
+    <Dropdown
+      name="profession"
+      label="Select Profession"
+      placeholder="Choose your profession"
+      multiple={false}
+      searchable
+      items={[
+        { type: 'option', label: 'Developer', value: 'developer' },
+        { type: 'option', label: 'Designer', value: 'designer' },
+        { type: 'option', label: 'Manager', value: 'manager' },
+        { type: 'option', label: 'Tester', value: 'tester' },
+      ]}
+      value={profession}
+      onChange={setProfession}
+    />
+  );
+}
+```
+
+## Multiple Selection
+
+```jsx
+import { Dropdown } from 'grauity';
+import { useState } from 'react';
+
+function MultipleSelect() {
+  const [hobbies, setHobbies] = useState([]);
+
+  return (
+    <Dropdown
+      name="hobbies"
+      label="Select Hobbies"
+      placeholder="Choose your hobbies"
+      multiple
+      searchable
+      showActionButtons
+      items={[
+        { type: 'option', label: 'Reading', value: 'reading' },
+        { type: 'option', label: 'Writing', value: 'writing' },
+        { type: 'option', label: 'Gaming', value: 'gaming' },
+        { type: 'option', label: 'Cooking', value: 'cooking' },
+        { type: 'option', label: 'Photography', value: 'photography' },
+      ]}
+      value={hobbies}
+      onChange={setHobbies}
+    />
+  );
+}
+```
+
+<Note>
+  In multiple selection mode, the value is an array of selected items. Use `showActionButtons` to require explicit confirmation.
+</Note>
+
+## With Sections and Dividers
+
+```jsx
+import { Dropdown } from 'grauity';
+
+function GroupedDropdown() {
+  const [value, setValue] = useState(null);
+
+  return (
+    <Dropdown
+      name="difficulty"
+      label="Difficulty Level"
+      items={[
+        { type: 'subheader', title: 'BEGINNER' },
+        { type: 'option', label: 'Easy', value: 'easy', description: 'Good for starters' },
+        { type: 'option', label: 'Medium', value: 'medium', description: 'Some experience needed' },
+        { type: 'divider' },
+        { type: 'subheader', title: 'ADVANCED' },
+        { type: 'option', label: 'Hard', value: 'hard', description: 'Challenging' },
+        { type: 'option', label: 'Expert', value: 'expert', description: 'Very difficult', disabled: true },
+      ]}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
+```
+
+## With Icons
+
+```jsx
+import { Dropdown } from 'grauity';
+
+function IconDropdown() {
+  const [status, setStatus] = useState(null);
+
+  return (
+    <Dropdown
+      name="status"
+      label="Status"
+      items={[
+        {
+          type: 'option',
+          label: 'Active',
+          value: 'active',
+          leftIcon: 'check-circle',
+          rightIcon: 'arrow-right',
+        },
+        {
+          type: 'option',
+          label: 'Pending',
+          value: 'pending',
+          leftIcon: 'clock',
+        },
+        {
+          type: 'option',
+          label: 'Inactive',
+          value: 'inactive',
+          leftIcon: 'close-circle',
+        },
+      ]}
+      value={status}
+      onChange={setStatus}
+    />
+  );
+}
+```
+
+## Custom Trigger
+
+```jsx
+import { Dropdown, Button } from 'grauity';
+import { useState } from 'react';
+
+function CustomTriggerDropdown() {
+  const [value, setValue] = useState(null);
+
+  return (
+    <Dropdown
+      name="actions"
+      trigger={<Button>Open Menu</Button>}
+      menuProps={{ width: '300px', fullWidth: false }}
+      items={[
+        { type: 'option', label: 'Edit', value: 'edit' },
+        { type: 'option', label: 'Delete', value: 'delete' },
+        { type: 'option', label: 'Share', value: 'share' },
+      ]}
+      value={value}
+      onChange={setValue}
+    />
+  );
+}
+```
+
+## With Validation
+
+```jsx
+import { Dropdown } from 'grauity';
+import { useState } from 'react';
+
+function ValidatedDropdown() {
+  const [value, setValue] = useState(null);
+  const [error, setError] = useState('');
+
+  const handleChange = (newValue) => {
+    setValue(newValue);
+    if (newValue) {
+      setError('');
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!value) {
+      setError('Please select an option');
+    }
+  };
+
+  return (
+    <Dropdown
+      name="required"
+      label="Required Field"
+      placeholder="Select an option"
+      isRequired
+      errorMessage={error}
+      helpMessage="This field is required"
+      items={[
+        { type: 'option', label: 'Option 1', value: '1' },
+        { type: 'option', label: 'Option 2', value: '2' },
+      ]}
+      value={value}
+      onChange={handleChange}
+    />
+  );
+}
+```
+
+## Props
+
+### Trigger Props
+
+<ParamField path="name" type="string" required>
+  The name of the dropdown field for form submission.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label displayed above the dropdown.
+</ParamField>
+
+<ParamField path="placeholder" type="string" default="'Select'">
+  Placeholder text shown when no option is selected.
+</ParamField>
+
+<ParamField path="isRequired" type="boolean" default={false}>
+  Whether the dropdown field is required.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether the dropdown is disabled.
+</ParamField>
+
+<ParamField path="helpMessage" type="string">
+  Helper text displayed below the dropdown.
+</ParamField>
+
+<ParamField path="errorMessage" type="string">
+  Error message displayed below the dropdown.
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  Color theme for the dropdown. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="showSelectedValueOnTrigger" type="boolean" default={true}>
+  Whether to show the selected value on the trigger button.
+  - If `false`, placeholder is always shown
+  - In single select: shows label
+  - In multi select: shows "n selected"
+</ParamField>
+
+<ParamField path="trigger" type="React.ReactNode">
+  Custom trigger element to display instead of default trigger.
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback fired when the dropdown menu is closed.
+  
+  ```tsx
+  (value: BaseItemOptionProps | BaseItemOptionProps[]) => void
+  ```
+</ParamField>
+
+### Menu Props
+
+<ParamField path="items" type="array" required>
+  Array of menu items to display. Each item can be:
+  - `{ type: 'option', label: string, value: string | number, description?: string, leftIcon?: string, rightIcon?: string, disabled?: boolean }`
+  - `{ type: 'subheader', title: string }`
+  - `{ type: 'divider' }`
+</ParamField>
+
+<ParamField path="value" type="BaseItemOptionProps | BaseItemOptionProps[]">
+  Currently selected value(s).
+  - Single select: single object or `null`
+  - Multiple select: array of objects
+</ParamField>
+
+<ParamField path="multiple" type="boolean" default={false}>
+  Whether multiple items can be selected.
+</ParamField>
+
+<ParamField path="searchable" type="boolean" default={false}>
+  Whether the dropdown menu includes a search field.
+</ParamField>
+
+<ParamField path="showHeader" type="boolean" default={true}>
+  Whether to show the dropdown menu header.
+</ParamField>
+
+<ParamField path="title" type="string" default="'Select'">
+  Title text for the dropdown menu header.
+</ParamField>
+
+<ParamField path="subtext" type="string">
+  Subtext displayed in the dropdown menu header.
+</ParamField>
+
+<ParamField path="showActionButtons" type="boolean" default={false}>
+  Whether to show Apply and Clear All buttons. When `true`, `onChange` is called only on Apply button click.
+</ParamField>
+
+<ParamField path="onChange" type="function">
+  Callback fired when selection changes.
+  
+  ```tsx
+  (value: BaseItemOptionProps | BaseItemOptionProps[]) => void
+  ```
+</ParamField>
+
+<ParamField path="menuProps" type="object">
+  Configuration for the dropdown menu positioning:
+  - `width`: Menu width (default: `'300px'`)
+  - `fullWidth`: Whether menu matches trigger width (default: `true`)
+</ParamField>
+
+## TypeScript
+
+```tsx
+import { DropdownProps, BaseItemOptionProps } from 'grauity';
+
+enum BaseItemType {
+  OPTION = 'option',
+  SUBHEADER = 'subheader',
+  DIVIDER = 'divider',
+}
+
+type BaseItemOptionProps = {
+  type: 'option';
+  label: string;
+  value: string | number;
+  description?: string;
+  leftIcon?: string;
+  rightIcon?: string;
+  disabled?: boolean;
+};
+```
+
+## Accessibility
+
+- Keyboard navigation with arrow keys, Enter, and Escape
+- Focus management for overlay and menu items
+- ARIA attributes for screen readers
+- Disabled items are not focusable
+- Selected items are announced
+
+<Warning>
+  When using `showActionButtons={true}`, the `onChange` callback will only fire when the user clicks "Apply", not when individual options are selected.
+</Warning>
+
+## Related Components
+
+- [Combobox](/components/forms/combobox) - Dropdown with searchable input field
+- [RadioButton](/components/forms/radio-button) - For fewer, always-visible options
+- [useForm](/components/forms/use-form) - For form validation and state management
+
+## Source
+
+View the source code on GitHub:
+- [Dropdown.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/Dropdown/Dropdown.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/Dropdown/types.ts:1)

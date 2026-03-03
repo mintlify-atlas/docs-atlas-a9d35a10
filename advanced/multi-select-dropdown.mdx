@@ -1,0 +1,382 @@
+---
+title: MultiSelectDropdown
+description: A deprecated multi-select dropdown component (use Dropdown instead)
+icon: list-check
+---
+
+<Warning>
+  This component is **deprecated** and will be removed in future releases. Please use the `Dropdown` component with `multiple` prop instead for new projects.
+  
+  [View Dropdown Documentation](/components/forms/dropdown)
+</Warning>
+
+## Overview
+
+`NSMultiSelectDropdown` is a multi-select dropdown component with search functionality and an "Apply" button. It allows users to select multiple options from a list and apply their selections in batch.
+
+## Migration Notice
+
+For new implementations, use the form `Dropdown` component with `multiple={true}` which provides:
+- Better accessibility
+- Improved keyboard navigation
+- Form integration capabilities
+- More flexible styling options
+- Better state management
+
+## Import
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+```
+
+## Basic Usage
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+import { useState } from 'react';
+
+function Example() {
+  const [selectedOptions, setSelectedOptions] = useState(new Set());
+
+  const options = new Set([
+    { id: '1', label: 'Option 1' },
+    { id: '2', label: 'Option 2' },
+    { id: '3', label: 'Option 3' },
+    { id: '4', label: 'Option 4' },
+  ]);
+
+  return (
+    <NSMultiSelectDropdown
+      options={options}
+      onOptionsChange={(selected) => setSelectedOptions(selected)}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="noOptionSelctedText" type="string" default="'Select'">
+  Text to display when no option is selected.
+  
+  <Note>Note the typo in the prop name `noOptionSelctedText` - this is maintained for backwards compatibility.</Note>
+</ParamField>
+
+<ParamField path="options" type="Set<DropdownOption>" default="new Set([])">
+  Set of options available for selection. Each option must have `id` (string) and `label` properties.
+</ParamField>
+
+<ParamField path="shouldEnableSearch" type="boolean" default="true">
+  Flag to enable or disable the search functionality.
+</ParamField>
+
+<ParamField path="onSearchInputChange" type="(value: string) => void">
+  Callback function triggered when the search input value changes.
+</ParamField>
+
+<ParamField path="searchPlaceholder" type="string" default="'Search'">
+  Placeholder text for the search input field.
+</ParamField>
+
+<ParamField path="shouldEnableAllSelected" type="boolean" default="true">
+  Flag to enable or disable the "Select All" functionality.
+</ParamField>
+
+<ParamField path="defaultAllSelected" type="boolean" default="false">
+  Flag to set all options as selected by default.
+</ParamField>
+
+<ParamField path="allOptionText" type="string" default="'All'">
+  Text to display for the "Select All" option and when all options are selected.
+</ParamField>
+
+<ParamField path="onOptionsChange" type="(options: Set<DropdownOption>) => void">
+  Callback function triggered when the selected options change. Called when the user clicks the "Apply" button.
+</ParamField>
+
+<ParamField path="triggerComponent" type="React.ReactNode">
+  Additional component to render as the trigger component. If not provided, the default trigger button will be rendered.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional class name for the dropdown wrapper.
+</ParamField>
+
+## DropdownOption Type
+
+```typescript
+interface DropdownOption {
+  id: string;
+  label: string;
+}
+```
+
+## Examples
+
+### Basic Multi-Select
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+import { useState } from 'react';
+
+function BasicMultiSelect() {
+  const [selected, setSelected] = useState(new Set());
+
+  const options = new Set([
+    { id: '1', label: 'React' },
+    { id: '2', label: 'Vue' },
+    { id: '3', label: 'Angular' },
+    { id: '4', label: 'Svelte' },
+  ]);
+
+  return (
+    <div>
+      <NSMultiSelectDropdown
+        noOptionSelctedText="Select frameworks"
+        options={options}
+        onOptionsChange={(selected) => {
+          setSelected(selected);
+          console.log('Selected:', Array.from(selected));
+        }}
+      />
+      
+      <div>
+        <p>Selected: {selected.size} frameworks</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### With Select All
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+
+function SelectAllExample() {
+  const options = new Set([
+    { id: '1', label: 'Monday' },
+    { id: '2', label: 'Tuesday' },
+    { id: '3', label: 'Wednesday' },
+    { id: '4', label: 'Thursday' },
+    { id: '5', label: 'Friday' },
+  ]);
+
+  return (
+    <NSMultiSelectDropdown
+      noOptionSelctedText="Select days"
+      options={options}
+      shouldEnableAllSelected={true}
+      allOptionText="All Days"
+      onOptionsChange={(selected) => console.log('Selected days:', selected)}
+    />
+  );
+}
+```
+
+### Default All Selected
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+
+function DefaultAllSelected() {
+  const options = new Set([
+    { id: '1', label: 'Email' },
+    { id: '2', label: 'SMS' },
+    { id: '3', label: 'Push' },
+  ]);
+
+  return (
+    <NSMultiSelectDropdown
+      noOptionSelctedText="Notifications"
+      options={options}
+      defaultAllSelected={true}
+      allOptionText="All Notifications"
+      onOptionsChange={(selected) => console.log('Enabled:', selected)}
+    />
+  );
+}
+```
+
+### With Custom Trigger
+
+```tsx
+import { NSMultiSelectDropdown, NSChip } from '@grauity/ui';
+import { useState } from 'react';
+
+function CustomTrigger() {
+  const [count, setCount] = useState(0);
+  const options = new Set([
+    { id: '1', label: 'Option 1' },
+    { id: '2', label: 'Option 2' },
+    { id: '3', label: 'Option 3' },
+  ]);
+
+  return (
+    <NSMultiSelectDropdown
+      options={options}
+      triggerComponent={
+        <NSChip>
+          Selected: {count}
+        </NSChip>
+      }
+      onOptionsChange={(selected) => setCount(selected.size)}
+    />
+  );
+}
+```
+
+### Custom Search Handler
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+import { useState } from 'react';
+
+function CustomSearch() {
+  const allOptions = new Set([
+    { id: '1', label: 'JavaScript' },
+    { id: '2', label: 'TypeScript' },
+    { id: '3', label: 'Python' },
+    { id: '4', label: 'Java' },
+    { id: '5', label: 'Go' },
+  ]);
+  
+  const [filteredOptions, setFilteredOptions] = useState(allOptions);
+
+  const handleSearch = (searchValue: string) => {
+    if (!searchValue) {
+      setFilteredOptions(allOptions);
+      return;
+    }
+
+    const filtered = new Set(
+      Array.from(allOptions).filter((option) =>
+        option.label.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    );
+    setFilteredOptions(filtered);
+  };
+
+  return (
+    <NSMultiSelectDropdown
+      options={filteredOptions}
+      onSearchInputChange={handleSearch}
+      searchPlaceholder="Search languages..."
+      onOptionsChange={(selected) => console.log('Selected:', selected)}
+    />
+  );
+}
+```
+
+### Without Search
+
+```tsx
+import { NSMultiSelectDropdown } from '@grauity/ui';
+
+function NoSearch() {
+  const options = new Set([
+    { id: '1', label: 'Small' },
+    { id: '2', label: 'Medium' },
+    { id: '3', label: 'Large' },
+  ]);
+
+  return (
+    <NSMultiSelectDropdown
+      options={options}
+      shouldEnableSearch={false}
+      noOptionSelctedText="Select size"
+      onOptionsChange={(selected) => console.log('Selected:', selected)}
+    />
+  );
+}
+```
+
+## Behavior
+
+<Info>
+  **Apply Pattern**: Unlike single-select dropdowns, this component uses an "Apply" button. Selections are only confirmed when the user clicks "Apply", allowing them to make multiple changes before committing.
+</Info>
+
+<Note>
+  **Visual Feedback**: The dropdown header shows:
+  - The placeholder text when nothing is selected
+  - "All" (or custom `allOptionText`) when all options are selected
+  - A single option label when one option is selected
+  - "{count} selected" when multiple (but not all) options are selected
+</Note>
+
+<Note>
+  Search functionality is debounced with a 500ms delay to improve performance.
+</Note>
+
+## Accessibility
+
+The component includes accessibility features:
+- `role="combobox"` for the dropdown header
+- `role="listbox"` for the options list
+- `role="searchbox"` for the search input
+- `aria-expanded` to indicate dropdown state
+- `aria-controls` to link header with list
+- `aria-labelledby` for proper labeling
+- Keyboard navigation support
+- Click-away detection to close dropdown
+
+## Limitations
+
+<Warning>
+  This component has several limitations compared to the newer `Dropdown` component:
+  
+  - Options are stored in a Set, which can be less convenient than arrays
+  - Limited styling customization options
+  - No support for option descriptions or icons
+  - No grouping or divider support
+  - Prop name typo (`noOptionSelctedText`) maintained for backwards compatibility
+  
+  Consider migrating to the `Dropdown` component for a better user experience and more features.
+</Warning>
+
+## Migration Guide
+
+To migrate from `NSMultiSelectDropdown` to the modern `Dropdown` component:
+
+```tsx
+// Old (MultiSelectDropdown)
+import { NSMultiSelectDropdown } from '@grauity/ui';
+
+const options = new Set([
+  { id: '1', label: 'Option 1' },
+  { id: '2', label: 'Option 2' },
+]);
+
+<NSMultiSelectDropdown
+  options={options}
+  onOptionsChange={(selected) => {
+    // selected is a Set of DropdownOption objects
+    setSelected(selected);
+  }}
+/>
+
+// New (Dropdown with multiple)
+import { NSDropdown } from '@grauity/ui';
+
+const options = [
+  { label: 'Option 1', value: '1' },
+  { label: 'Option 2', value: '2' },
+];
+
+<NSDropdown
+  multiple
+  options={options}
+  onChange={(values) => {
+    // values is an array of selected values
+    setSelected(values);
+  }}
+/>
+```
+
+Key differences:
+- `options` is now an array instead of a Set
+- Option structure uses `value` instead of `id`
+- `onChange` returns an array of values instead of a Set of objects
+- Built-in "Select All" functionality without extra props
+- Better TypeScript support

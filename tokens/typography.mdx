@@ -1,0 +1,307 @@
+---
+title: Typography
+description: Typography tokens for font sizes, weights, and families in Grauity
+---
+
+Grauity provides a comprehensive typography system with tokens for font sizes, font weights, and font families.
+
+## Font Families
+
+Grauity uses two primary font families:
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--font-family` | `"Mona Sans", sans-serif` | Default font for UI and content |
+| `--font-family-code` | `"Fira Code", monospace` | Font for code blocks and technical content |
+
+### Usage
+
+```css
+.text {
+  font-family: var(--font-family);
+}
+
+.code {
+  font-family: var(--font-family-code);
+}
+```
+
+## Font Sizes
+
+Font size tokens provide a consistent typographic scale from 2px to 96px.
+
+<Note>
+All font sizes are defined in pixels for precise control and consistency across browsers.
+</Note>
+
+| Token | Value | Typical Usage |
+|-------|-------|---------------|
+| `--font-size-2px` | `2px` | Micro text |
+| `--font-size-4px` | `4px` | Tiny text |
+| `--font-size-6px` | `6px` | Extra small text |
+| `--font-size-8px` | `8px` | Very small text |
+| `--font-size-10px` | `10px` | Small labels |
+| `--font-size-11px` | `11px` | Small text |
+| `--font-size-12px` | `12px` | Caption, helper text |
+| `--font-size-14px` | `14px` | Body text (small) |
+| `--font-size-16px` | `16px` | Body text (default) |
+| `--font-size-18px` | `18px` | Body text (large) |
+| `--font-size-20px` | `20px` | Subheading |
+| `--font-size-24px` | `24px` | Heading 4 |
+| `--font-size-28px` | `28px` | Heading 3 |
+| `--font-size-32px` | `32px` | Heading 2 |
+| `--font-size-36px` | `36px` | Heading 1 |
+| `--font-size-40px` | `40px` | Display text (small) |
+| `--font-size-48px` | `48px` | Display text (medium) |
+| `--font-size-56px` | `56px` | Display text (large) |
+| `--font-size-64px` | `64px` | Hero text (small) |
+| `--font-size-72px` | `72px` | Hero text (medium) |
+| `--font-size-80px` | `80px` | Hero text (large) |
+| `--font-size-96px` | `96px` | Hero text (extra large) |
+
+### Font Size Scale
+
+The font size scale follows these progressions:
+
+- **Micro scale**: 2px, 4px, 6px, 8px, 10px
+- **Small scale**: 11px, 12px, 14px
+- **Body scale**: 16px, 18px, 20px
+- **Heading scale**: 24px, 28px, 32px, 36px, 40px
+- **Display scale**: 48px, 56px, 64px, 72px, 80px, 96px
+
+### Usage
+
+```css
+/* Body text */
+.body {
+  font-size: var(--font-size-16px);
+}
+
+/* Heading */
+.heading {
+  font-size: var(--font-size-32px);
+}
+
+/* Caption */
+.caption {
+  font-size: var(--font-size-12px);
+}
+
+/* Display text */
+.hero {
+  font-size: var(--font-size-64px);
+}
+```
+
+## Font Weights
+
+Font weight tokens provide a range from thin (100) to black (900).
+
+### Numeric Weights
+
+| Token | Value | Name |
+|-------|-------|------|
+| `--font-weight-100` | `100` | Thin |
+| `--font-weight-200` | `200` | Extra Light |
+| `--font-weight-300` | `300` | Light |
+| `--font-weight-400` | `400` | Regular |
+| `--font-weight-450` | `450` | Medium (custom) |
+| `--font-weight-500` | `500` | Medium |
+| `--font-weight-550` | `550` | Semi Bold (custom) |
+| `--font-weight-600` | `600` | Semi Bold |
+| `--font-weight-650` | `650` | Bold (custom) |
+| `--font-weight-700` | `700` | Bold |
+| `--font-weight-800` | `800` | Extra Bold |
+| `--font-weight-900` | `900` | Black |
+
+### Semantic Weight Aliases
+
+For easier use, Grauity provides semantic aliases for common font weights:
+
+| Token | Maps To | Value | Usage |
+|-------|---------|-------|-------|
+| `--font-weight-medium` | `--font-weight-450` | `450` | Emphasized body text |
+| `--font-weight-semibold` | `--font-weight-550` | `550` | Subheadings |
+| `--font-weight-bold` | `--font-weight-650` | `650` | Headings and strong emphasis |
+
+<Note>
+The custom weights (450, 550, 650) are fine-tuned for the Mona Sans typeface to provide optimal visual hierarchy.
+</Note>
+
+### Font Weight Usage
+
+```css
+/* Regular text */
+.text {
+  font-weight: var(--font-weight-400);
+}
+
+/* Medium emphasis */
+.medium {
+  font-weight: var(--font-weight-medium);
+}
+
+/* Semi bold */
+.semibold {
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Bold heading */
+.heading {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Heavy display text */
+.display {
+  font-weight: var(--font-weight-700);
+}
+```
+
+## Typography Best Practices
+
+### Hierarchy
+
+Establish clear visual hierarchy by combining font size and weight:
+
+```css
+/* Primary heading */
+.h1 {
+  font-size: var(--font-size-36px);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-family);
+}
+
+/* Secondary heading */
+.h2 {
+  font-size: var(--font-size-28px);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family);
+}
+
+/* Body text */
+.body {
+  font-size: var(--font-size-16px);
+  font-weight: var(--font-weight-400);
+  font-family: var(--font-family);
+}
+
+/* Caption */
+.caption {
+  font-size: var(--font-size-12px);
+  font-weight: var(--font-weight-400);
+  font-family: var(--font-family);
+}
+```
+
+### Emphasis
+
+Use font weight to create emphasis without changing size:
+
+```css
+.text {
+  font-size: var(--font-size-16px);
+  font-weight: var(--font-weight-400);
+}
+
+.emphasized {
+  font-size: var(--font-size-16px);
+  font-weight: var(--font-weight-medium);
+}
+
+.strong {
+  font-size: var(--font-size-16px);
+  font-weight: var(--font-weight-semibold);
+}
+```
+
+### Code Blocks
+
+Always use the monospace font family for code:
+
+```css
+.code {
+  font-family: var(--font-family-code);
+  font-size: var(--font-size-14px);
+  font-weight: var(--font-weight-400);
+}
+
+.code-heading {
+  font-family: var(--font-family-code);
+  font-size: var(--font-size-16px);
+  font-weight: var(--font-weight-600);
+}
+```
+
+## Responsive Typography
+
+While the tokens themselves are fixed, you can create responsive typography by changing tokens at different breakpoints:
+
+```css
+.heading {
+  font-size: var(--font-size-24px);
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: var(--font-size-32px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading {
+    font-size: var(--font-size-40px);
+    font-weight: var(--font-weight-bold);
+  }
+}
+```
+
+## React Component Example
+
+```jsx
+import styled from 'styled-components';
+
+const Typography = {
+  H1: styled.h1`
+    font-family: var(--font-family);
+    font-size: var(--font-size-36px);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-emphasis-primary-default);
+  `,
+  
+  H2: styled.h2`
+    font-family: var(--font-family);
+    font-size: var(--font-size-28px);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-emphasis-primary-default);
+  `,
+  
+  Body: styled.p`
+    font-family: var(--font-family);
+    font-size: var(--font-size-16px);
+    font-weight: var(--font-weight-400);
+    color: var(--text-emphasis-primary-default);
+  `,
+  
+  Caption: styled.span`
+    font-family: var(--font-family);
+    font-size: var(--font-size-12px);
+    font-weight: var(--font-weight-400);
+    color: var(--text-emphasis-secondary-default);
+  `,
+  
+  Code: styled.code`
+    font-family: var(--font-family-code);
+    font-size: var(--font-size-14px);
+    font-weight: var(--font-weight-400);
+  `,
+};
+
+export default Typography;
+```
+
+## Source Files
+
+- **Typography Tokens**: `ui/themes/GlobalStyle.ts` (lines 141-182)
+- **Font Size Stories**: `stories/atoms/Font/FontSize.stories.tsx`
+- **Font Weight Stories**: `stories/atoms/Font/FontWeight.stories.tsx`

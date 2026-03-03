@@ -1,0 +1,293 @@
+---
+title: SelectDropdown
+description: A deprecated single-select dropdown component (use Dropdown instead)
+icon: caret-down
+---
+
+<Warning>
+  This component is **deprecated** and will be removed in future releases. Please use the `Dropdown` component instead for new projects.
+  
+  [View Dropdown Documentation](/components/forms/dropdown)
+</Warning>
+
+## Overview
+
+`NSSelectDropdown` is a single-select dropdown component with optional search functionality. It provides a simple interface for selecting one option from a list.
+
+## Migration Notice
+
+For new implementations, use the form `Dropdown` component which provides:
+- Better accessibility
+- Improved keyboard navigation
+- Form integration
+- More flexible styling options
+
+## Import
+
+```tsx
+import { NSSelectDropdown } from '@grauity/ui';
+```
+
+## Basic Usage
+
+```tsx
+import { NSSelectDropdown } from '@grauity/ui';
+import { useState } from 'react';
+
+function Example() {
+  const [selected, setSelected] = useState(null);
+
+  const options = new Set([
+    { id: '1', label: 'Option 1' },
+    { id: '2', label: 'Option 2' },
+    { id: '3', label: 'Option 3' },
+  ]);
+
+  return (
+    <NSSelectDropdown
+      options={options}
+      onChange={(option) => setSelected(option)}
+      text="Select an option"
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="options" type="Set<DropdownOption>" default="new Set([])">
+  Set of options available for selection. Each option must have `id` and `label` properties.
+</ParamField>
+
+<ParamField path="icon" type="grauityIconName">
+  Name of the icon to display in the dropdown button.
+</ParamField>
+
+<ParamField path="text" type="string" default="'Select'">
+  Text to display in the dropdown button.
+</ParamField>
+
+<ParamField path="shouldEnableSearch" type="boolean" default="true">
+  Flag to enable or disable the search functionality.
+</ParamField>
+
+<ParamField path="onSearchInputChange" type="(value: string) => void">
+  Callback function triggered when the search input value changes.
+</ParamField>
+
+<ParamField path="searchPlaceholder" type="string" default="'Search'">
+  Placeholder text for the search input field.
+</ParamField>
+
+<ParamField path="onChange" type="(option: DropdownOption) => void">
+  Callback function triggered when an option is selected.
+</ParamField>
+
+<ParamField path="noOptionsText" type="string" default="'-- No options available --'">
+  Text to display when no options are available.
+</ParamField>
+
+<ParamField path="triggerComponent" type="React.ReactNode">
+  Additional component to render as the trigger component. If not provided, the default trigger button will be rendered.
+</ParamField>
+
+<ParamField path="width" type="string" default="'max-content'">
+  Width of the dropdown.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional class name for the dropdown wrapper.
+</ParamField>
+
+## DropdownOption Type
+
+```typescript
+interface DropdownOption {
+  id: number | string;
+  label: string;
+}
+```
+
+## Examples
+
+### With Search Enabled
+
+```tsx
+import { NSSelectDropdown } from '@grauity/ui';
+
+function SearchableDropdown() {
+  const options = new Set([
+    { id: '1', label: 'Apple' },
+    { id: '2', label: 'Banana' },
+    { id: '3', label: 'Cherry' },
+    { id: '4', label: 'Date' },
+    { id: '5', label: 'Elderberry' },
+  ]);
+
+  return (
+    <NSSelectDropdown
+      options={options}
+      shouldEnableSearch={true}
+      searchPlaceholder="Search fruits..."
+      onChange={(option) => console.log('Selected:', option)}
+    />
+  );
+}
+```
+
+### With Custom Trigger
+
+```tsx
+import { NSSelectDropdown, NSButton } from '@grauity/ui';
+
+function CustomTriggerDropdown() {
+  const options = new Set([
+    { id: '1', label: 'Option 1' },
+    { id: '2', label: 'Option 2' },
+    { id: '3', label: 'Option 3' },
+  ]);
+
+  return (
+    <NSSelectDropdown
+      options={options}
+      triggerComponent={
+        <NSButton variant="outline">
+          Custom Trigger Button
+        </NSButton>
+      }
+      onChange={(option) => console.log('Selected:', option)}
+    />
+  );
+}
+```
+
+### With Icon
+
+```tsx
+import { NSSelectDropdown } from '@grauity/ui';
+
+function IconDropdown() {
+  const options = new Set([
+    { id: '1', label: 'Create New' },
+    { id: '2', label: 'Open Existing' },
+    { id: '3', label: 'Import' },
+  ]);
+
+  return (
+    <NSSelectDropdown
+      icon="plus"
+      text="Actions"
+      options={options}
+      onChange={(option) => console.log('Action:', option)}
+    />
+  );
+}
+```
+
+### Custom Search Handler
+
+```tsx
+import { NSSelectDropdown } from '@grauity/ui';
+import { useState } from 'react';
+
+function CustomSearchDropdown() {
+  const [allOptions] = useState(
+    new Set([
+      { id: '1', label: 'Apple' },
+      { id: '2', label: 'Banana' },
+      { id: '3', label: 'Cherry' },
+    ])
+  );
+  const [filteredOptions, setFilteredOptions] = useState(allOptions);
+
+  const handleSearch = (searchValue: string) => {
+    if (!searchValue) {
+      setFilteredOptions(allOptions);
+      return;
+    }
+
+    const filtered = new Set(
+      Array.from(allOptions).filter((option) =>
+        option.label.toLowerCase().includes(searchValue.toLowerCase())
+      )
+    );
+    setFilteredOptions(filtered);
+  };
+
+  return (
+    <NSSelectDropdown
+      options={filteredOptions}
+      onSearchInputChange={handleSearch}
+      onChange={(option) => console.log('Selected:', option)}
+    />
+  );
+}
+```
+
+## Behavior
+
+<Info>
+  The dropdown automatically closes when an option is selected. The selected option is passed to the `onChange` callback.
+</Info>
+
+<Note>
+  Search functionality is debounced with a 500ms delay to improve performance and reduce unnecessary filtering operations.
+</Note>
+
+## Accessibility
+
+The component includes basic accessibility features:
+- `role="combobox"` for the wrapper
+- `role="searchbox"` for the search input
+- `role="option"` for each option
+- Keyboard navigation support
+
+## Limitations
+
+<Warning>
+  This component has several limitations compared to the newer `Dropdown` component:
+  
+  - Limited styling customization
+  - No keyboard navigation for options
+  - No support for option descriptions or icons
+  - No grouping or divider support
+  
+  Consider migrating to the `Dropdown` component for a better user experience.
+</Warning>
+
+## Migration Guide
+
+To migrate from `NSSelectDropdown` to `Dropdown`:
+
+```tsx
+// Old (SelectDropdown)
+import { NSSelectDropdown } from '@grauity/ui';
+
+const options = new Set([
+  { id: '1', label: 'Option 1' },
+  { id: '2', label: 'Option 2' },
+]);
+
+<NSSelectDropdown
+  options={options}
+  onChange={(option) => setSelected(option)}
+/>
+
+// New (Dropdown)
+import { NSDropdown } from '@grauity/ui';
+
+const options = [
+  { label: 'Option 1', value: '1' },
+  { label: 'Option 2', value: '2' },
+];
+
+<NSDropdown
+  options={options}
+  onChange={(value) => setSelected(value)}
+/>
+```
+
+Key differences:
+- `options` is now an array instead of a Set
+- Option structure uses `value` instead of `id`
+- Better TypeScript support and autocomplete

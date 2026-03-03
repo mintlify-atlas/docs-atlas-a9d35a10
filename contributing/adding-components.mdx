@@ -1,0 +1,695 @@
+---
+title: Adding Components
+description: Step-by-step guide to creating and integrating new components in Grauity
+---
+
+## Overview
+
+This guide walks you through the complete process of adding a new component to Grauity, from initial setup to final integration.
+
+<Note>
+  Before starting, make sure you've completed the [development setup](/contributing/setup) and reviewed the [contribution guidelines](/contributing/guidelines).
+</Note>
+
+## Project Structure
+
+Grauity components are organized in two main directories:
+
+<CodeGroup>
+```bash Component Implementation
+ui/elements/YourComponent/
+├── YourComponent.tsx          # Main component implementation
+├── YourComponent.styles.ts    # Styled-components styles
+├── YourComponent.test.tsx     # Unit tests
+├── types.ts                   # TypeScript type definitions
+├── constants.ts               # Constants and enums
+├── utils.ts                   # Helper functions (if needed)
+└── index.ts                   # Public API exports
+```
+
+```bash Storybook Documentation
+stories/elements/YourComponent/
+├── index.stories.tsx          # Main Storybook story
+└── Gallery.stories.tsx        # Additional examples (optional)
+```
+</CodeGroup>
+
+### Directory Breakdown
+
+<AccordionGroup>
+  <Accordion title="ui/elements/">
+    Contains the actual React component implementations. This is where the component logic, styling, and tests live.
+    
+    - **Component files**: `.tsx` files with React components
+    - **Style files**: `.styles.ts` files with styled-components
+    - **Test files**: `.test.tsx` files with Jest tests
+    - **Type files**: `types.ts` with TypeScript interfaces
+    - **Constants**: `constants.ts` with enums and constants
+  </Accordion>
+
+  <Accordion title="stories/elements/">
+    Contains Storybook stories that document and demonstrate component usage.
+    
+    - **Stories**: `.stories.tsx` files that showcase component variations
+    - **Examples**: Source files showing real-world usage patterns
+  </Accordion>
+
+  <Accordion title="ui/index.ts">
+    The main export file that exposes components to consumers of the library.
+    
+    All public APIs must be exported from this file to be available in the published package.
+  </Accordion>
+</AccordionGroup>
+
+## Step-by-Step Guide
+
+<Steps>
+  <Step title="Create component directory structure">
+    Create the necessary directories and files for your component:
+    
+    ```bash
+    # Create component directory (use PascalCase)
+    mkdir -p ui/elements/Badge
+    
+    # Create story directory
+    mkdir -p stories/elements/Badge
+    
+    # Create component files
+    touch ui/elements/Badge/Badge.tsx
+    touch ui/elements/Badge/Badge.styles.ts
+    touch ui/elements/Badge/Badge.test.tsx
+    touch ui/elements/Badge/types.ts
+    touch ui/elements/Badge/constants.ts
+    touch ui/elements/Badge/index.ts
+    
+    # Create story file
+    touch stories/elements/Badge/index.stories.tsx
+    ```
+    
+    <Warning>
+      Component names must be in **PascalCase** and prefixed with **NS** when exported.
+    </Warning>
+  </Step>
+
+  <Step title="Define TypeScript types">
+    Start by defining your component's TypeScript interface in `types.ts`:
+    
+    ```typescript ui/elements/Badge/types.ts
+    import { ReactNode } from 'react';
+    
+    /**
+     * Props for the Badge component
+     */
+    export interface BadgeProps {
+        /** Badge content */
+        children: ReactNode;
+        
+        /** Visual variant of the badge */
+        variant?: 'success' | 'error' | 'warning' | 'info';
+        
+        /** Size of the badge */
+        size?: 'small' | 'medium' | 'large';
+        
+        /** Additional CSS class names */
+        className?: string;
+        
+        /** Optional click handler */
+        onClick?: () => void;
+    }
+    ```
+    
+    <Tip>
+      Always document your props with JSDoc comments. These appear in IDE tooltips and Storybook documentation.
+    </Tip>
+  </Step>
+
+  <Step title="Define constants and enums">
+    Create constants and enums in `constants.ts`:
+    
+    ```typescript ui/elements/Badge/constants.ts
+    /**
+     * Available badge variants
+     */
+    export enum BADGE_VARIANTS_ENUM {
+        SUCCESS = 'success',
+        ERROR = 'error',
+        WARNING = 'warning',
+        INFO = 'info',
+    }
+    
+    /**
+     * Available badge sizes
+     */
+    export enum BADGE_SIZES_ENUM {
+        SMALL = 'small',
+        MEDIUM = 'medium',
+        LARGE = 'large',
+    }
+    
+    /**
+     * List of all badge variants
+     */
+    export const BADGE_VARIANTS = Object.values(BADGE_VARIANTS_ENUM);
+    
+    /**
+     * List of all badge sizes
+     */
+    export const BADGE_SIZES = Object.values(BADGE_SIZES_ENUM);
+    ```
+  </Step>
+
+  <Step title="Create styled components">
+    Define your component's styles using styled-components in `Badge.styles.ts`:
+    
+    ```typescript ui/elements/Badge/Badge.styles.ts
+    import styled from 'styled-components';
+    import { BadgeProps } from './types';
+    
+    export const StyledBadge = styled.span<BadgeProps>`
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: ${({ size }) => {
+            switch (size) {
+                case 'small':
+                    return '2px 8px';
+                case 'large':
+                    return '6px 16px';
+                case 'medium':
+                default:
+                    return '4px 12px';
+            }
+        }};
+        border-radius: var(--ns-border-radius-small);
+        font-size: ${({ size }) => {
+            switch (size) {
+                case 'small':
+                    return '12px';
+                case 'large':
+                    return '16px';
+                case 'medium':
+                default:
+                    return '14px';
+            }
+        }};
+        font-weight: 500;
+        background-color: ${({ variant }) => {
+            switch (variant) {
+                case 'success':
+                    return 'var(--ns-color-success-bg)';
+                case 'error':
+                    return 'var(--ns-color-error-bg)';
+                case 'warning':
+                    return 'var(--ns-color-warning-bg)';
+                case 'info':
+                default:
+                    return 'var(--ns-color-info-bg)';
+            }
+        }};
+        color: ${({ variant }) => {
+            switch (variant) {
+                case 'success':
+                    return 'var(--ns-color-success-text)';
+                case 'error':
+                    return 'var(--ns-color-error-text)';
+                case 'warning':
+                    return 'var(--ns-color-warning-text)';
+                case 'info':
+                default:
+                    return 'var(--ns-color-info-text)';
+            }
+        }};
+    `;
+    ```
+    
+    <Note>
+      Use Grauity's CSS custom properties (variables) for theming support. Variables are prefixed with `--ns-`.
+    </Note>
+  </Step>
+
+  <Step title="Implement the component">
+    Create your React component in `Badge.tsx`:
+    
+    ```typescript ui/elements/Badge/Badge.tsx
+    import React from 'react';
+    import { StyledBadge } from './Badge.styles';
+    import { BadgeProps } from './types';
+    
+    /**
+     * Badge component for displaying status, labels, or counts
+     */
+    const Badge: React.FC<BadgeProps> = ({
+        children,
+        variant = 'info',
+        size = 'medium',
+        className,
+        onClick,
+        ...rest
+    }) => {
+        return (
+            <StyledBadge
+                variant={variant}
+                size={size}
+                className={className}
+                onClick={onClick}
+                role={onClick ? 'button' : undefined}
+                tabIndex={onClick ? 0 : undefined}
+                {...rest}
+            >
+                {children}
+            </StyledBadge>
+        );
+    };
+    
+    export default Badge;
+    ```
+    
+    <Tip>
+      Follow accessibility best practices: add proper ARIA attributes, keyboard support, and semantic HTML.
+    </Tip>
+  </Step>
+
+  <Step title="Write unit tests">
+    Create comprehensive tests in `Badge.test.tsx`:
+    
+    ```typescript ui/elements/Badge/Badge.test.tsx
+    import '@testing-library/jest-dom';
+    import { fireEvent, render, screen } from '@testing-library/react';
+    import React from 'react';
+    import Badge from './Badge';
+    
+    describe('Badge', () => {
+        it('renders with default props', () => {
+            render(<Badge>New</Badge>);
+            const badge = screen.getByText('New');
+            expect(badge).toBeInTheDocument();
+        });
+    
+        it('renders with different variants', () => {
+            const { rerender } = render(
+                <Badge variant="success">Success</Badge>
+            );
+            expect(screen.getByText('Success')).toBeInTheDocument();
+    
+            rerender(<Badge variant="error">Error</Badge>);
+            expect(screen.getByText('Error')).toBeInTheDocument();
+        });
+    
+        it('renders with different sizes', () => {
+            const { rerender } = render(
+                <Badge size="small">Small</Badge>
+            );
+            expect(screen.getByText('Small')).toBeInTheDocument();
+    
+            rerender(<Badge size="large">Large</Badge>);
+            expect(screen.getByText('Large')).toBeInTheDocument();
+        });
+    
+        it('calls onClick handler when clicked', () => {
+            const handleClick = jest.fn();
+            render(<Badge onClick={handleClick}>Clickable</Badge>);
+            const badge = screen.getByText('Clickable');
+            fireEvent.click(badge);
+            expect(handleClick).toHaveBeenCalledTimes(1);
+        });
+    
+        it('applies custom className', () => {
+            render(<Badge className="custom-class">Badge</Badge>);
+            const badge = screen.getByText('Badge');
+            expect(badge).toHaveClass('custom-class');
+        });
+    });
+    ```
+    
+    Run tests to ensure they pass:
+    ```bash
+    npm test Badge
+    ```
+  </Step>
+
+  <Step title="Export from component index">
+    Export your component's public API in `ui/elements/Badge/index.ts`:
+    
+    ```typescript ui/elements/Badge/index.ts
+    export { default } from './Badge';
+    export { BADGE_VARIANTS, BADGE_VARIANTS_ENUM } from './constants';
+    export { BADGE_SIZES, BADGE_SIZES_ENUM } from './constants';
+    export type { BadgeProps } from './types';
+    ```
+  </Step>
+
+  <Step title="Export from main library index">
+    Add your component to the main `ui/index.ts` file with the **NS prefix**:
+    
+    ```typescript ui/index.ts
+    // ... other exports ...
+    
+    // NSBadge
+    export {
+        BADGE_VARIANTS,
+        BADGE_VARIANTS_ENUM,
+        BADGE_SIZES,
+        BADGE_SIZES_ENUM,
+        type BadgeProps,
+        default as NSBadge,
+    } from './elements/Badge';
+    ```
+    
+    <Warning>
+      Always use the **NS prefix** when exporting components (e.g., `NSBadge`, not `Badge`).
+    </Warning>
+  </Step>
+
+  <Step title="Create Storybook story">
+    Document your component with a Storybook story in `stories/elements/Badge/index.stories.tsx`:
+    
+    ```typescript stories/elements/Badge/index.stories.tsx
+    import React from 'react';
+    import Badge, { BadgeProps } from 'ui/elements/Badge';
+    
+    export default {
+        title: 'Elements/Badge',
+        component: Badge,
+        argTypes: {
+            variant: {
+                control: 'select',
+                options: ['success', 'error', 'warning', 'info'],
+            },
+            size: {
+                control: 'select',
+                options: ['small', 'medium', 'large'],
+            },
+        },
+    };
+    
+    const Template = (args: BadgeProps) => <Badge {...args} />;
+    
+    export const Default = Template.bind({});
+    Default.args = {
+        children: 'Badge',
+        variant: 'info',
+        size: 'medium',
+    };
+    
+    export const Success = Template.bind({});
+    Success.args = {
+        children: 'Success',
+        variant: 'success',
+    };
+    
+    export const Error = Template.bind({});
+    Error.args = {
+        children: 'Error',
+        variant: 'error',
+    };
+    
+    export const Warning = Template.bind({});
+    Warning.args = {
+        children: 'Warning',
+        variant: 'warning',
+    };
+    
+    export const AllSizes = () => (
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <Badge size="small">Small</Badge>
+            <Badge size="medium">Medium</Badge>
+            <Badge size="large">Large</Badge>
+        </div>
+    );
+    ```
+    
+    View your component in Storybook:
+    ```bash
+    npm run storybook
+    ```
+  </Step>
+
+  <Step title="Test and verify">
+    Verify everything works correctly:
+    
+    <Tabs>
+      <Tab title="Tests">
+        ```bash
+        # Run all tests
+        npm test
+        
+        # Run tests with coverage
+        npm run test:coverage
+        ```
+      </Tab>
+      <Tab title="Linting">
+        ```bash
+        # Check for linting errors
+        npm run lint
+        
+        # Auto-fix linting errors
+        npm run lint:fix
+        ```
+      </Tab>
+      <Tab title="Build">
+        ```bash
+        # Build the library
+        npm run build
+        
+        # Build Storybook docs
+        npm run build-storybook
+        ```
+      </Tab>
+      <Tab title="Storybook">
+        ```bash
+        # Start Storybook dev server
+        npm run storybook
+        ```
+        
+        Then navigate to `http://localhost:6006` and find your component under Elements/Badge
+      </Tab>
+    </Tabs>
+  </Step>
+</Steps>
+
+<Check>
+  Your component is now ready! It can be imported and used by consumers of the Grauity library.
+</Check>
+
+## Component Checklist
+
+Before submitting your component, ensure you've completed all items:
+
+<AccordionGroup>
+  <Accordion title="Implementation" icon="code">
+    - [ ] Component follows NS naming convention
+    - [ ] TypeScript types are properly defined
+    - [ ] Constants and enums are created
+    - [ ] Styled components use CSS custom properties
+    - [ ] Component handles all prop variations
+    - [ ] Default props are sensible
+    - [ ] PropTypes include JSDoc comments
+  </Accordion>
+
+  <Accordion title="Code Quality" icon="check">
+    - [ ] No ESLint errors: `npm run lint`
+    - [ ] Code is formatted: `npm run prettify`
+    - [ ] No TypeScript errors
+    - [ ] Follows file naming conventions
+    - [ ] 4-space indentation
+    - [ ] Single quotes for strings
+  </Accordion>
+
+  <Accordion title="Testing" icon="flask">
+    - [ ] Unit tests written and passing
+    - [ ] All prop variations tested
+    - [ ] User interactions tested
+    - [ ] Edge cases covered
+    - [ ] Accessibility tested
+    - [ ] Test coverage > 80%
+  </Accordion>
+
+  <Accordion title="Documentation" icon="book">
+    - [ ] Storybook story created
+    - [ ] All variants demonstrated
+    - [ ] Props documented in JSDoc
+    - [ ] Usage examples provided
+    - [ ] ArgTypes configured in story
+  </Accordion>
+
+  <Accordion title="Accessibility" icon="universal-access">
+    - [ ] Semantic HTML used
+    - [ ] ARIA attributes added
+    - [ ] Keyboard navigation works
+    - [ ] Focus management implemented
+    - [ ] Color contrast meets WCAG AA
+    - [ ] Screen reader friendly
+  </Accordion>
+
+  <Accordion title="Exports" icon="arrow-up-right-from-square">
+    - [ ] Exported from component index.ts
+    - [ ] Exported from ui/index.ts with NS prefix
+    - [ ] All types exported
+    - [ ] All constants/enums exported
+  </Accordion>
+</AccordionGroup>
+
+## Advanced Topics
+
+### Compound Components
+
+For complex components with sub-components (like `NSButton` and `NSButtonGroup`):
+
+```typescript
+// Main component
+export { default as NSBadge } from './Badge';
+// Sub-component
+export { default as NSBadgeGroup } from './BadgeGroup';
+```
+
+### Utility Functions
+
+If your component needs helper functions, create a `utils.ts` file:
+
+```typescript ui/elements/Badge/utils.ts
+import { BADGE_VARIANTS_ENUM } from './constants';
+
+/**
+ * Get badge variant based on status code
+ */
+export const getVariantFromStatus = (status: number) => {
+    if (status >= 200 && status < 300) {
+        return BADGE_VARIANTS_ENUM.SUCCESS;
+    }
+    if (status >= 400) {
+        return BADGE_VARIANTS_ENUM.ERROR;
+    }
+    return BADGE_VARIANTS_ENUM.INFO;
+};
+```
+
+### Component Variants
+
+Create variants as separate components that share the same base:
+
+```typescript
+// Badge.tsx - Base component
+export const Badge = () => { /* ... */ };
+
+// StatusBadge.tsx - Variant
+import Badge from './Badge';
+
+export const StatusBadge = ({ status, ...props }) => {
+    const variant = getVariantFromStatus(status);
+    return <Badge variant={variant} {...props} />;
+};
+```
+
+## Common Pitfalls
+
+<Warning>
+  Avoid these common mistakes when adding components:
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Forgetting NS prefix">
+    ❌ Wrong:
+    ```typescript
+    export { default as Badge } from './elements/Badge';
+    ```
+    
+    ✅ Correct:
+    ```typescript
+    export { default as NSBadge } from './elements/Badge';
+    ```
+  </Accordion>
+
+  <Accordion title="Not exporting types">
+    ❌ Wrong:
+    ```typescript
+    export { default as NSBadge } from './elements/Badge';
+    ```
+    
+    ✅ Correct:
+    ```typescript
+    export {
+        default as NSBadge,
+        type BadgeProps,
+        BADGE_VARIANTS_ENUM,
+    } from './elements/Badge';
+    ```
+  </Accordion>
+
+  <Accordion title="Hardcoding colors">
+    ❌ Wrong:
+    ```typescript
+    background-color: #3b82f6;
+    ```
+    
+    ✅ Correct:
+    ```typescript
+    background-color: var(--ns-color-primary);
+    ```
+  </Accordion>
+
+  <Accordion title="Missing accessibility">
+    ❌ Wrong:
+    ```typescript
+    <div onClick={handleClick}>Click me</div>
+    ```
+    
+    ✅ Correct:
+    ```typescript
+    <button onClick={handleClick} aria-label="Close">
+        Click me
+    </button>
+    ```
+  </Accordion>
+
+  <Accordion title="Insufficient testing">
+    ❌ Wrong: Only testing happy path
+    
+    ✅ Correct: Test all variants, edge cases, and error states
+  </Accordion>
+</AccordionGroup>
+
+## Example: Complete Component
+
+Here's what a complete component file structure looks like:
+
+<CardGroup cols={2}>
+  <Card title="Component Structure" icon="folder-tree">
+    ```
+    ui/elements/Badge/
+    ├── Badge.tsx (143 lines)
+    ├── Badge.styles.ts (67 lines)
+    ├── Badge.test.tsx (95 lines)
+    ├── types.ts (24 lines)
+    ├── constants.ts (18 lines)
+    └── index.ts (5 lines)
+    ```
+  </Card>
+  <Card title="Story Structure" icon="book">
+    ```
+    stories/elements/Badge/
+    ├── index.stories.tsx (78 lines)
+    └── Gallery.stories.tsx (45 lines)
+    ```
+  </Card>
+</CardGroup>
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Setup Guide" icon="wrench" href="/contributing/setup">
+    Review development setup instructions
+  </Card>
+  <Card title="Guidelines" icon="book-open" href="/contributing/guidelines">
+    Check contribution guidelines and standards
+  </Card>
+  <Card title="Storybook" icon="book" href="https://grauity.newtonschool.co">
+    Browse existing components for reference
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com/Newton-School/grauity">
+    View source code and examples
+  </Card>
+</CardGroup>
+
+<Tip>
+  Study existing components like `NSButton`, `NSAlert`, or `NSTypography` to see real-world examples of Grauity components.
+</Tip>

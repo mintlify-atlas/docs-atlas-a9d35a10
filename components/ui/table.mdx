@@ -1,0 +1,294 @@
+---
+title: Table
+description: A flexible table component for displaying structured data with customizable styling and layout options.
+---
+
+## Overview
+
+The Table component provides a robust solution for displaying tabular data with support for various styling options, actions, and responsive layouts.
+
+## Basic Usage
+
+```tsx
+import Table from '@grauity/ui/elements/Table';
+
+const columns = [
+  { key: 'name', display: 'Name', width: '200px' },
+  { key: 'email', display: 'Email', width: '250px' },
+  { key: 'role', display: 'Role' },
+];
+
+const rows = [
+  {
+    name: { display: 'John Doe' },
+    email: { display: 'john@example.com' },
+    role: { display: 'Admin' },
+  },
+  {
+    name: { display: 'Jane Smith' },
+    email: { display: 'jane@example.com' },
+    role: { display: 'User' },
+  },
+];
+
+function MyComponent() {
+  return (
+    <Table
+      columns={columns}
+      rows={rows}
+      striped={false}
+      hoverable={true}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="columns" type="TableColumn[]">
+  Array of column definitions.
+</ParamField>
+
+<ParamField path="rows" type="TableRow[]">
+  Array of row data objects.
+</ParamField>
+
+<ParamField path="condensed" type="boolean" default={true}>
+  Use reduced padding for a more compact table.
+</ParamField>
+
+<ParamField path="striped" type="boolean" default={false}>
+  Apply alternating row background colors.
+</ParamField>
+
+<ParamField path="borderAround" type="boolean" default={true}>
+  Show border around the table.
+</ParamField>
+
+<ParamField path="borderWithin" type="boolean" default={true}>
+  Show borders between cells. Has precedence over `borderHorizontal` and `borderVertical`.
+</ParamField>
+
+<ParamField path="borderHorizontal" type="boolean" default={true}>
+  Show horizontal borders between rows.
+</ParamField>
+
+<ParamField path="borderVertical" type="boolean" default={true}>
+  Show vertical borders between columns.
+</ParamField>
+
+<ParamField path="loading" type="boolean" default={false}>
+  Show loading state.
+</ParamField>
+
+<ParamField path="capitalizeHeaders" type="boolean" default={true}>
+  Automatically capitalize header text.
+</ParamField>
+
+<ParamField path="highlightHeaders" type="boolean" default={true}>
+  Apply highlight styling to table headers.
+</ParamField>
+
+<ParamField path="hoverable" type="boolean" default={false}>
+  Enable hover effects on table rows.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes.
+</ParamField>
+
+<ParamField path="style" type="React.CSSProperties" default={{}}>
+  Additional inline styles.
+</ParamField>
+
+## Column Definition
+
+```tsx
+interface TableColumn {
+  key: string;           // Column identifier
+  display: string;       // Header display text
+  width?: string;        // Column width
+  align?: 'left' | 'right' | 'center';  // Text alignment
+  rowSpan?: number;      // Header row span
+  colSpan?: number;      // Header col span
+}
+```
+
+## Cell Definition
+
+```tsx
+interface TableCellInterface {
+  display?: ReactNode;   // Cell content
+  render?: (args: TableCellInterface) => ReactNode;  // Custom render
+  vAlign?: 'top' | 'bottom' | 'middle';  // Vertical alignment
+  rowSpan?: number;      // Cell row span
+  colSpan?: number;      // Cell col span
+  actions?: TableCellAction[];  // Row actions
+  align?: 'left' | 'right' | 'center';  // Text alignment
+}
+```
+
+## With Custom Alignment
+
+```tsx
+const columns = [
+  { key: 'product', display: 'Product', align: 'left' },
+  { key: 'price', display: 'Price', align: 'right' },
+  { key: 'stock', display: 'Stock', align: 'center' },
+];
+
+const rows = [
+  {
+    product: { display: 'Widget', align: 'left' },
+    price: { display: '$29.99', align: 'right' },
+    stock: { display: '150', align: 'center' },
+  },
+];
+```
+
+## With Row Actions
+
+```tsx
+const rows = [
+  {
+    name: { display: 'John Doe' },
+    email: { display: 'john@example.com' },
+    actions: {
+      actions: [
+        {
+          key: 'edit',
+          display: 'Edit',
+          icon: 'edit',
+          handleClick: (data) => console.log('Edit', data),
+        },
+        {
+          key: 'delete',
+          display: 'Delete',
+          icon: 'trash',
+          handleClick: (data) => console.log('Delete', data),
+        },
+      ],
+    },
+  },
+];
+```
+
+## Custom Cell Render
+
+```tsx
+const rows = [
+  {
+    name: { display: 'John Doe' },
+    status: {
+      render: () => (
+        <Chip variant="success" size="small">
+          Active
+        </Chip>
+      ),
+    },
+  },
+];
+```
+
+## Striped Table
+
+```tsx
+<Table
+  columns={columns}
+  rows={rows}
+  striped={true}
+/>
+```
+
+## Hoverable Rows
+
+```tsx
+<Table
+  columns={columns}
+  rows={rows}
+  hoverable={true}
+/>
+```
+
+## Without Borders
+
+```tsx
+<Table
+  columns={columns}
+  rows={rows}
+  borderAround={false}
+  borderWithin={false}
+/>
+```
+
+## Condensed vs Regular
+
+```tsx
+// Condensed (default)
+<Table columns={columns} rows={rows} condensed={true} />
+
+// Regular spacing
+<Table columns={columns} rows={rows} condensed={false} />
+```
+
+## Loading State
+
+```tsx
+<Table
+  columns={columns}
+  rows={rows}
+  loading={true}
+/>
+```
+
+## Complex Example
+
+```tsx
+const columns = [
+  { key: 'id', display: 'ID', width: '80px', align: 'center' },
+  { key: 'name', display: 'Name', width: '200px' },
+  { key: 'email', display: 'Email', width: '250px' },
+  { key: 'role', display: 'Role', width: '120px' },
+  { key: 'status', display: 'Status', width: '100px', align: 'center' },
+  { key: 'actions', display: 'Actions', width: '150px', align: 'center' },
+];
+
+const rows = [
+  {
+    id: { display: '1', align: 'center' },
+    name: { display: 'John Doe' },
+    email: { display: 'john@example.com' },
+    role: { display: 'Admin' },
+    status: {
+      render: () => <Chip variant="success" size="small">Active</Chip>,
+      align: 'center',
+    },
+    actions: {
+      actions: [
+        {
+          key: 'edit',
+          icon: 'edit',
+          display: 'Edit',
+          handleClick: (data) => handleEdit(data),
+        },
+        {
+          key: 'delete',
+          icon: 'trash',
+          display: 'Delete',
+          handleClick: (data) => handleDelete(data),
+        },
+      ],
+      align: 'center',
+    },
+  },
+];
+
+<Table
+  columns={columns}
+  rows={rows}
+  striped={true}
+  hoverable={true}
+  capitalizeHeaders={true}
+  highlightHeaders={true}
+/>
+```

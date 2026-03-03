@@ -1,0 +1,244 @@
+---
+title: Checkbox
+description: A single checkbox component for binary selections
+---
+
+## Overview
+
+Checkbox is a form input component that allows users to select or deselect an option. It supports multiple sizes, states, and can display in an indeterminate state.
+
+## Basic Usage
+
+```jsx
+import { Checkbox } from 'grauity';
+import { useState } from 'react';
+
+function MyForm() {
+  const [checked, setChecked] = useState(false);
+
+  return (
+    <Checkbox
+      name="terms"
+      label="I agree to the terms and conditions"
+      isChecked={checked}
+      onChange={(e) => setChecked(e.target.checked)}
+    />
+  );
+}
+```
+
+## With Validation
+
+```jsx
+import { Checkbox } from 'grauity';
+import { useState } from 'react';
+
+function ValidatedCheckbox() {
+  const [accepted, setAccepted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    setAccepted(e.target.checked);
+    if (e.target.checked) {
+      setError('');
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!accepted) {
+      setError('You must accept the terms to continue');
+    }
+  };
+
+  return (
+    <>
+      <Checkbox
+        name="consent"
+        label="I agree to receive marketing emails"
+        isChecked={accepted}
+        onChange={handleChange}
+        errorMessage={error}
+        helpMessage="You can unsubscribe at any time"
+        isRequired
+      />
+      <button onClick={handleSubmit}>Submit</button>
+    </>
+  );
+}
+```
+
+## Sizes
+
+Checkbox comes in three sizes: `small`, `medium` (default), and `large`.
+
+```jsx
+<Checkbox name="small" label="Small checkbox" size="small" />
+<Checkbox name="medium" label="Medium checkbox" size="medium" />
+<Checkbox name="large" label="Large checkbox" size="large" />
+```
+
+## Indeterminate State
+
+The indeterminate state is useful for "Select All" checkboxes when only some items are selected.
+
+```jsx
+import { Checkbox } from 'grauity';
+import { useState } from 'react';
+
+function IndeterminateExample() {
+  const [items, setItems] = useState({
+    item1: false,
+    item2: false,
+    item3: false,
+  });
+
+  const allChecked = Object.values(items).every(Boolean);
+  const someChecked = Object.values(items).some(Boolean) && !allChecked;
+
+  const handleSelectAll = () => {
+    const newValue = !allChecked;
+    setItems({
+      item1: newValue,
+      item2: newValue,
+      item3: newValue,
+    });
+  };
+
+  return (
+    <>
+      <Checkbox
+        name="selectAll"
+        label="Select All"
+        isChecked={allChecked}
+        isIndeterminate={someChecked}
+        onChange={handleSelectAll}
+      />
+      <Checkbox
+        name="item1"
+        label="Item 1"
+        isChecked={items.item1}
+        onChange={(e) => setItems({ ...items, item1: e.target.checked })}
+      />
+      <Checkbox
+        name="item2"
+        label="Item 2"
+        isChecked={items.item2}
+        onChange={(e) => setItems({ ...items, item2: e.target.checked })}
+      />
+      <Checkbox
+        name="item3"
+        label="Item 3"
+        isChecked={items.item3}
+        onChange={(e) => setItems({ ...items, item3: e.target.checked })}
+      />
+    </>
+  );
+}
+```
+
+<Note>
+  The `isIndeterminate` prop takes precedence over `isChecked` for visual display.
+</Note>
+
+## Colors
+
+```jsx
+<Checkbox name="brand" label="Brand color" color="brand" isChecked />
+<Checkbox name="success" label="Success color" color="success" isChecked />
+<Checkbox name="danger" label="Danger color" color="danger" isChecked />
+<Checkbox name="warning" label="Warning color" color="warning" isChecked />
+```
+
+## Props
+
+<ParamField path="name" type="string" required>
+  The name of the checkbox input.
+</ParamField>
+
+<ParamField path="label" type="string">
+  The label text displayed next to the checkbox.
+</ParamField>
+
+<ParamField path="value" type="string | number">
+  The value of the checkbox. Useful when used in a group.
+</ParamField>
+
+<ParamField path="isChecked" type="boolean" default={false}>
+  Whether the checkbox is checked.
+</ParamField>
+
+<ParamField path="isIndeterminate" type="boolean" default={false}>
+  Whether the checkbox is in an indeterminate state. Takes precedence over `isChecked` for display.
+</ParamField>
+
+<ParamField path="size" type="string" default="'medium'">
+  The size of the checkbox. Options: `'small'` | `'medium'` | `'large'`
+</ParamField>
+
+<ParamField path="color" type="string" default="'brand'">
+  The color theme for the checkbox. Options: `'brand'` | `'primary'` | `'secondary'` | `'success'` | `'danger'` | `'warning'` | `'info'`
+</ParamField>
+
+<ParamField path="isRequired" type="boolean" default={false}>
+  Whether the checkbox is required. Displays a required indicator.
+</ParamField>
+
+<ParamField path="isDisabled" type="boolean" default={false}>
+  Whether the checkbox is disabled.
+</ParamField>
+
+<ParamField path="errorMessage" type="string">
+  Error message to display below the checkbox.
+</ParamField>
+
+<ParamField path="helpMessage" type="string">
+  Helper text displayed below the checkbox.
+</ParamField>
+
+<ParamField path="state" type="string" default="'default'">
+  **Deprecated:** Use `color` prop instead. Options: `'default'` | `'error'` | `'success'`
+</ParamField>
+
+<ParamField path="onChange" type="function">
+  Callback fired when the checkbox state changes.
+  
+  ```tsx
+  (event: React.ChangeEvent<HTMLInputElement>) => void
+  ```
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS class name for the container.
+</ParamField>
+
+## TypeScript
+
+```tsx
+import { CheckboxProps } from 'grauity';
+
+type CheckboxSize = 'small' | 'medium' | 'large';
+type CheckboxColors = 'brand' | 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
+```
+
+## Accessibility
+
+- Uses `role="checkbox"` with proper ARIA attributes
+- Supports `aria-checked` including `"mixed"` for indeterminate state
+- Keyboard accessible (Space to toggle)
+- Screen reader announces checked/unchecked/mixed states
+- Associated label is clickable to toggle checkbox
+
+<Warning>
+  When using checkboxes in a group, consider using the CheckboxGroup component for better organization and validation.
+</Warning>
+
+## Related Components
+
+- [RadioButton](/components/forms/radio-button) - For single selection from multiple options
+- [useForm](/components/forms/use-form) - For form validation and state management
+
+## Source
+
+View the source code on GitHub:
+- [Checkbox.tsx](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/Checkbox/Checkbox.tsx:1)
+- [types.ts](https://github.com/Newton-School/grauity/blob/main/ui/elements/Form/Checkbox/types.ts:1)

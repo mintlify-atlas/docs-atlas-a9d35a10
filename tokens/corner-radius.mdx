@@ -1,0 +1,438 @@
+---
+title: Corner Radius
+description: Border radius tokens for consistent rounded corners in Grauity
+---
+
+Corner radius tokens provide a consistent system for rounded corners across all components, from subtle roundness to fully circular elements.
+
+## Available Tokens
+
+Grauity provides border radius values from sharp corners (0px) to fully rounded (100%).
+
+<Note>
+Most tokens use pixel values for consistent roundness regardless of element size. Percentage values are provided for circular and pill-shaped elements.
+</Note>
+
+| Token | Value | Visual | Use Case |
+|-------|-------|--------|----------|
+| `--corner-radius-0px` | `0px` | Sharp | No rounding, sharp corners |
+| `--corner-radius-2px` | `2px` | Subtle | Minimal rounding, badges |
+| `--corner-radius-4px` | `4px` | Small | Small elements, chips |
+| `--corner-radius-8px` | `8px` | Medium | Buttons, inputs, cards |
+| `--corner-radius-12px` | `12px` | Large | Cards, containers |
+| `--corner-radius-16px` | `16px` | Extra Large | Large cards, modals |
+| `--corner-radius-20px` | `20px` | XXL | Prominent containers |
+| `--corner-radius-24px` | `24px` | XXXL | Hero sections, large panels |
+| `--corner-radius-32px` | `32px` | Huge | Extra large containers |
+| `--corner-radius-40px` | `40px` | Massive | Oversized elements |
+| `--corner-radius-50percent` | `50%` | Circular | Avatars, circular buttons |
+| `--corner-radius-100percent` | `100%` | Pill | Pills, fully rounded buttons |
+
+## Corner Radius Categories
+
+### Sharp (0px)
+
+No rounding - for strict, geometric designs:
+
+```css
+.sharp-card {
+  border-radius: var(--corner-radius-0px);
+}
+```
+
+### Subtle (2-4px)
+
+Minimal rounding - for small elements:
+
+```css
+.badge {
+  border-radius: var(--corner-radius-2px);
+}
+
+.chip {
+  border-radius: var(--corner-radius-4px);
+}
+
+.tooltip {
+  border-radius: var(--corner-radius-4px);
+}
+```
+
+### Standard (8-12px)
+
+Most common rounding - for buttons, inputs, and cards:
+
+```css
+.button {
+  border-radius: var(--corner-radius-8px);
+}
+
+.input {
+  border-radius: var(--corner-radius-8px);
+}
+
+.card {
+  border-radius: var(--corner-radius-12px);
+}
+
+.select {
+  border-radius: var(--corner-radius-8px);
+}
+```
+
+### Large (16-24px)
+
+Prominent rounding - for containers and sections:
+
+```css
+.modal {
+  border-radius: var(--corner-radius-16px);
+}
+
+.dialog {
+  border-radius: var(--corner-radius-20px);
+}
+
+.panel {
+  border-radius: var(--corner-radius-24px);
+}
+```
+
+### Extra Large (32-40px)
+
+Dramatic rounding - for hero sections and special elements:
+
+```css
+.hero-card {
+  border-radius: var(--corner-radius-32px);
+}
+
+.feature-section {
+  border-radius: var(--corner-radius-40px);
+}
+```
+
+### Circular and Pills (50%, 100%)
+
+Fully rounded - for avatars, icon buttons, and pills:
+
+```css
+/* Circular (equal width and height) */
+.avatar {
+  border-radius: var(--corner-radius-50percent);
+  width: 48px;
+  height: 48px;
+}
+
+.icon-button {
+  border-radius: var(--corner-radius-50percent);
+  width: 40px;
+  height: 40px;
+}
+
+/* Pill shape (unequal dimensions) */
+.pill-button {
+  border-radius: var(--corner-radius-100percent);
+  padding: var(--spacing-8px) var(--spacing-20px);
+}
+
+.status-badge {
+  border-radius: var(--corner-radius-100percent);
+  padding: var(--spacing-4px) var(--spacing-12px);
+}
+```
+
+## Common Patterns
+
+### Component Variants
+
+Different sizes of the same component can use different corner radius:
+
+```css
+.button-small {
+  border-radius: var(--corner-radius-4px);
+  padding: var(--spacing-6px) var(--spacing-12px);
+}
+
+.button-medium {
+  border-radius: var(--corner-radius-8px);
+  padding: var(--spacing-10px) var(--spacing-16px);
+}
+
+.button-large {
+  border-radius: var(--corner-radius-12px);
+  padding: var(--spacing-14px) var(--spacing-24px);
+}
+```
+
+### Nested Corners
+
+Inner elements should have smaller corner radius:
+
+```css
+.outer-card {
+  border-radius: var(--corner-radius-16px);
+  padding: var(--spacing-16px);
+}
+
+.inner-element {
+  /* Outer (16px) - padding (16px) = 0px, but use 8px for visual comfort */
+  border-radius: var(--corner-radius-8px);
+}
+```
+
+### Directional Rounding
+
+Apply rounding to specific corners:
+
+```css
+/* Top corners only */
+.modal-header {
+  border-radius: var(--corner-radius-16px) var(--corner-radius-16px) 0 0;
+}
+
+/* Bottom corners only */
+.modal-footer {
+  border-radius: 0 0 var(--corner-radius-16px) var(--corner-radius-16px);
+}
+
+/* Left corners only */
+.tab-left {
+  border-radius: var(--corner-radius-8px) 0 0 var(--corner-radius-8px);
+}
+
+/* Right corners only */
+.tab-right {
+  border-radius: 0 var(--corner-radius-8px) var(--corner-radius-8px) 0;
+}
+```
+
+### Image Rounding
+
+```css
+/* Card with image */
+.card-image {
+  border-radius: var(--corner-radius-12px) var(--corner-radius-12px) 0 0;
+  width: 100%;
+}
+
+/* Avatar */
+.avatar-image {
+  border-radius: var(--corner-radius-50percent);
+  width: 48px;
+  height: 48px;
+}
+
+/* Rounded rectangle image */
+.feature-image {
+  border-radius: var(--corner-radius-16px);
+}
+```
+
+## React Component Examples
+
+### Button Component
+
+```jsx
+import styled from 'styled-components';
+
+const Button = styled.button`
+  border-radius: var(--corner-radius-8px);
+  padding: var(--spacing-10px) var(--spacing-16px);
+  background: var(--bg-emphasis-brand-default);
+  color: var(--text-emphasis-white-default);
+  border: none;
+  
+  &:hover {
+    background: var(--bg-emphasis-brand-hover);
+  }
+`;
+
+const PillButton = styled(Button)`
+  border-radius: var(--corner-radius-100percent);
+  padding: var(--spacing-10px) var(--spacing-24px);
+`;
+
+const IconButton = styled.button`
+  border-radius: var(--corner-radius-50percent);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+`;
+```
+
+### Card Component
+
+```jsx
+import styled from 'styled-components';
+
+const Card = styled.div`
+  border-radius: var(--corner-radius-12px);
+  padding: var(--spacing-16px);
+  background: var(--bg-subtle-primary-default);
+  border: var(--spacing-1px) solid var(--border-subtle-primary-default);
+`;
+
+const CardImage = styled.img`
+  border-radius: var(--corner-radius-12px) var(--corner-radius-12px) 0 0;
+  width: 100%;
+  height: auto;
+  margin: calc(var(--spacing-16px) * -1) calc(var(--spacing-16px) * -1) var(--spacing-16px);
+`;
+
+const CardContent = styled.div`
+  /* Content styling */
+`;
+
+// Usage
+<Card>
+  <CardImage src="image.jpg" alt="Card" />
+  <CardContent>
+    <h3>Card Title</h3>
+    <p>Card content</p>
+  </CardContent>
+</Card>
+```
+
+### Avatar Component
+
+```jsx
+import styled from 'styled-components';
+
+const Avatar = styled.img`
+  border-radius: var(--corner-radius-50percent);
+  width: ${props => props.size || '48px'};
+  height: ${props => props.size || '48px'};
+  object-fit: cover;
+  border: var(--spacing-2px) solid var(--border-subtle-primary-default);
+`;
+
+const AvatarPlaceholder = styled.div`
+  border-radius: var(--corner-radius-50percent);
+  width: ${props => props.size || '48px'};
+  height: ${props => props.size || '48px'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-subtle-brand-default);
+  color: var(--text-emphasis-brand-default);
+  font-weight: var(--font-weight-semibold);
+`;
+
+// Usage
+<Avatar src="avatar.jpg" alt="User" size="64px" />
+<AvatarPlaceholder size="48px">JD</AvatarPlaceholder>
+```
+
+### Modal Component
+
+```jsx
+import styled from 'styled-components';
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: var(--alpha-overlay);
+  backdrop-filter: var(--backdrop-blur);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContainer = styled.div`
+  border-radius: var(--corner-radius-16px);
+  background: var(--bg-subtle-primary-default);
+  max-width: 500px;
+  width: 90%;
+  overflow: hidden;
+`;
+
+const ModalHeader = styled.div`
+  padding: var(--spacing-24px);
+  border-bottom: var(--spacing-1px) solid var(--border-subtle-primary-default);
+`;
+
+const ModalBody = styled.div`
+  padding: var(--spacing-24px);
+`;
+
+const ModalFooter = styled.div`
+  padding: var(--spacing-24px);
+  border-top: var(--spacing-1px) solid var(--border-subtle-primary-default);
+  display: flex;
+  gap: var(--spacing-12px);
+  justify-content: flex-end;
+`;
+```
+
+## Best Practices
+
+### Consistency
+
+Use consistent corner radius for similar components:
+
+```css
+/* ✅ All interactive elements use 8px */
+.button { border-radius: var(--corner-radius-8px); }
+.input { border-radius: var(--corner-radius-8px); }
+.select { border-radius: var(--corner-radius-8px); }
+```
+
+### Scale Appropriately
+
+Larger components can have larger corner radius:
+
+```css
+/* Small component */
+.chip { border-radius: var(--corner-radius-4px); }
+
+/* Medium component */
+.button { border-radius: var(--corner-radius-8px); }
+
+/* Large component */
+.card { border-radius: var(--corner-radius-12px); }
+
+/* Extra large component */
+.modal { border-radius: var(--corner-radius-16px); }
+```
+
+### Nested Relationships
+
+Inner elements should have smaller or equal corner radius:
+
+```css
+/* ❌ Don't - inner element has larger radius */
+.card { border-radius: var(--corner-radius-8px); }
+.card-inner { border-radius: var(--corner-radius-16px); }
+
+/* ✅ Do - inner element has smaller radius */
+.card { border-radius: var(--corner-radius-16px); }
+.card-inner { border-radius: var(--corner-radius-8px); }
+```
+
+### Use Percentages for Circular Elements
+
+```css
+/* ✅ Use percentage for elements with equal dimensions */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--corner-radius-50percent);
+}
+
+/* ✅ Use 100% for pill shapes */
+.pill {
+  border-radius: var(--corner-radius-100percent);
+  padding: var(--spacing-8px) var(--spacing-20px);
+}
+```
+
+## Source Files
+
+- **Corner Radius Tokens**: `ui/themes/GlobalStyle.ts` (lines 128-139)
+- **Stories**: `stories/atoms/CornerRadius/index.stories.tsx`

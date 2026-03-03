@@ -1,0 +1,253 @@
+---
+title: Alert
+description: A versatile alert component for displaying important messages with actions, icons, and multiple visual variants.
+---
+
+## Overview
+
+The Alert component displays important messages to users with support for different types, variants, action buttons, and custom icons.
+
+## Basic Usage
+
+```tsx
+import Alert from '@grauity/ui/elements/Alert';
+import Typography from '@grauity/ui/elements/Typography';
+
+function MyComponent() {
+  return (
+    <Alert
+      variant="primary"
+      type="filled"
+      icon="auto"
+      title={
+        <Typography variant="paragraph-sb-l1" color="inherit">
+          This is an alert title
+        </Typography>
+      }
+      description={
+        <Typography variant="paragraph-md-p3" color="inherit">
+          This is the alert description with more details.
+        </Typography>
+      }
+      showCloseButton={true}
+      onClose={() => console.log('Alert closed')}
+    />
+  );
+}
+```
+
+## Props
+
+<ParamField path="type" type="string" default="default">
+  Type/style of the alert.
+  
+  **Available choices:**
+  - `default` - Colorless background, colored icon & text
+  - `outlined` - Light colored background with outline, colored icon & text
+  - `filled` - Colored background, white icon & text
+</ParamField>
+
+<ParamField path="variant" type="string" default="primary">
+  Variant/color theme of the alert.
+  
+  **Available choices:** `primary`, `success`, `warning`, `error`, `default`
+</ParamField>
+
+<ParamField path="icon" type="grauityIconName | 'auto' | null" default="null">
+  Alert icon. Use `auto` to automatically select the icon based on the variant (info, check, warning, or error icon).
+</ParamField>
+
+<ParamField path="title" type="React.ReactNode" default="">
+  Alert title content. Can be a string or React element (typically Typography).
+</ParamField>
+
+<ParamField path="description" type="React.ReactNode" default="">
+  Alert description content. Can be a string or React element.
+</ParamField>
+
+<ParamField path="showCloseButton" type="boolean" default={false}>
+  Show a close button in the alert.
+</ParamField>
+
+<ParamField path="onClose" type="function">
+  Callback function when the close button is clicked.
+</ParamField>
+
+<ParamField path="actionButtons" type="ButtonProps[]">
+  Array of action button configurations to display in the alert.
+</ParamField>
+
+<ParamField path="inlineButtons" type="boolean" default={false}>
+  Display action buttons inline with the content instead of stacked.
+</ParamField>
+
+<ParamField path="position" type="string" default="static">
+  CSS position property for the alert.
+  
+  **Available choices:** `static`, `fixed`, `absolute`, `relative`
+</ParamField>
+
+<ParamField path="top" type="string" default="null">
+  Top position value (useful for fixed positioning).
+</ParamField>
+
+<ParamField path="bottom" type="string" default="null">
+  Bottom position value (useful for fixed positioning).
+</ParamField>
+
+<ParamField path="left" type="string" default="null">
+  Left position value (useful for fixed positioning).
+</ParamField>
+
+<ParamField path="right" type="string" default="null">
+  Right position value (useful for fixed positioning).
+</ParamField>
+
+<ParamField path="maxWidth" type="string" default="440px">
+  Maximum width of the alert.
+</ParamField>
+
+<ParamField path="className" type="string" default="">
+  Additional CSS class name for styling.
+</ParamField>
+
+## Alert Types
+
+<CodeGroup>
+```tsx Default
+<Alert
+  type="default"
+  variant="primary"
+  icon="auto"
+  title="Default Alert"
+  description="Colorless background with colored icon and text."
+/>
+```
+
+```tsx Outlined
+<Alert
+  type="outlined"
+  variant="success"
+  icon="auto"
+  title="Outlined Alert"
+  description="Light colored background with outline."
+/>
+```
+
+```tsx Filled
+<Alert
+  type="filled"
+  variant="error"
+  icon="auto"
+  title="Filled Alert"
+  description="Colored background with white text."
+/>
+```
+</CodeGroup>
+
+## Alert Variants
+
+```tsx
+<Alert variant="primary" type="filled" icon="auto" title="Primary" />
+<Alert variant="success" type="filled" icon="auto" title="Success" />
+<Alert variant="warning" type="filled" icon="auto" title="Warning" />
+<Alert variant="error" type="filled" icon="auto" title="Error" />
+<Alert variant="default" type="filled" icon="auto" title="Default" />
+```
+
+## With Action Buttons
+
+```tsx
+<Alert
+  variant="primary"
+  type="filled"
+  title="Action Required"
+  description="Please review and take action."
+  actionButtons={[
+    {
+      children: 'Confirm',
+      variant: 'primary',
+      color: 'neutral',
+      size: 'small',
+      onClick: () => console.log('Confirmed'),
+    },
+    {
+      children: 'Cancel',
+      variant: 'tertiary',
+      color: 'neutral',
+      size: 'small',
+      onClick: () => console.log('Cancelled'),
+    },
+  ]}
+/>
+```
+
+## Inline Buttons
+
+```tsx
+<Alert
+  variant="success"
+  title="Success!"
+  description="Operation completed."
+  inlineButtons={true}
+  actionButtons={[
+    {
+      children: 'View Details',
+      variant: 'primary',
+      size: 'small',
+    },
+  ]}
+/>
+```
+
+## With Close Button
+
+```tsx
+<Alert
+  variant="warning"
+  icon="auto"
+  title="Warning"
+  description="This action cannot be undone."
+  showCloseButton={true}
+  onClose={() => console.log('Alert dismissed')}
+/>
+```
+
+## Custom Icon
+
+```tsx
+<Alert
+  variant="primary"
+  icon="sparkle"
+  title="Custom Icon"
+  description="Using a custom icon instead of auto."
+/>
+```
+
+## Fixed Positioning
+
+```tsx
+<Alert
+  variant="success"
+  title="Fixed Alert"
+  position="fixed"
+  top="20px"
+  right="20px"
+  maxWidth="400px"
+/>
+```
+
+## Constants
+
+```tsx
+import { 
+  ALERT_VARIANTS_ENUM,
+  ALERT_TYPES_ENUM 
+} from '@grauity/ui/elements/Alert';
+
+// Usage
+<Alert 
+  variant={ALERT_VARIANTS_ENUM.SUCCESS} 
+  type={ALERT_TYPES_ENUM.FILLED}
+/>
+```
