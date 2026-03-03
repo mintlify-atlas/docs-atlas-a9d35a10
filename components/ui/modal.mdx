@@ -10,7 +10,7 @@ The Modal component displays content in a dialog overlay, perfect for forms, con
 ## Basic Usage
 
 ```tsx
-import Modal from '@grauity/ui/elements/Modal';
+import { NSModal } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function MyComponent() {
@@ -28,7 +28,7 @@ function MyComponent() {
         description="This is a modal description"
       >
         <p>Modal content goes here</p>
-      </Modal>
+      </NSModal>
     </>
   );
 }
@@ -183,7 +183,7 @@ function MyComponent() {
   title="Modal with Banner"
 >
   <p>Modal content</p>
-</Modal>
+</NSModal>
 ```
 
 ## Custom Size
@@ -198,29 +198,29 @@ function MyComponent() {
   title="Large Modal"
 >
   <p>Content for a larger modal</p>
-</Modal>
+</NSModal>
 ```
 
 ## Animation Types
 
 ```tsx
 // Fade (default)
-<Modal animatePresence="fade" />
+<NSModal animatePresence="fade" />
 
 // Slide from bottom
-<Modal animatePresence="slide" />
+<NSModal animatePresence="slide" />
 
 // Slide from top
-<Modal animatePresence="slide-reverse" />
+<NSModal animatePresence="slide-reverse" />
 
 // Emanate from click point
-<Modal 
+<NSModal 
   animatePresence="emanate" 
   clickEvent={clickEvent}
 />
 
 // No animation
-<Modal animatePresence={false} />
+<NSModal animatePresence={false} />
 ```
 
 ## Confirmation Dialog
@@ -228,7 +228,7 @@ function MyComponent() {
 For simple confirmation dialogs, use the `ConfirmationDialog` component:
 
 ```tsx
-import { ConfirmationDialog } from '@grauity/ui/elements/Modal';
+import { ConfirmationDialog } from '@newtonschool/grauity';
 
 <ConfirmationDialog
   isOpen={isOpen}
@@ -246,7 +246,7 @@ import { ConfirmationDialog } from '@grauity/ui/elements/Modal';
 ## Multi-Step Modal
 
 ```tsx
-import { MultiStepModal } from '@grauity/ui/elements/Modal';
+import { MultiStepModal } from '@newtonschool/grauity';
 
 <MultiStepModal
   isOpen={isOpen}

@@ -26,13 +26,13 @@ For new implementations, use the form `Dropdown` component with `multiple={true}
 ## Import
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 ```
 
 ## Basic Usage
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function Example() {
@@ -116,7 +116,7 @@ interface DropdownOption {
 ### Basic Multi-Select
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function BasicMultiSelect() {
@@ -151,7 +151,7 @@ function BasicMultiSelect() {
 ### With Select All
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 
 function SelectAllExample() {
   const options = new Set([
@@ -177,7 +177,7 @@ function SelectAllExample() {
 ### Default All Selected
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 
 function DefaultAllSelected() {
   const options = new Set([
@@ -201,7 +201,7 @@ function DefaultAllSelected() {
 ### With Custom Trigger
 
 ```tsx
-import { NSMultiSelectDropdown, NSChip } from '@grauity/ui';
+import { NSMultiSelectDropdown, NSChip } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function CustomTrigger() {
@@ -229,7 +229,7 @@ function CustomTrigger() {
 ### Custom Search Handler
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function CustomSearch() {
@@ -271,7 +271,7 @@ function CustomSearch() {
 ### Without Search
 
 ```tsx
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 
 function NoSearch() {
   const options = new Set([
@@ -341,7 +341,7 @@ To migrate from `NSMultiSelectDropdown` to the modern `Dropdown` component:
 
 ```tsx
 // Old (MultiSelectDropdown)
-import { NSMultiSelectDropdown } from '@grauity/ui';
+import { NSMultiSelectDropdown } from '@newtonschool/grauity';
 
 const options = new Set([
   { id: '1', label: 'Option 1' },
@@ -357,7 +357,7 @@ const options = new Set([
 />
 
 // New (Dropdown with multiple)
-import { NSDropdown } from '@grauity/ui';
+import { NSDropdown } from '@newtonschool/grauity';
 
 const options = [
   { label: 'Option 1', value: '1' },

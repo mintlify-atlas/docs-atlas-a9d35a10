@@ -10,7 +10,7 @@ The Tabs component provides a simple tab interface for navigating between differ
 ## Basic Usage
 
 ```tsx
-import Tabs from '@grauity/ui/elements/Tabs';
+import { NSTabs } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function MyComponent() {
@@ -18,7 +18,7 @@ function MyComponent() {
 
   return (
     <>
-      <Tabs
+      <NSTabs
         tabItems={['Weekly', 'Monthly', 'Yearly']}
         initialActiveTab={activeTab}
         onTabFocusChange={(index) => setActiveTab(index)}
@@ -82,8 +82,8 @@ function MyComponent() {
 ```tsx
 <Tabs
   tabItems={[
-    <span><Icon name="calendar" /> Weekly</span>,
-    <span><Icon name="chart" /> Monthly</span>,
+    <span><NSIcon name="calendar" /> Weekly</span>,
+    <span><NSIcon name="chart" /> Monthly</span>,
   ]}
   onTabFocusChange={(index) => handleTabChange(index)}
 />

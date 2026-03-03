@@ -10,8 +10,8 @@ The Tooltip component wraps any element and displays additional information when
 ## Basic Usage
 
 ```tsx
-import Tooltip from '@grauity/ui/elements/Tooltip';
-import Button from '@grauity/ui/elements/Button';
+import Tooltip from '@newtonschool/grauity';
+import Button from '@newtonschool/grauity';
 
 function MyComponent() {
   return (
@@ -117,10 +117,10 @@ function MyComponent() {
 <Tooltip
   content={
     <div>
-      <Typography variant="paragraph-sb-p4">Custom Tooltip</Typography>
-      <Typography variant="paragraph-md-p4">
+      <NSTypography variant="paragraph-sb-p4">Custom Tooltip</NSTypography>
+      <NSTypography variant="paragraph-md-p4">
         With multiple lines and rich content
-      </Typography>
+      </NSTypography>
     </div>
   }
 >
@@ -193,7 +193,7 @@ function ControlledTooltipExample() {
 
 ```tsx
 <Tooltip content="Help information">
-  <Icon name="info-circle" size="20" />
+  <NSIcon name="info-circle" size="20" />
 </Tooltip>
 ```
 

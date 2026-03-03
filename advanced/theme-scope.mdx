@@ -28,7 +28,7 @@ icon: palette
 ## Import
 
 ```tsx
-import { NSThemeScope, useThemeScope } from '@grauity/ui';
+import { NSThemeScope, useThemeScope } from '@newtonschool/grauity';
 ```
 
 ## Basic Usage
@@ -36,7 +36,7 @@ import { NSThemeScope, useThemeScope } from '@grauity/ui';
 <CodeGroup>
 
 ```tsx Apply Light Theme
-import { NSThemeScope, NSButton } from '@grauity/ui';
+import { NSThemeScope, NSButton } from '@newtonschool/grauity';
 
 function App() {
   return (
@@ -51,7 +51,7 @@ function App() {
 ```
 
 ```tsx Apply Dark Theme
-import { NSThemeScope, NSButton } from '@grauity/ui';
+import { NSThemeScope, NSButton } from '@newtonschool/grauity';
 
 function App() {
   return (
@@ -66,7 +66,7 @@ function App() {
 ```
 
 ```tsx Invert Parent Theme
-import { NSThemeScope, NSButton } from '@grauity/ui';
+import { NSThemeScope, NSButton } from '@newtonschool/grauity';
 
 function App() {
   return (
@@ -116,7 +116,7 @@ function App() {
 Create complex theme hierarchies by nesting multiple `NSThemeScope` components:
 
 ```tsx
-import { NSThemeScope } from '@grauity/ui';
+import { NSThemeScope } from '@newtonschool/grauity';
 
 function NestedThemes() {
   return (
@@ -147,7 +147,7 @@ Render the theme scope using a custom component or styled element:
 
 ```tsx
 import styled from 'styled-components';
-import { NSThemeScope } from '@grauity/ui';
+import { NSThemeScope } from '@newtonschool/grauity';
 
 const Card = styled.div`
   padding: 24px;
@@ -171,7 +171,7 @@ function ThemedCard() {
 Create an alternating theme pattern using the `invert` prop:
 
 ```tsx
-import { NSThemeScope } from '@grauity/ui';
+import { NSThemeScope } from '@newtonschool/grauity';
 import styled from 'styled-components';
 
 const Section = styled.div`
@@ -205,7 +205,7 @@ The `useThemeScope` hook allows you to access the current theme context from any
 ### Usage
 
 ```tsx
-import { NSThemeScope, useThemeScope } from '@grauity/ui';
+import { NSThemeScope, useThemeScope } from '@newtonschool/grauity';
 
 function ThemeAwareComponent() {
   const { theme, themeClassName } = useThemeScope();
@@ -243,7 +243,7 @@ function App() {
 
 ```tsx
 import styled from 'styled-components';
-import { NSThemeScope } from '@grauity/ui';
+import { NSThemeScope } from '@newtonschool/grauity';
 
 const ThemedDiv = styled.div`
   background-color: ${props => 
@@ -273,7 +273,7 @@ function App() {
 </Info>
 
 ```tsx
-import { NSThemeScope } from '@grauity/ui';
+import { NSThemeScope } from '@newtonschool/grauity';
 
 function InheritedTheme() {
   return (

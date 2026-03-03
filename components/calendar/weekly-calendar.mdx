@@ -11,14 +11,14 @@ The `WeeklyCalendar` component displays events in a week-long view with hourly t
 ## Import
 
 ```tsx
-import { WeeklyCalendar } from '@grauity/ui';
-import type { WeeklyCalendarProps, CalendarEvent } from '@grauity/ui';
+import { WeeklyCalendar } from '@newtonschool/grauity';
+import type { WeeklyCalendarProps, CalendarEvent } from '@newtonschool/grauity';
 ```
 
 ## Basic Usage
 
 ```tsx
-import { WeeklyCalendar } from '@grauity/ui';
+import { WeeklyCalendar } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function MyWeeklyCalendar() {
@@ -158,8 +158,8 @@ Events that overlap will be displayed side-by-side with appropriate widths calcu
 ## Custom Event Rendering
 
 ```tsx
-import { WeeklyCalendar, CalendarEvent } from '@grauity/ui';
-import CalendarEvent from '@grauity/ui/CalendarEvent';
+import { WeeklyCalendar, CalendarEvent } from '@newtonschool/grauity';
+import CalendarEvent from '@newtonschool/grauity';
 
 function CustomWeeklyCalendar() {
   const events = [
@@ -236,7 +236,7 @@ The calendar displays a horizontal line showing the current time position. This 
 ## Complete Example
 
 ```tsx
-import { WeeklyCalendar, CalendarEvent } from '@grauity/ui';
+import { WeeklyCalendar, CalendarEvent } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function ScheduleApp() {

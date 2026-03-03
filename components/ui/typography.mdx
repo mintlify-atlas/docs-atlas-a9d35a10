@@ -10,13 +10,13 @@ The Typography component provides a consistent way to render text throughout you
 ## Basic Usage
 
 ```tsx
-import Typography from '@grauity/ui/elements/Typography';
+import { NSTypography } from '@newtonschool/grauity';
 
 function MyComponent() {
   return (
-    <Typography variant="paragraph-md-p1">
+    <NSTypography variant="paragraph-md-p1">
       The quick brown fox jumps over the lazy dog!
-    </Typography>
+    </NSTypography>
   );
 }
 ```
@@ -74,9 +74,9 @@ function MyComponent() {
 Large display text for hero sections and prominent headlines.
 
 ```tsx
-<Typography variant="display-bd-d1">Display D1 - 76px</Typography>
-<Typography variant="display-bd-d2">Display D2 - 64px</Typography>
-<Typography variant="display-bd-d3">Display D3 - 52px</Typography>
+<NSTypography variant="display-bd-d1">Display D1 - 76px</NSTypography>
+<NSTypography variant="display-bd-d2">Display D2 - 64px</NSTypography>
+<NSTypography variant="display-bd-d3">Display D3 - 52px</NSTypography>
 ```
 
 ## Heading Variants
@@ -84,12 +84,12 @@ Large display text for hero sections and prominent headlines.
 Semibold headings for section titles and content hierarchy.
 
 ```tsx
-<Typography variant="heading-sb-h1">Heading H1 - 40px</Typography>
-<Typography variant="heading-sb-h2">Heading H2 - 36px</Typography>
-<Typography variant="heading-sb-h3">Heading H3 - 28px</Typography>
-<Typography variant="heading-sb-h4">Heading H4 - 24px</Typography>
-<Typography variant="heading-sb-h5">Heading H5 - 20px</Typography>
-<Typography variant="heading-sb-h6">Heading H6 - 16px</Typography>
+<NSTypography variant="heading-sb-h1">Heading H1 - 40px</NSTypography>
+<NSTypography variant="heading-sb-h2">Heading H2 - 36px</NSTypography>
+<NSTypography variant="heading-sb-h3">Heading H3 - 28px</NSTypography>
+<NSTypography variant="heading-sb-h4">Heading H4 - 24px</NSTypography>
+<NSTypography variant="heading-sb-h5">Heading H5 - 20px</NSTypography>
+<NSTypography variant="heading-sb-h6">Heading H6 - 16px</NSTypography>
 ```
 
 ## Paragraph Variants
@@ -97,34 +97,34 @@ Semibold headings for section titles and content hierarchy.
 ### Semibold Paragraphs
 
 ```tsx
-<Typography variant="paragraph-sb-p1">Paragraph SB P1 - 18px</Typography>
-<Typography variant="paragraph-sb-p2">Paragraph SB P2 - 16px</Typography>
-<Typography variant="paragraph-sb-p3">Paragraph SB P3 - 14px</Typography>
-<Typography variant="paragraph-sb-p4">Paragraph SB P4 - 12px</Typography>
+<NSTypography variant="paragraph-sb-p1">Paragraph SB P1 - 18px</NSTypography>
+<NSTypography variant="paragraph-sb-p2">Paragraph SB P2 - 16px</NSTypography>
+<NSTypography variant="paragraph-sb-p3">Paragraph SB P3 - 14px</NSTypography>
+<NSTypography variant="paragraph-sb-p4">Paragraph SB P4 - 12px</NSTypography>
 ```
 
 ### Medium Weight Paragraphs
 
 ```tsx
-<Typography variant="paragraph-md-p1">Paragraph MD P1 - 18px</Typography>
-<Typography variant="paragraph-md-p2">Paragraph MD P2 - 16px</Typography>
-<Typography variant="paragraph-md-p3">Paragraph MD P3 - 14px</Typography>
-<Typography variant="paragraph-md-p4">Paragraph MD P4 - 12px</Typography>
+<NSTypography variant="paragraph-md-p1">Paragraph MD P1 - 18px</NSTypography>
+<NSTypography variant="paragraph-md-p2">Paragraph MD P2 - 16px</NSTypography>
+<NSTypography variant="paragraph-md-p3">Paragraph MD P3 - 14px</NSTypography>
+<NSTypography variant="paragraph-md-p4">Paragraph MD P4 - 12px</NSTypography>
 ```
 
 ### Code Variant
 
 ```tsx
-<Typography variant="paragraph-md-c1">Code text with monospace font</Typography>
+<NSTypography variant="paragraph-md-c1">Code text with monospace font</NSTypography>
 ```
 
 ### Label Variants
 
 ```tsx
-<Typography variant="paragraph-sb-l1">Semibold Label - 14px</Typography>
-<Typography variant="paragraph-sb-l2">Semibold Label - 12px</Typography>
-<Typography variant="paragraph-md-l1">Medium Label - 14px</Typography>
-<Typography variant="paragraph-md-l2">Medium Label - 12px</Typography>
+<NSTypography variant="paragraph-sb-l1">Semibold Label - 14px</NSTypography>
+<NSTypography variant="paragraph-sb-l2">Semibold Label - 12px</NSTypography>
+<NSTypography variant="paragraph-md-l1">Medium Label - 14px</NSTypography>
+<NSTypography variant="paragraph-md-l2">Medium Label - 12px</NSTypography>
 ```
 
 ## Overline Variants
@@ -132,8 +132,8 @@ Semibold headings for section titles and content hierarchy.
 Uppercase text for labels and categories.
 
 ```tsx
-<Typography variant="overline-sb-ol1">OVERLINE 1</Typography>
-<Typography variant="overline-sb-ol2">OVERLINE 2</Typography>
+<NSTypography variant="overline-sb-ol1">OVERLINE 1</NSTypography>
+<NSTypography variant="overline-sb-ol2">OVERLINE 2</NSTypography>
 ```
 
 ## Action Variants
@@ -141,32 +141,32 @@ Uppercase text for labels and categories.
 For interactive text elements like buttons and links.
 
 ```tsx
-<Typography variant="action-sb-p1">Action P1 - 16px</Typography>
-<Typography variant="action-sb-p2">Action P2 - 14px</Typography>
-<Typography variant="action-sb-lk1">ACTION LINK</Typography>
+<NSTypography variant="action-sb-p1">Action P1 - 16px</NSTypography>
+<NSTypography variant="action-sb-p2">Action P2 - 14px</NSTypography>
+<NSTypography variant="action-sb-lk1">ACTION LINK</NSTypography>
 ```
 
 ## Custom Element Type
 
 ```tsx
-<Typography variant="paragraph-md-p1" as="span">
+<NSTypography variant="paragraph-md-p1" as="span">
   This renders as a span element
-</Typography>
+</NSTypography>
 
-<Typography variant="paragraph-md-p1" as="div">
+<NSTypography variant="paragraph-md-p1" as="div">
   This renders as a div element
-</Typography>
+</NSTypography>
 ```
 
 ## Custom Color
 
 ```tsx
-<Typography 
+<NSTypography 
   variant="heading-sb-h1" 
   color="var(--text-emphasis-brand-default)"
 >
   Branded Heading
-</Typography>
+</NSTypography>
 ```
 
 ## Constants
@@ -176,8 +176,8 @@ import {
   TYPOGRAPHY_VARIANTS_ENUM,
   TYPOGRAPHY_AS_ENUM,
   TYPOGRAPHY_VARIANT_AS_MAPPING 
-} from '@grauity/ui/elements/Typography';
+} from '@newtonschool/grauity';
 
 // Usage
-<Typography variant={TYPOGRAPHY_VARIANTS_ENUM.HEADING_SB_H1} />
+<NSTypography variant={TYPOGRAPHY_VARIANTS_ENUM.HEADING_SB_H1} />
 ```

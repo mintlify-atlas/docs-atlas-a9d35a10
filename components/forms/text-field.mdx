@@ -77,7 +77,7 @@ function ValidatedInput() {
       adornments={{
         start: (
           <>
-            <Icon name="call-end" color="currentColor" />
+            <NSIcon name="call-end" color="currentColor" />
             +91
           </>
         )
@@ -97,7 +97,7 @@ function ValidatedInput() {
         end: (
           <>
             @gmail.com
-            <Icon name="check-circle" color="currentColor" />
+            <NSIcon name="check-circle" color="currentColor" />
             <Button size="small" variant="primary">Save</Button>
           </>
         )
@@ -113,7 +113,7 @@ function ValidatedInput() {
       name="custom"
       label="Custom Field"
       adornments={{
-        start: <Icon name="call-end" color="currentColor" />,
+        start: <NSIcon name="call-end" color="currentColor" />,
         end: <Button size="small">Submit</Button>
       }}
     />
@@ -126,29 +126,29 @@ function ValidatedInput() {
 TextField comes in four sizes: `small`, `medium` (default), `large`, and `extra-large`.
 
 ```jsx
-<TextField name="small" size="small" placeholder="Small (32px)" />
-<TextField name="medium" size="medium" placeholder="Medium (40px)" />
-<TextField name="large" size="large" placeholder="Large (48px)" />
-<TextField name="xlarge" size="extra-large" placeholder="Extra Large (56px)" />
+<NSTextField name="small" size="small" placeholder="Small (32px)" />
+<NSTextField name="medium" size="medium" placeholder="Medium (40px)" />
+<NSTextField name="large" size="large" placeholder="Large (48px)" />
+<NSTextField name="xlarge" size="extra-large" placeholder="Extra Large (56px)" />
 ```
 
 ## Input Types
 
 ```jsx
 // Text input
-<TextField name="text" type="text" placeholder="Text input" />
+<NSTextField name="text" type="text" placeholder="Text input" />
 
 // Number input
-<TextField name="number" type="number" placeholder="Enter a number" min={0} max={100} step={1} />
+<NSTextField name="number" type="number" placeholder="Enter a number" min={0} max={100} step={1} />
 
 // Email input
-<TextField name="email" type="email" placeholder="you@example.com" />
+<NSTextField name="email" type="email" placeholder="you@example.com" />
 
 // Password input
-<TextField name="password" type="password" placeholder="Enter password" />
+<NSTextField name="password" type="password" placeholder="Enter password" />
 
 // URL input
-<TextField name="url" type="url" placeholder="https://example.com" />
+<NSTextField name="url" type="url" placeholder="https://example.com" />
 ```
 
 ## Props

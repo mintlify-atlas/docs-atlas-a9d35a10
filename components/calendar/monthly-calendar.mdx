@@ -11,14 +11,14 @@ The `MonthlyCalendar` component displays events in a traditional month grid view
 ## Import
 
 ```tsx
-import { MonthlyCalendar } from '@grauity/ui';
-import type { MonthlyCalendarProps, CalendarEvent } from '@grauity/ui';
+import { MonthlyCalendar } from '@newtonschool/grauity';
+import type { MonthlyCalendarProps, CalendarEvent } from '@newtonschool/grauity';
 ```
 
 ## Basic Usage
 
 ```tsx
-import { MonthlyCalendar } from '@grauity/ui';
+import { MonthlyCalendar } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function MyMonthlyCalendar() {
@@ -115,8 +115,8 @@ interface CalendarEvent<T = {}> {
 Use the `MonthlyCalendarEvent` component for styled event items:
 
 ```tsx
-import { MonthlyCalendar } from '@grauity/ui';
-import MonthlyCalendarEventItem from '@grauity/ui/MonthlyCalendarEvent';
+import { MonthlyCalendar } from '@newtonschool/grauity';
+import MonthlyCalendarEventItem from '@newtonschool/grauity';
 
 function CustomMonthlyCalendar() {
   const events = [
@@ -203,8 +203,8 @@ When a day has more events than can fit in the grid cell:
 ## Complete Example
 
 ```tsx
-import { MonthlyCalendar } from '@grauity/ui';
-import MonthlyCalendarEventItem from '@grauity/ui/MonthlyCalendarEvent';
+import { MonthlyCalendar } from '@newtonschool/grauity';
+import MonthlyCalendarEventItem from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function CalendarApp() {

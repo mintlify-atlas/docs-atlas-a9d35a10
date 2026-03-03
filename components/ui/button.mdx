@@ -10,17 +10,17 @@ The Button component is used to trigger actions in your application. It supports
 ## Basic Usage
 
 ```tsx
-import Button from '@grauity/ui/elements/Button';
+import { NSButton } from '@newtonschool/grauity';
 
 function MyComponent() {
   return (
-    <Button 
+    <NSButton 
       variant="primary" 
       color="brand"
       onClick={() => console.log('Clicked!')}
     >
       Click Me!
-    </Button>
+    </NSButton>
   );
 }
 ```
@@ -119,94 +119,94 @@ Buttons come in four visual variants:
 
 <CodeGroup>
 ```tsx Primary (Solid)
-<Button variant="primary" color="brand">
+<NSButton variant="primary" color="brand">
   Primary Button
-</Button>
+</NSButton>
 ```
 
 ```tsx Secondary (Outlined)
-<Button variant="secondary" color="brand">
+<NSButton variant="secondary" color="brand">
   Secondary Button
-</Button>
+</NSButton>
 ```
 
 ```tsx Tertiary (Borderless)
-<Button variant="tertiary" color="brand">
+<NSButton variant="tertiary" color="brand">
   Tertiary Button
-</Button>
+</NSButton>
 ```
 
 ```tsx Text
-<Button variant="text" color="brand">
+<NSButton variant="text" color="brand">
   Text Button
-</Button>
+</NSButton>
 ```
 </CodeGroup>
 
 ## Colors
 
 ```tsx
-<Button variant="primary" color="brand">Brand</Button>
-<Button variant="primary" color="neutral">Neutral</Button>
-<Button variant="primary" color="error">Error</Button>
-<Button variant="primary" color="success">Success</Button>
-<Button variant="primary" color="warning">Warning</Button>
-<Button variant="primary" color="yellow">Yellow</Button>
-<Button variant="primary" color="purple">Purple</Button>
+<NSButton variant="primary" color="brand">Brand</NSButton>
+<NSButton variant="primary" color="neutral">Neutral</NSButton>
+<NSButton variant="primary" color="error">Error</NSButton>
+<NSButton variant="primary" color="success">Success</NSButton>
+<NSButton variant="primary" color="warning">Warning</NSButton>
+<NSButton variant="primary" color="yellow">Yellow</NSButton>
+<NSButton variant="primary" color="purple">Purple</NSButton>
 ```
 
 ## Sizes
 
 ```tsx
-<Button size="extra-small">Extra Small</Button>
-<Button size="small">Small</Button>
-<Button size="medium">Medium</Button>
-<Button size="large">Large</Button>
-<Button size="extra-large">Extra Large</Button>
+<NSButton size="extra-small">Extra Small</NSButton>
+<NSButton size="small">Small</NSButton>
+<NSButton size="medium">Medium</NSButton>
+<NSButton size="large">Large</NSButton>
+<NSButton size="extra-large">Extra Large</NSButton>
 ```
 
 ## With Icons
 
 ```tsx
-<Button 
+<NSButton 
   variant="primary" 
   icon="sparkle" 
   iconPosition="left"
 >
   With Icon
-</Button>
+</NSButton>
 
-<Button 
+<NSButton 
   variant="primary" 
   icon="arrow-right" 
   iconPosition="right"
 >
   Icon Right
-</Button>
+</NSButton>
 ```
 
 ## Loading State
 
 ```tsx
-<Button variant="primary" loading={true}>
+<NSButton variant="primary" loading={true}>
   Loading...
-</Button>
+</NSButton>
 ```
 
 ## Disabled State
 
 ```tsx
-<Button variant="primary" disabled={true}>
+<NSButton variant="primary" disabled={true}>
   Disabled Button
-</Button>
+</NSButton>
 ```
 
 ## Full Width
 
 ```tsx
-<Button variant="primary" fullWidth={true}>
+<NSButton variant="primary" fullWidth={true}>
   Full Width Button
-</Button>
+</NSButton>
 ```
 
 ## Icon Button
@@ -214,9 +214,9 @@ Buttons come in four visual variants:
 For icon-only buttons, use the `IconButton` component:
 
 ```tsx
-import { IconButton } from '@grauity/ui/elements/Button';
+import { NSIconButton } from '@newtonschool/grauity';
 
-<IconButton 
+<NSIconButton 
   variant="primary" 
   icon="sparkle" 
   size="medium"
@@ -231,8 +231,8 @@ import {
   BUTTON_VARIANTS_ENUM, 
   BUTTON_SIZES_ENUM,
   BUTTON_COLORS_ENUM 
-} from '@grauity/ui/elements/Button';
+} from '@newtonschool/grauity';
 
 // Usage
-<Button variant={BUTTON_VARIANTS_ENUM.PRIMARY} />
+<NSButton variant={BUTTON_VARIANTS_ENUM.PRIMARY} />
 ```

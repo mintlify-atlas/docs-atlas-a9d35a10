@@ -10,11 +10,11 @@ The Icon component renders icons from the Grauity icon library with customizable
 ## Basic Usage
 
 ```tsx
-import { Icon } from '@grauity/ui/elements/Icon';
+import { Icon } from '@newtonschool/grauity';
 
 function MyComponent() {
   return (
-    <Icon 
+    <NSIcon 
       name="sparkle" 
       size="32" 
       color="var(--text-emphasis-primary-default)" 
@@ -102,12 +102,12 @@ function MyComponent() {
 ## Icon Sizes
 
 ```tsx
-<Icon name="sparkle" size="12" />
-<Icon name="sparkle" size="16" />
-<Icon name="sparkle" size="20" />
-<Icon name="sparkle" size="24" />
-<Icon name="sparkle" size="32" />
-<Icon name="sparkle" size="40" />
+<NSIcon name="sparkle" size="12" />
+<NSIcon name="sparkle" size="16" />
+<NSIcon name="sparkle" size="20" />
+<NSIcon name="sparkle" size="24" />
+<NSIcon name="sparkle" size="32" />
+<NSIcon name="sparkle" size="40" />
 ```
 
 ## Loading State
@@ -115,13 +115,13 @@ function MyComponent() {
 Use an icon as a loading spinner:
 
 ```tsx
-<Icon name="loading" loading={true} size="24" />
+<NSIcon name="loading" loading={true} size="24" />
 ```
 
 ## Disabled State
 
 ```tsx
-<Icon name="sparkle" disabled={true} size="24" />
+<NSIcon name="sparkle" disabled={true} size="24" />
 ```
 
 ## Transformations
@@ -129,15 +129,15 @@ Use an icon as a loading spinner:
 ### Flipped Icons
 
 ```tsx
-<Icon name="arrow-right" flipped="horizontally" />
-<Icon name="arrow-right" flipped="vertically" />
+<NSIcon name="arrow-right" flipped="horizontally" />
+<NSIcon name="arrow-right" flipped="vertically" />
 ```
 
 ### Rotated Icons
 
 ```tsx
-<Icon name="arrow-right" rotated="clockwise" />
-<Icon name="arrow-right" rotated="counterclockwise" />
+<NSIcon name="arrow-right" rotated="clockwise" />
+<NSIcon name="arrow-right" rotated="counterclockwise" />
 ```
 
 ## Styled Icons
@@ -145,7 +145,7 @@ Use an icon as a loading spinner:
 ### Bordered Icon
 
 ```tsx
-<Icon 
+<NSIcon 
   name="sparkle" 
   bordered={true} 
   size="32" 
@@ -155,7 +155,7 @@ Use an icon as a loading spinner:
 ### Circular Icon
 
 ```tsx
-<Icon 
+<NSIcon 
   name="sparkle" 
   circular={true} 
   size="32" 
@@ -167,14 +167,14 @@ Use an icon as a loading spinner:
 Works with bordered or circular icons:
 
 ```tsx
-<Icon 
+<NSIcon 
   name="sparkle" 
   bordered={true} 
   inverted={true} 
   size="32" 
 />
 
-<Icon 
+<NSIcon 
   name="sparkle" 
   circular={true} 
   inverted={true} 
@@ -185,13 +185,13 @@ Works with bordered or circular icons:
 ## Custom Colors
 
 ```tsx
-<Icon 
+<NSIcon 
   name="sparkle" 
   color="#FF5733" 
   size="32" 
 />
 
-<Icon 
+<NSIcon 
   name="sparkle" 
   color="var(--text-emphasis-brand-default)" 
   size="32" 
@@ -203,5 +203,5 @@ Works with bordered or circular icons:
 Useful when used inside buttons or other colored containers:
 
 ```tsx
-<Icon name="sparkle" color="inherit" size="20" />
+<NSIcon name="sparkle" color="inherit" size="20" />
 ```

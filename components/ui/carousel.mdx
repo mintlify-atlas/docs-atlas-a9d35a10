@@ -10,7 +10,7 @@ The Carousel component displays a horizontally scrollable list of items with nav
 ## Basic Usage
 
 ```tsx
-import Carousel from '@grauity/ui/elements/Carousel';
+import Carousel from '@newtonschool/grauity';
 
 function MyComponent() {
   const items = [
@@ -110,7 +110,7 @@ function MyComponent() {
 ```tsx
 <Carousel
   items={items}
-  title={<Typography variant="heading-sb-h4">Featured Products</Typography>}
+  title={<NSTypography variant="heading-sb-h4">Featured Products</NSTypography>}
 />
 ```
 
@@ -204,15 +204,15 @@ function ProductCarousel() {
   const items = products.map(product => (
     <div key={product.id} style={{ width: '200px' }}>
       <img src={product.image} alt={product.name} />
-      <Typography variant="paragraph-sb-p3">{product.name}</Typography>
-      <Typography variant="paragraph-md-p3">{product.price}</Typography>
+      <NSTypography variant="paragraph-sb-p3">{product.name}</NSTypography>
+      <NSTypography variant="paragraph-md-p3">{product.price}</NSTypography>
     </div>
   ));
 
   return (
     <Carousel
       items={items}
-      title={<Typography variant="heading-sb-h3">Featured Products</Typography>}
+      title={<NSTypography variant="heading-sb-h3">Featured Products</NSTypography>}
       gap={16}
       scrollAmount={220}
     />

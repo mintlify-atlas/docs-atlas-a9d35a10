@@ -10,7 +10,7 @@ The Table component provides a robust solution for displaying tabular data with 
 ## Basic Usage
 
 ```tsx
-import Table from '@grauity/ui/elements/Table';
+import { NSTable } from '@newtonschool/grauity';
 
 const columns = [
   { key: 'name', display: 'Name', width: '200px' },
@@ -225,10 +225,10 @@ const rows = [
 
 ```tsx
 // Condensed (default)
-<Table columns={columns} rows={rows} condensed={true} />
+<NSTable columns={columns} rows={rows} condensed={true} />
 
 // Regular spacing
-<Table columns={columns} rows={rows} condensed={false} />
+<NSTable columns={columns} rows={rows} condensed={false} />
 ```
 
 ## Loading State

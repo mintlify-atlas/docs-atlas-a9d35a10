@@ -10,7 +10,7 @@ The Popover component displays content in a floating panel that appears relative
 ## Basic Usage
 
 ```tsx
-import PopOver from '@grauity/ui/elements/PopOver';
+import PopOver from '@newtonschool/grauity';
 import { useRef, useState } from 'react';
 
 function MyComponent() {
@@ -180,7 +180,7 @@ function MenuPopover() {
   onClose={onClose}
 >
   <div style={{ padding: '24px' }}>
-    <Typography variant="heading-sb-h5">Custom Size</Typography>
+    <NSTypography variant="heading-sb-h5">Custom Size</NSTypography>
     <p>This popover has a custom width and height</p>
   </div>
 </PopOver>
@@ -249,7 +249,7 @@ function FormPopover() {
         disableBackgroundScroll={true}
       >
         <div style={{ padding: '20px' }}>
-          <Typography variant="heading-sb-h6">Add New Item</Typography>
+          <NSTypography variant="heading-sb-h6">Add New Item</NSTypography>
           <input type="text" placeholder="Item name" />
           <Button variant="primary" onClick={handleSubmit}>
             Save

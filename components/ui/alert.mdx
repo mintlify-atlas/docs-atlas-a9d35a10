@@ -10,8 +10,8 @@ The Alert component displays important messages to users with support for differ
 ## Basic Usage
 
 ```tsx
-import Alert from '@grauity/ui/elements/Alert';
-import Typography from '@grauity/ui/elements/Typography';
+import { NSAlert } from '@newtonschool/grauity';
+import { NSTypography } from '@newtonschool/grauity';
 
 function MyComponent() {
   return (
@@ -20,14 +20,14 @@ function MyComponent() {
       type="filled"
       icon="auto"
       title={
-        <Typography variant="paragraph-sb-l1" color="inherit">
+        <NSTypography variant="paragraph-sb-l1" color="inherit">
           This is an alert title
-        </Typography>
+        </NSTypography>
       }
       description={
-        <Typography variant="paragraph-md-p3" color="inherit">
+        <NSTypography variant="paragraph-md-p3" color="inherit">
           This is the alert description with more details.
-        </Typography>
+        </NSTypography>
       }
       showCloseButton={true}
       onClose={() => console.log('Alert closed')}
@@ -148,11 +148,11 @@ function MyComponent() {
 ## Alert Variants
 
 ```tsx
-<Alert variant="primary" type="filled" icon="auto" title="Primary" />
-<Alert variant="success" type="filled" icon="auto" title="Success" />
-<Alert variant="warning" type="filled" icon="auto" title="Warning" />
-<Alert variant="error" type="filled" icon="auto" title="Error" />
-<Alert variant="default" type="filled" icon="auto" title="Default" />
+<NSAlert variant="primary" type="filled" icon="auto" title="Primary" />
+<NSAlert variant="success" type="filled" icon="auto" title="Success" />
+<NSAlert variant="warning" type="filled" icon="auto" title="Warning" />
+<NSAlert variant="error" type="filled" icon="auto" title="Error" />
+<NSAlert variant="default" type="filled" icon="auto" title="Default" />
 ```
 
 ## With Action Buttons
@@ -243,10 +243,10 @@ function MyComponent() {
 import { 
   ALERT_VARIANTS_ENUM,
   ALERT_TYPES_ENUM 
-} from '@grauity/ui/elements/Alert';
+} from '@newtonschool/grauity';
 
 // Usage
-<Alert 
+<NSAlert 
   variant={ALERT_VARIANTS_ENUM.SUCCESS} 
   type={ALERT_TYPES_ENUM.FILLED}
 />

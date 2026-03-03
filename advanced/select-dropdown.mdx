@@ -25,13 +25,13 @@ For new implementations, use the form `Dropdown` component which provides:
 ## Import
 
 ```tsx
-import { NSSelectDropdown } from '@grauity/ui';
+import { NSSelectDropdown } from '@newtonschool/grauity';
 ```
 
 ## Basic Usage
 
 ```tsx
-import { NSSelectDropdown } from '@grauity/ui';
+import { NSSelectDropdown } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function Example() {
@@ -113,7 +113,7 @@ interface DropdownOption {
 ### With Search Enabled
 
 ```tsx
-import { NSSelectDropdown } from '@grauity/ui';
+import { NSSelectDropdown } from '@newtonschool/grauity';
 
 function SearchableDropdown() {
   const options = new Set([
@@ -138,7 +138,7 @@ function SearchableDropdown() {
 ### With Custom Trigger
 
 ```tsx
-import { NSSelectDropdown, NSButton } from '@grauity/ui';
+import { NSSelectDropdown, NSButton } from '@newtonschool/grauity';
 
 function CustomTriggerDropdown() {
   const options = new Set([
@@ -164,7 +164,7 @@ function CustomTriggerDropdown() {
 ### With Icon
 
 ```tsx
-import { NSSelectDropdown } from '@grauity/ui';
+import { NSSelectDropdown } from '@newtonschool/grauity';
 
 function IconDropdown() {
   const options = new Set([
@@ -187,7 +187,7 @@ function IconDropdown() {
 ### Custom Search Handler
 
 ```tsx
-import { NSSelectDropdown } from '@grauity/ui';
+import { NSSelectDropdown } from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function CustomSearchDropdown() {
@@ -261,7 +261,7 @@ To migrate from `NSSelectDropdown` to `Dropdown`:
 
 ```tsx
 // Old (SelectDropdown)
-import { NSSelectDropdown } from '@grauity/ui';
+import { NSSelectDropdown } from '@newtonschool/grauity';
 
 const options = new Set([
   { id: '1', label: 'Option 1' },
@@ -274,7 +274,7 @@ const options = new Set([
 />
 
 // New (Dropdown)
-import { NSDropdown } from '@grauity/ui';
+import { NSDropdown } from '@newtonschool/grauity';
 
 const options = [
   { label: 'Option 1', value: '1' },

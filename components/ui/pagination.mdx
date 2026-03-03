@@ -10,7 +10,7 @@ The Pagination component provides navigation controls for multi-page content wit
 ## Basic Usage
 
 ```tsx
-import Pagination from '@grauity/ui/elements/Pagination';
+import Pagination from '@newtonschool/grauity';
 import { useState } from 'react';
 
 function MyComponent() {
@@ -148,9 +148,9 @@ function PaginatedList() {
     <div>
       <div>
         {/* Render your paginated content here */}
-        <Typography variant="paragraph-md-p2">
+        <NSTypography variant="paragraph-md-p2">
           Showing page {currentPage} of {totalPages}
-        </Typography>
+        </NSTypography>
       </div>
       
       <Pagination
@@ -190,7 +190,7 @@ function DataTable() {
 
   return (
     <div>
-      <Table 
+      <NSTable 
         columns={columns} 
         rows={data} 
         loading={loading}
